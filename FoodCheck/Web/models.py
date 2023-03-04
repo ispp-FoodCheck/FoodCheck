@@ -24,11 +24,11 @@ class Supermercado(models.Model):
         return self.nombre
     
 class Producto(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.BigIntegerField(primary_key=True)
     nombre = models.CharField(max_length=50)
     imagen = models.URLField(validators=[URLValidator()])
     #precio = models.FloatField()
-    ingredientes = models.CharField(max_length=200)
+    ingredientes = models.CharField(max_length=500)
     marca = models.CharField(max_length=50)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
