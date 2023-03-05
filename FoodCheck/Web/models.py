@@ -76,7 +76,7 @@ class Receta(models.Model):
     
 
 class Valoracion(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     puntuacion = models.IntegerField()
     comentario = models.CharField(max_length=200)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -86,7 +86,7 @@ class Valoracion(models.Model):
         return self.usuario.nombre + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
     
 class RecetasDesbloqueadasUsuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     disponible = models.BooleanField()
