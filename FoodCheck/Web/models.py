@@ -1,13 +1,6 @@
 from django.db import models
 from django.core.validators import URLValidator
 
-class Dieta(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.nombre
-
 class Alergeno(models.Model):
     id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=50)
@@ -25,14 +18,14 @@ class Supermercado(models.Model):
     
 class Producto(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100)
     imagen = models.URLField(validators=[URLValidator()])
     #precio = models.FloatField()
-    ingredientes = models.CharField(max_length=500)
+    ingredientes = models.CharField(max_length=2000)
     marca = models.CharField(max_length=50)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    dietas = models.ManyToManyField(Dieta)
+    vegano = models.BooleanField(blank=True)
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
@@ -48,7 +41,6 @@ class Usuario(models.Model):
     recetaDiaria = models.BooleanField()
     premiumHasta = models.DateField()   
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    dieta = models.ForeignKey(Dieta, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre + ' - ' + self.usuario
