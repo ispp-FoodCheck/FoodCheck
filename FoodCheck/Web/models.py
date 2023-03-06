@@ -2,14 +2,15 @@ from django.db import models
 from django.core.validators import URLValidator
 
 class Alergeno(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
+    imagen = models.URLField(validators=[URLValidator()], blank=True)
 
     def __str__(self):
         return self.nombre
     
 class Supermercado(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     foto = models.URLField(validators=[URLValidator()])
 
@@ -31,7 +32,7 @@ class Producto(models.Model):
         return self.nombre + ' - ' + self.marca
     
 class Usuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
@@ -46,7 +47,7 @@ class Usuario(models.Model):
         return self.nombre + ' - ' + self.usuario
 
 class ListaCompra(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     productos = models.ManyToManyField(Producto)
@@ -55,7 +56,7 @@ class ListaCompra(models.Model):
         return "Lista de la compra: "+self.nombre + ' - ' + self.usuario.nombre
     
 class Receta(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=200)
     tiempoPreparacion = models.IntegerField()
@@ -65,10 +66,9 @@ class Receta(models.Model):
 
     def __str__(self):
         return self.nombre + ' - ' + self.propietario.nombre
-    
 
 class Valoracion(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     puntuacion = models.IntegerField()
     comentario = models.CharField(max_length=200)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -78,7 +78,7 @@ class Valoracion(models.Model):
         return self.usuario.nombre + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
     
 class RecetasDesbloqueadasUsuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     disponible = models.BooleanField()
