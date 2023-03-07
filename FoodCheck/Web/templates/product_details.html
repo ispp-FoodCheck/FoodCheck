@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/stila.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="col-md-4 card mt-2">
+    <div class="card-header">
+        Comentarios y valoraciones
+    </div>
+    <ul class="list-group list-group-flush" style="height: 200px; overflow-y: scroll;">
+        {% for valoracion in valoraciones %}
+        <li class="list-group-item">
+            <b>{{valoracion.usuario}}</b>
+            <br>
+            <span class="product-ratings border rounded-pill">{{valoracion.puntuacion}}</span>
+            <p>{{valoracion.comentario}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="cuerpo" class="form-label">Escribe tu comentario aquí:</label>
+            <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200"></textarea>
+            <div class="d-flex justify-content-end">
+                <span id="caracteres-actuales">0</span>
+                <span id="limite-caracteres">/ 200</span>
+            </div>
+        </div>
+        <div id="rating-container" class="mb-2">
+            <!-- Aquí se mostrarán las estrellas de valoración -->
+        </div>
+        <input type="hidden" name="valoracion" id="valoracion" value="0">
+        <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Enviar</button>
+    </form>
+</div>
+
+<script>
+    // Código para generar las estrellas de valoración
+    const ratingContainer = document.querySelector('#rating-container');
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+
+        star.classList.add = 'estrellas'
+
+        star.textContent = '☆';
+        star.style.fontSize = '30px';
+        star.style.cursor = 'pointer';
+        star.addEventListener('click', () => {
+            // Rellenar las estrellas según la valoración seleccionada
+            for (let j = 0; j < stars.length; j++) {
+                if (j < i) {
+                    stars[j].textContent = '★';
+                } else {
+                    stars[j].textContent = '☆';
+                }
+            }
+            // Actualizar el valor del campo oculto
+            document.querySelector('#valoracion').value = i;
+            document.querySelector('#enviar').disabled = false;
+            document.querySelector('#enviar').style.opacity = 1;
+        });
+        ratingContainer.appendChild(star);
+        stars.push(star);
+    }
+</script>
+
+<script>
+    function convertirNumeroAEstrellas(numero) {
+        const maxEstrellas = 5;
+        let estrellas = "";
+        for (let i = 0; i < maxEstrellas; i++) {
+            if (i < numero) {
+                estrellas += "★";
+            } else {
+                estrellas += "☆";
+            }
+        }
+        return estrellas;
+    }
+
+    const elementosRating = document.querySelectorAll("span.product-ratings");
+    elementosRating.forEach((elemento) => {
+        const rating = parseInt(elemento.textContent);
+        const estrellas = convertirNumeroAEstrellas(rating);
+        elemento.textContent = estrellas;
+    });
+</script>
+
+<script>
+    const textarea = document.getElementById('cuerpo');
+    const currentChars = document.getElementById('caracteres-actuales');
+
+    textarea.addEventListener('input', () => {
+        const charactersTyped = textarea.value.length;
+        currentChars.textContent = charactersTyped;
+    });
+</script>
+
+{% endblock %}
