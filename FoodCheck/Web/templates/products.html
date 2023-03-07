@@ -1,25 +1,32 @@
 {% extends "base.html" %}
 
 {% block head %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/stila.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 {% block body %}
 
-<div class="container text-center">
-    <div class="row">
-        {% for producto in lista_producto %}
-            <div class="col-4">
-                <div class="card">
-                    <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
-                    <p class="nombre">{{producto.nombre}}</p>
-                    <p class="ingredientes">{{producto.ingredientes}}</p>
-                    <p class="marca">{{producto.marca}}</p>
-                    <p>{{producto.supermercados.all|join:"/"}}</p>
-                </div> 
-            </div>    
-        {% endfor %}
+<body></body>
+
+    <div class="container text-center">
+
+        <div class="row">
+            <h1 class="title">Mostrando todos los productos registrados</h1>
+        </div>
+
+        <div class="row">
+            {% for producto in lista_producto %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
+                        <p class="nombre">{{producto.nombre}}</p>
+                        <p class="marca">{{producto.marca}}</p>
+                        <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>
+                    </div> 
+                </div>    
+            {% endfor %}
+        </div>
     </div>
-</div>
+
 {% endblock %}

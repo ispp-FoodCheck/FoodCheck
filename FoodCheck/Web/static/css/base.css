@@ -1,9 +1,9 @@
-.card {
-    margin: auto;
-    text-align: center;
-  }
-.marca{
-    color: red;
+nav.navbar {
+  background-color: #07644A;
+}
+
+footer {
+  padding-top: 1%;
 }
 
 #enviar { 

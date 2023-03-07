@@ -1,0 +1,43 @@
+body {
+    background-color: #FFFFE5;
+}
+
+.row{
+    margin-top: 5%;
+}
+
+.title {
+    color: black;
+    font-weight: bold;
+    letter-spacing: -2px;
+}
+
+.card {
+    margin-top: 5%;
+    padding: 5%;
+
+    border-radius: 5%;
+    border-width: 0px;
+
+    color: black;
+    font-size: large;
+    text-align: left;
+    letter-spacing: -0.5px;
+}
+
+.nombre {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.marca{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.supermercados {
+    color: #545454;
+    font-weight: normal;
+}
+
+
