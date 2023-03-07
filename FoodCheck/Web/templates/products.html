@@ -17,6 +17,8 @@
                     {{ alergeno.nombre }}
                 </label>
             {% endfor %}
+            <input type="checkbox" name="vegano" value="vegano" {% if vegano_selected %} checked {% endif %}>
+            <label for="vegano">Vegano</label>
             <button type="submit">Filtrar</button>
         </form>
     </div>

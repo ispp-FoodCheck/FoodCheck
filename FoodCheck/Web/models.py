@@ -30,6 +30,7 @@ class Producto(models.Model):
     #precio = models.FloatField()
     ingredientes = models.CharField(max_length=500)
     marca = models.CharField(max_length=50)
+    vegano = models.BooleanField(default=True)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
     dietas = models.ManyToManyField(Dieta)
