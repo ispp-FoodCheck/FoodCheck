@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('shopping_list/', views.shopping_list, name='shopping_list'),
 ]
