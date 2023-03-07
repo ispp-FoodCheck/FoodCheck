@@ -35,8 +35,8 @@
         <div id="rating-container" class="mb-2">
             <!-- Aquí se mostrarán las estrellas de valoración -->
         </div>
-        <input type="hidden" name="valoracion" id="valoracion">
-        <button type="submit" class="btn btn-primary mb-3">Enviar</button>
+        <input type="hidden" name="valoracion" id="valoracion" value="0">
+        <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Enviar</button>
     </form>
 </div>
 
@@ -46,6 +46,9 @@
     const stars = [];
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
+
+        star.classList.add = 'estrellas'
+
         star.textContent = '☆';
         star.style.fontSize = '30px';
         star.style.cursor = 'pointer';
@@ -60,6 +63,8 @@
             }
             // Actualizar el valor del campo oculto
             document.querySelector('#valoracion').value = i;
+            document.querySelector('#enviar').disabled = false;
+            document.querySelector('#enviar').style.opacity = 1;
         });
         ratingContainer.appendChild(star);
         stars.push(star);

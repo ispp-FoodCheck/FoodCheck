@@ -78,7 +78,7 @@ class Receta(models.Model):
 class Valoracion(models.Model):
     id = models.AutoField(primary_key=True)
     puntuacion = models.IntegerField()
-    comentario = models.CharField(max_length=200)
+    comentario = models.CharField(max_length=200, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 

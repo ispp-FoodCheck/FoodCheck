@@ -5,3 +5,7 @@
 .marca{
     color: red;
 }
+
+#enviar { 
+  opacity: 0.5; transition: opacity 0.5s;
+}
