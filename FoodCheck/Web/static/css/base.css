@@ -5,3 +5,18 @@ nav.navbar {
 footer {
   padding-top: 1%;
 }
+
+#enviar { 
+  opacity: 0.5; transition: opacity 0.5s;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-md-4 card mt-1, .col-md-4 card mt-2 {
+  width: 50%;
+  padding: 20px;
+}

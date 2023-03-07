@@ -19,7 +19,7 @@
             {% for producto in lista_producto %}
                 <div class="col-md-4">
                     <div class="card">
-                        <img class="imagen" src="{{producto.imagen}}" alt="error" style="width:100%">
+                        <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
                         <p class="nombre">{{producto.nombre}}</p>
                         <p class="marca">{{producto.marca}}</p>
                         <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>

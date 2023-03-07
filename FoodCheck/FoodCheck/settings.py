@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Web',
     'Scrappers',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'foodcheck',
         'USER': 'root',
-        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
     }
