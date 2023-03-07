@@ -2,6 +2,7 @@ from urllib.request import urlopen
 import json
 import time
 import random
+import re
 
 from Web.models import Producto, Supermercado
 
@@ -24,8 +25,9 @@ def hacer_peticion(url):
             print(f'Pausando Scrapping durante {TIEMPO_EXCESO_DE_PETICIONES/60} minutos por exceso de peticiones')
             time.sleep(TIEMPO_EXCESO_DE_PETICIONES)
             return hacer_peticion(url)
-        print('Error en la petición ' + url)
-        print(e)
+        if 'HTTP Error 410: Gone' != str(e):
+            print('Error en la petición ' + url)
+            print(e)
         return None
 
 def obtener_categorias():
@@ -41,8 +43,14 @@ def obtener_categorias():
 
 def obtener_productos_de_categoria(id_categoria):
     productos_finales = []
-    datos = hacer_peticion(ENDPOINT_CATEGORIAS + str(id_categoria))
-    categorias = datos['categories']
+    categorias = []
+    for _ in range(3):
+        datos = hacer_peticion(ENDPOINT_CATEGORIAS + str(id_categoria))
+        try:
+            categorias = datos['categories']
+            break
+        except:
+            print('Error con la categoria %s' % id_categoria)
     for categoria in categorias:
         productos = categoria['products']
         for producto in productos:
@@ -58,7 +66,7 @@ def obtener_datos_de_producto(id_producto):
         'ean': producto['ean'],
         'nombre': producto['display_name'],
         'imagen': producto['photos'][0]['regular'],
-        'marca': producto['details']['brand'] or 'Desconocida',
+        'marca': producto['brand'] or 'Desconocida',
         'ingredientes': producto['nutrition_information']['ingredients'],
         'alergenos': producto['nutrition_information']['allergens'],
     }
@@ -74,6 +82,7 @@ def actualizar_datos_mercadona():
     productos_comprobados = set()
 
     for categoria in categorias:
+        cantidad_actual = 0
         productos = obtener_productos_de_categoria(categoria['id'])
         for id_producto in productos:
             if id_producto in productos_comprobados:
@@ -84,12 +93,15 @@ def actualizar_datos_mercadona():
             productos_comprobados.add(p['id'])
             if p['ingredientes'] is None or p['ingredientes'] == "":
                 continue
+            
+            ingredientes = re.sub(r'<\/?\w+>', '', p['ingredientes'])
+            # alergenos = re.sub(r'<\/?\w+>', '', p['alergenos'])
 
             try:
                 producto = Producto.objects.get(id=int(p['ean']))
                 producto.nombre = p['nombre']
                 producto.imagen = p['imagen']
-                producto.ingredientes = p['ingredientes']
+                producto.ingredientes = ingredientes
                 producto.marca = p['marca']
                 if mercadona not in producto.supermercados.all():
                     producto.supermercados.add(mercadona)
@@ -100,11 +112,15 @@ def actualizar_datos_mercadona():
                     id=int(p['ean']),
                     nombre=p['nombre'],
                     imagen=p['imagen'],
-                    ingredientes=p['ingredientes'],
+                    ingredientes=ingredientes,
                     marca=p['marca'])
                 producto.supermercados.set([mercadona])
                 producto.save()
-
+            
             # TODO: Logica para saber alergenos
+
+            cantidad_actual += 1
+            if cantidad_actual >= 5:
+                break
 
         print('Productos de la categoria %s guardados' % categoria['nombre'])
