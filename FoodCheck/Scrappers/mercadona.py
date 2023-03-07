@@ -4,7 +4,7 @@ import time
 import random
 import re
 
-from Web.models import Producto, Supermercado
+from Web.models import Producto, Supermercado, Alergeno
 
 
 TIEMPO_EXCESO_DE_PETICIONES = 300
@@ -68,15 +68,12 @@ def obtener_datos_de_producto(id_producto):
         'imagen': producto['photos'][0]['regular'],
         'marca': producto['brand'] or 'Desconocida',
         'ingredientes': producto['nutrition_information']['ingredients'],
-        'alergenos': producto['nutrition_information']['allergens'],
+        'alergenos': producto['nutrition_information']['allergens'] or '',
     }
 
 def actualizar_datos_mercadona():
 
-    try:
-        mercadona = Supermercado.objects.get(id=1)
-    except Supermercado.DoesNotExist:
-        mercadona = Supermercado.objects.create(id=1, nombre='Mercadona', foto='https://1000marcas.net/wp-content/uploads/2021/09/Mercadona-Logo.png')
+    mercadona = Supermercado.objects.get_or_create(nombre='Mercadona', defaults={'foto':'https://1000marcas.net/wp-content/uploads/2021/09/Mercadona-Logo.png'})[0]
     
     categorias = obtener_categorias()
     productos_comprobados = set()
@@ -95,27 +92,28 @@ def actualizar_datos_mercadona():
                 continue
             
             ingredientes = re.sub(r'<\/?\w+>', '', p['ingredientes'])
-            # alergenos = re.sub(r'<\/?\w+>', '', p['alergenos'])
-
-            try:
-                producto = Producto.objects.get(id=int(p['ean']))
+            alergenos = re.findall(r'<strong>(.*?)<\/strong>', p['alergenos'])
+            lista_alergenos = []
+            for alergeno in alergenos:
+                lista_alergenos.append(Alergeno.objects.get_or_create(nombre=alergeno)[0])
+            
+            producto, created = Producto.objects.get_or_create(id=int(p['ean']), defaults={
+                'nombre': p['nombre'],
+                'imagen': p['imagen'],
+                'ingredientes': ingredientes,
+                'marca': p['marca']
+            })
+            if created:
+                producto.supermercados.set([mercadona])
+            else:
                 producto.nombre = p['nombre']
                 producto.imagen = p['imagen']
                 producto.ingredientes = ingredientes
                 producto.marca = p['marca']
                 if mercadona not in producto.supermercados.all():
                     producto.supermercados.add(mercadona)
-                producto.save()
-                
-            except Producto.DoesNotExist:
-                producto = Producto.objects.create(
-                    id=int(p['ean']),
-                    nombre=p['nombre'],
-                    imagen=p['imagen'],
-                    ingredientes=ingredientes,
-                    marca=p['marca'])
-                producto.supermercados.set([mercadona])
-                producto.save()
+            producto.alergenos.set(lista_alergenos)
+            producto.save()
             
             # TODO: Logica para saber alergenos
 
