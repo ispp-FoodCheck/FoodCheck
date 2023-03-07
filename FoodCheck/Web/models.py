@@ -1,22 +1,16 @@
 from django.db import models
-from django.core.validators import URLValidator
-
-class Dieta(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.nombre
+from django.core.validators import URLValidator, RegexValidator
 
 class Alergeno(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    imagen = models.URLField(validators=[URLValidator()], blank=True, null=True)
 
     def __str__(self):
         return self.nombre
     
 class Supermercado(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     foto = models.URLField(validators=[URLValidator()])
 
@@ -25,21 +19,22 @@ class Supermercado(models.Model):
     
 class Producto(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100)
     imagen = models.URLField(validators=[URLValidator()])
     #precio = models.FloatField()
-    ingredientes = models.CharField(max_length=500)
+    ingredientes = models.CharField(max_length=2000)
     marca = models.CharField(max_length=50)
     vegano = models.BooleanField(default=True)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    dietas = models.ManyToManyField(Dieta)
+    vegano = models.BooleanField(default=False)
+    valoracionMedia = models.FloatField(default=0)
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
     
 class Usuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
@@ -47,15 +42,14 @@ class Usuario(models.Model):
     usuario = models.CharField(max_length=50)
     contraseña = models.CharField(max_length=50)
     recetaDiaria = models.BooleanField()
-    premiumHasta = models.DateField()   
+    premiumHasta = models.DateField(null=True)   
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    dieta = models.ForeignKey(Dieta, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre + ' - ' + self.usuario
 
 class ListaCompra(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     productos = models.ManyToManyField(Producto)
@@ -64,7 +58,7 @@ class ListaCompra(models.Model):
         return "Lista de la compra: "+self.nombre + ' - ' + self.usuario.nombre
     
 class Receta(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=200)
     tiempoPreparacion = models.IntegerField()
@@ -74,12 +68,11 @@ class Receta(models.Model):
 
     def __str__(self):
         return self.nombre + ' - ' + self.propietario.nombre
-    
 
 class Valoracion(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     puntuacion = models.IntegerField()
-    comentario = models.CharField(max_length=200)
+    comentario = models.CharField(max_length=200, null=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
@@ -87,7 +80,7 @@ class Valoracion(models.Model):
         return self.usuario.nombre + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
     
 class RecetasDesbloqueadasUsuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     disponible = models.BooleanField()
