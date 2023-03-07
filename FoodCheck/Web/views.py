@@ -10,6 +10,8 @@ def index(request):
     if request.user.is_authenticated and alergenos_selected == None:
         alergenos_selected = list(request.user.alergenos.all())
 
+    lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)
+
     if request.GET.get('vegano'):
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
