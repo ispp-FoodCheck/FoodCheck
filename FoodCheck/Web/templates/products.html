@@ -12,7 +12,7 @@
         {% for producto in lista_producto %}
             <div class="col-4">
                 <div class="card">
-                    <img src="{{producto.imagen}}" alt="error" style="width:100%">
+                    <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
                     <p class="nombre">{{producto.nombre}}</p>
                     <p class="ingredientes">{{producto.ingredientes}}</p>
                     <p class="marca">{{producto.marca}}</p>
