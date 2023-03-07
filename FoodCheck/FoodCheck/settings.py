@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Web',
     'Scrappers',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
