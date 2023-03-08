@@ -22,7 +22,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     imagen = models.URLField(validators=[URLValidator()])
     #precio = models.FloatField()
-    ingredientes = models.CharField(max_length=2000)
+    ingredientes = models.CharField(max_length=2500)
     marca = models.CharField(max_length=50)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
