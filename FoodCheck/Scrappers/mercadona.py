@@ -115,8 +115,8 @@ def actualizar_datos_mercadona():
             lista_alergenos = []
             for alergeno in alergenos:
                 intolerancia = None
-                if alergeno in KEYWORDS_INTOLERANCIAS.keys():
-                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS.get(alergeno))
+                if alergeno.lower() in KEYWORDS_INTOLERANCIAS.keys():
+                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[alergeno.lower()])[0]
                 else:
                     intolerancia = Alergeno.objects.get_or_create(nombre=alergeno)[0]
                 lista_alergenos.append(intolerancia)
