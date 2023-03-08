@@ -1,11 +1,24 @@
 from django.shortcuts import render
-from .models import Producto, Valoracion, Usuario
+from .models import Producto, Valoracion, Usuario, Alergeno
 
 # Create your views here.
 
 def index(request):
-    lista_producto= Producto.objects.all()
-    diccionario={'lista_producto':lista_producto}
+    alergenos_selected = request.GET.getlist('alergenos')
+    alergenos = Alergeno.objects.all()
+
+    if request.user.is_authenticated and alergenos_selected == None:
+        alergenos_selected = list(request.user.alergenos.all())
+
+    lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)
+
+    if request.GET.get('vegano'):
+        lista_producto = lista_producto.filter(vegano=True)
+        vegano_selected = True
+    else:
+        vegano_selected = False
+
+    diccionario={'lista_producto':lista_producto,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
     return render(request,"products.html",diccionario)
 
 def product_details(request, id_producto):

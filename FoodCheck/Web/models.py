@@ -1,10 +1,10 @@
 from django.db import models
-from django.core.validators import URLValidator
+from django.core.validators import URLValidator, RegexValidator
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
-    imagen = models.URLField(validators=[URLValidator()], blank=True)
+    nombre = models.CharField(max_length=100)
+    imagen = models.URLField(validators=[URLValidator()], blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -24,9 +24,11 @@ class Producto(models.Model):
     #precio = models.FloatField()
     ingredientes = models.CharField(max_length=2500)
     marca = models.CharField(max_length=50)
+    vegano = models.BooleanField(default=True)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    vegano = models.BooleanField(blank=True)
+    vegano = models.BooleanField(default=False)
+    valoracionMedia = models.FloatField(default=0)
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
@@ -40,7 +42,7 @@ class Usuario(models.Model):
     usuario = models.CharField(max_length=50)
     contraseña = models.CharField(max_length=50)
     recetaDiaria = models.BooleanField()
-    premiumHasta = models.DateField()   
+    premiumHasta = models.DateField(null=True)   
     alergenos = models.ManyToManyField(Alergeno, blank=True)
 
     def __str__(self):
