@@ -5,7 +5,7 @@ from .models import Producto, Valoracion, Usuario, Alergeno
 
 def index(request):
     alergenos_selected = request.GET.getlist('alergenos')
-    alergenos = Alergeno.objects.all()
+    alergenos = Alergeno.objects.exclude(imagen__isnull=True)
 
     if request.user.is_authenticated and alergenos_selected == None:
         alergenos_selected = list(request.user.alergenos.all())

@@ -1,4 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from Scrappers.carrefour import actualizar_datos_carrefour
 from Scrappers.mercadona import actualizar_datos_mercadona
 
 class Command(BaseCommand):
@@ -6,4 +7,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         actualizar_datos_mercadona()
+        actualizar_datos_carrefour()
         self.stdout.write(self.style.SUCCESS('Datos actualizados exitosamente'))

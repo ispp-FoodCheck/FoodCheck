@@ -127,7 +127,7 @@ def update_progress(progress, total, bar_length=20):
     sys.stdout.flush()  # limpiar el buffer
 
 
-def main():
+def actualizar_datos_carrefour():
     try:
         carrefour = Supermercado.objects.get(id=2)
     except Supermercado.DoesNotExist:
@@ -195,7 +195,3 @@ def main():
                 producto.alergenos.set(alergenos)
                 producto.save()
         iteration += 1
-
-
-if __name__ == '__main__':
-    main()
