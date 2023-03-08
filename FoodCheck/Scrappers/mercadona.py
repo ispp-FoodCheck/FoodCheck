@@ -15,6 +15,25 @@ API_URL = 'https://tienda.mercadona.es/api/'
 ENDPOINT_CATEGORIAS = API_URL + 'categories/'
 ENDPOINT_PRODUCTOS = API_URL + 'products/'
 
+KEYWORDS_INTOLERANCIAS = {
+    'cereales que contengan gluten': 'gluten',
+    'trigo y productos derivados': 'gluten',
+    'centeno y productos derivados': 'gluten',
+    'crustáceos y productos a base de crustáceos': 'crustaceos',
+    'huevos y productos a base de huevo': 'huevos',
+    'cacahuetes y productos a base de cacahuetes': 'cacahuetes',
+    'pescado y productos a base de pescado': 'pescado',
+    'soja y productos a base de soja': 'soja',
+    'leche y sus derivados (incluida la lactosa)': 'lacteos',
+    'frutos de cáscara': 'frutos secos',
+    'apio y productos derivados': 'apio',
+    'mostaza y productos derivados': 'mostaza',
+    'granos de sésamo y productos a base de granos de sésamo': 'sesamo',
+    'dióxido de azufre y sulfitos': 'sulfitos',
+    'altramuces y productos a base de altramuces': 'altramuz',
+    'moluscos y productos a base de moluscos': 'moluscos',
+}
+
 def hacer_peticion(url):
     time.sleep(random.random() * (TIEMPO_MAX_POR_PETICION - TIEMPO_MIN_POR_PETICION) + TIEMPO_MIN_POR_PETICION)
     try:
@@ -95,7 +114,12 @@ def actualizar_datos_mercadona():
             alergenos = re.findall(r'<strong>(.*?)<\/strong>', p['alergenos'])
             lista_alergenos = []
             for alergeno in alergenos:
-                lista_alergenos.append(Alergeno.objects.get_or_create(nombre=alergeno)[0])
+                intolerancia = None
+                if alergeno in KEYWORDS_INTOLERANCIAS.keys():
+                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS.get(alergeno))
+                else:
+                    intolerancia = Alergeno.objects.get_or_create(nombre=alergeno)[0]
+                lista_alergenos.append(intolerancia)
             
             producto, created = Producto.objects.get_or_create(id=int(p['ean']), defaults={
                 'nombre': p['nombre'],
