@@ -1,12 +1,8 @@
-body {
-    background-color: #FFFFE5;
-}
-
 .row{
     margin-top: 5%;
 }
 
-.title {
+h1.title {
     color: black;
     font-weight: bold;
     letter-spacing: -2px;

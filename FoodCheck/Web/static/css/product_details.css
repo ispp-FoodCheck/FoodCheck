@@ -1,0 +1,34 @@
+.row {
+    margin-top: 3%;
+    margin-bottom: 3%;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    margin: 2%;
+    padding: 2%;
+
+    border-radius: 5%;
+    border-width: 0px;
+
+    color: black;
+    font-size: large;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.nombre {
+    font-size: 20px;
+}
+
+.marca{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.valoracion {
+    font-size: 50px;
+}
+
