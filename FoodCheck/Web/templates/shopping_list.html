@@ -18,7 +18,6 @@
 
     <div class="container">
         <p class="h2" style="text-align: center; text-decoration: underline;">Tu lista</a>
-            <!-- <div class="row">-->
             {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
         <p class="h3">{{supermercado}}</a>
         <div class="row">
@@ -38,6 +37,5 @@
         </div>
 
         {% endfor %}
-        <!-- </div>-->
     </div>
     {% endblock %}
