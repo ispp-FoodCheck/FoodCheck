@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   {% load static %}
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,13 +15,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% block head %}{% endblock %}
   <title>{% block title %}FoodCheck{% endblock %}</title>
-  
+
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-dark">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="{% static 'imgs/logo_final.png' %}" alt="Bootstrap" width="70" height="65">
@@ -46,7 +48,8 @@
               <h6 class="text-uppercase fw-bold">Compañia</h6>
               <hr class="mb-4 mt-0 d-inline-block mx-auto"
                 style="width: 70px; background-color: #7c4dff; height: 2px" />
-              <p class="text-white">Universidad de Sevilla, Escuela Técnica Superior de Ingeniería Informática, 41012 Sevilla </p>
+              <p class="text-white">Universidad de Sevilla, Escuela Técnica Superior de Ingeniería Informática, 41012
+                Sevilla </p>
             </div>
             <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 class="text-uppercase fw-bold">Links utiles</h6>
