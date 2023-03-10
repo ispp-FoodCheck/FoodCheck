@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from random import randint
+from django.core.paginator import Paginator
 from .models import Producto, Valoracion, Usuario, Alergeno
 from django.views.decorators.http import require_safe
 
 # Create your views here.
+
+def landing_page(request):
+    context = {
+
+    }
+    return render(request, "landing.html", context)
 
 def index(request):
     alergenos_selected = request.GET.getlist('alergenos')
@@ -19,8 +26,11 @@ def index(request):
         vegano_selected = True
     else:
         vegano_selected = False
-
-    diccionario={'lista_producto':lista_producto,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
+    
+    paginacion= Paginator(lista_producto,12)
+    numero_pagina= request.GET.get('page')
+    objetos_de_la_pagina= paginacion.get_page(numero_pagina)
+    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
     return render(request,"products.html",diccionario)
 
 def product_details(request, id_producto):
