@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from random import randint
 from .models import Producto, Valoracion, Usuario, Alergeno
+from django.views.decorators.http import require_safe
 
 # Create your views here.
 
@@ -42,7 +43,7 @@ def product_details(request, id_producto):
     
     diccionario = {'producto':prod, 'valoraciones':valoraciones}
     return render(request, "product_details.html", diccionario)
-
+@require_safe
 def shopping_list(request):
     # Ahora mismo muestra entre 8 productos aleatorios
     productos = set()
