@@ -58,7 +58,7 @@ def obtener_categorias():
 
     for categoria in categorias:
         categorias_finales.append({'id': categoria['id'], 'nombre': categoria['name'], 'orden': categoria['order'], 'publicado': categoria['published']})
-        for sub_categoria in categoria['categories']:
+        for sub_categoria in categoria['categories']: 
             categorias_finales.append({'id': sub_categoria['id'], 'nombre': sub_categoria['name'], 'orden': sub_categoria['order'], 'publicado': sub_categoria['published']})
     return categorias_finales
 
@@ -148,7 +148,14 @@ def actualizar_datos_mercadona():
             producto.alergenos.set(lista_alergenos)
             producto.save()
             
-            # TODO: Logica para saber alergenos
+            ing = producto.ingredientes
+            non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()
+            for non_vegan in non_vegans_ing_list:
+                if non_vegan.lower() in ing.lower(): 
+                    producto.vegano = False
+                    break
+            producto.save()
+            
 
             cantidad_actual += 1
             if cantidad_actual >= 5:

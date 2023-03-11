@@ -27,7 +27,7 @@ class Producto(models.Model):
     vegano = models.BooleanField(default=True)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    vegano = models.BooleanField(default=False)
+    vegano = models.BooleanField(default=True)
     valoracionMedia = models.FloatField(default=0)
 
     def __str__(self):
