@@ -1,52 +1,65 @@
 {% extends "base.html" %}
 
 {% block head %}
-{% load static %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
 {% endblock %}
 
 {% block body %}
 
 <div class="container">
-    <div class="col-md-4 card mt-1" >
-        <img src="{{producto.imagen}}" alt="error" width="300" height="300">
-        <b><p class="nombre">{{producto.nombre}}</p></b>
-        <p class="ingredientes">{{producto.ingredientes}}</p>
-        <p class="marca">{{producto.marca}}</p>
-        <p>{{producto.supermercados.all|join:"/"}}</p>
-    </div>
 
-    <div class="col-md-4 card mt-2">
-        <div class="card-header">
-            Comentarios y valoraciones
-        </div>
-        <ul class="list-group list-group-flush" style="height: 200px; overflow-y: scroll;">
-            {% for valoracion in valoraciones %}
-            <li class="list-group-item">
-                <b>{{valoracion.usuario}}</b>
-                <br>
-                <span class="product-ratings border rounded-pill">{{valoracion.puntuacion}}</span>
-                <p>{{valoracion.comentario}}</p>
-            </li>
-            {% endfor %}
-        </ul>
-
-        <form method="POST">
-            {% csrf_token %}
-            <div>
-                <label for="cuerpo" class="form-label">Escribe tu comentario aquí:</label>
-                <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200"></textarea>
-                <div class="d-flex justify-content-end">
-                    <span id="caracteres-actuales">0</span>
-                    <span id="limite-caracteres">/ 200</span>
+    <div class="row" id="row-details"> 
+        <div class="card col-md-4 mt-1 text-center" >
+            <img src="{{producto.imagen}}" alt="error" style="width:100%">
+            <p class="nombre">{{producto.nombre}}</p>
+            <p class="marca">{{producto.marca}}</p>
+            <p class="valoracion">{{producto.valoracionMedia}} ★</p>
+            <p class="ingredientes">{{producto.ingredientes}}</p>
+            <p>{{producto.supermercados.all|join:"/"}}</p>
+            <div class="row">
+                <div class="col">
+                {% for alergeno in producto.alergenos.all%}
+                    {% if alergeno.imagen != None  %}                                        
+                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                    {% endif %}
+                {% endfor %}
                 </div>
             </div>
-            <div id="rating-container" class="mb-2">
-                <!-- Aquí se mostrarán las estrellas de valoración -->
-            </div>
-            <input type="hidden" name="valoracion" id="valoracion" value="0">
-            <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Enviar</button>
-        </form>
+        </div>
+
+        <div class="card col-md-4 mt-2 text-center">
+            <p class="title">Opiniones</p>
+            <ul class="list-group list-group-flush" style="height: 200px; overflow-y: scroll;">
+                {% for valoracion in valoraciones %}
+                <li class="list-group-item">
+                    <b>{{valoracion.usuario}}</b>
+                    <br>
+                    <span class="product-ratings border rounded-pill">{{valoracion.puntuacion}}</span>
+                    <p>{{valoracion.comentario}}</p>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div id="rating-container" class="mb-2">
+                    <!-- Aquí se mostrarán las estrellas de valoración -->
+                </div>
+                <input type="hidden" name="valoracion" id="valoracion" value="0">
+                <div>
+                    {% comment %} <label for="cuerpo" class="form-label">Escribe tu comentario aquí:</label> {% endcomment %}
+                    <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200" placeholder = "¿Qué opinas del producto?"></textarea>
+                    <div class="d-flex justify-content-end">
+                        <span id="caracteres-actuales">0</span>
+                        <span id="limite-caracteres">/ 200</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Añadir Valoración</button>
+            </form>
+        </div>
     </div>
+
 </div>
 
 <script>

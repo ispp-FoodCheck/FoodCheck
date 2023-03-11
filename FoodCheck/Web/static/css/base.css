@@ -7,7 +7,13 @@ footer {
 }
 
 #enviar { 
-  opacity: 0.5; transition: opacity 0.5s;
+  background-color: #07644A;
+  opacity: 1;
+
+  font-size: 100%;
+  font-weight: bold;
+  border-width: 0px;
+  border-radius: 7%;
 }
 
 .container {
