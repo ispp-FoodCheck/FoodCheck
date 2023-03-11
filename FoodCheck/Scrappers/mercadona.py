@@ -4,7 +4,7 @@ import time
 import random
 import re
 
-from Web.models import Producto, Supermercado
+from Web.models import Producto, Supermercado, Alergeno
 
 
 TIEMPO_EXCESO_DE_PETICIONES = 300
@@ -15,11 +15,32 @@ API_URL = 'https://tienda.mercadona.es/api/'
 ENDPOINT_CATEGORIAS = API_URL + 'categories/'
 ENDPOINT_PRODUCTOS = API_URL + 'products/'
 
+KEYWORDS_INTOLERANCIAS = {
+    'cereales que contengan gluten': 'gluten',
+    'trigo y productos derivados': 'gluten',
+    'centeno y productos derivados': 'gluten',
+    'crustáceos y productos a base de crustáceos': 'crustaceos',
+    'huevos y productos a base de huevo': 'huevos',
+    'cacahuetes y productos a base de cacahuetes': 'cacahuetes',
+    'pescado y productos a base de pescado': 'pescado',
+    'soja y productos a base de soja': 'soja',
+    'leche y sus derivados (incluida la lactosa)': 'lacteos',
+    'frutos de cáscara': 'frutos secos',
+    'apio y productos derivados': 'apio',
+    'mostaza y productos derivados': 'mostaza',
+    'granos de sésamo y productos a base de granos de sésamo': 'sesamo',
+    'dióxido de azufre y sulfitos': 'sulfitos',
+    'altramuces y productos a base de altramuces': 'altramuz',
+    'moluscos y productos a base de moluscos': 'moluscos',
+}
+
 def hacer_peticion(url):
     time.sleep(random.random() * (TIEMPO_MAX_POR_PETICION - TIEMPO_MIN_POR_PETICION) + TIEMPO_MIN_POR_PETICION)
     try:
-        respuesta = urlopen(url).read()
-        return json.loads(respuesta)
+        conexion = urlopen(url)
+        datos = json.loads(conexion.read())
+        conexion.close()
+        return datos
     except Exception as e:
         if 'Too Many Requests' in str(e):
             print(f'Pausando Scrapping durante {TIEMPO_EXCESO_DE_PETICIONES/60} minutos por exceso de peticiones')
@@ -68,18 +89,16 @@ def obtener_datos_de_producto(id_producto):
         'imagen': producto['photos'][0]['regular'],
         'marca': producto['brand'] or 'Desconocida',
         'ingredientes': producto['nutrition_information']['ingredients'],
-        'alergenos': producto['nutrition_information']['allergens'],
+        'alergenos': producto['nutrition_information']['allergens'] or '',
     }
 
 def actualizar_datos_mercadona():
 
-    try:
-        mercadona = Supermercado.objects.get(id=1)
-    except Supermercado.DoesNotExist:
-        mercadona = Supermercado.objects.create(id=1, nombre='Mercadona', foto='https://1000marcas.net/wp-content/uploads/2021/09/Mercadona-Logo.png')
+    mercadona = Supermercado.objects.get_or_create(nombre='Mercadona', defaults={'foto':'https://1000marcas.net/wp-content/uploads/2021/09/Mercadona-Logo.png'})[0]
     
     categorias = obtener_categorias()
     productos_comprobados = set()
+    random.shuffle(categorias)
 
     for categoria in categorias:
         cantidad_actual = 0
@@ -95,27 +114,39 @@ def actualizar_datos_mercadona():
                 continue
             
             ingredientes = re.sub(r'<\/?\w+>', '', p['ingredientes'])
-            # alergenos = re.sub(r'<\/?\w+>', '', p['alergenos'])
-
-            try:
-                producto = Producto.objects.get(id=int(p['ean']))
+            alergenos = map(lambda x: x.lower(), p['alergenos'].split('.'))
+            lista_alergenos = []
+            for posible_alergeno in alergenos:
+                intolerancia = None
+                if 'libre' in posible_alergeno:
+                    continue
+                alergeno = re.search(r'<strong>(.*?)<\/strong>', posible_alergeno)
+                if alergeno is None:
+                    continue
+                alergeno = alergeno.group(1)
+                if alergeno in KEYWORDS_INTOLERANCIAS.keys():
+                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[alergeno])[0]
+                else:
+                    intolerancia = Alergeno.objects.get_or_create(nombre=alergeno)[0]
+                lista_alergenos.append(intolerancia)
+            
+            producto, created = Producto.objects.get_or_create(id=int(p['ean']), defaults={
+                'nombre': p['nombre'],
+                'imagen': p['imagen'],
+                'ingredientes': ingredientes,
+                'marca': p['marca']
+            })
+            if created:
+                producto.supermercados.set([mercadona])
+            else:
                 producto.nombre = p['nombre']
                 producto.imagen = p['imagen']
                 producto.ingredientes = ingredientes
                 producto.marca = p['marca']
                 if mercadona not in producto.supermercados.all():
                     producto.supermercados.add(mercadona)
-                producto.save()
-                
-            except Producto.DoesNotExist:
-                producto = Producto.objects.create(
-                    id=int(p['ean']),
-                    nombre=p['nombre'],
-                    imagen=p['imagen'],
-                    ingredientes=ingredientes,
-                    marca=p['marca'])
-                producto.supermercados.set([mercadona])
-                producto.save()
+            producto.alergenos.set(lista_alergenos)
+            producto.save()
             
             ing = producto.ingredientes
             non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()

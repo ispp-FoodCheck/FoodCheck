@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/stila.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="col-lg-4">
+    <div class="card">
+        <div class="card-body text-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="img-fluid" style="width: 150px;">
+            <h5 class="my-3">Usuario</h5>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        <p class="h2" style="text-align: center; text-decoration: underline;">Tu lista</a>
+            {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
+        <p class="h3">{{supermercado}}</a>
+        <div class="row">
+            {% for producto in productos %}
+            <div class="col-4">
+                <div class="card mb-4">
+                    <img src="{{producto.imagen}}" alt="error" style="width:100%">
+                    <p class="nombre">{{producto.nombre}}</p>
+                    <p class="marca">{{producto.marca}}</p>
+                    <div class="row" style="margin-bottom: 5%;">
+                        <div class="col-md-6"><a class="btn btn-danger">Quitar de mi lista</a></div>
+                        <div class="col-md-6"><a href="/product/{{producto.id}}/details" class="btn btn-info">Ver producto</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endfor %}
+    </div>
+    {% endblock %}

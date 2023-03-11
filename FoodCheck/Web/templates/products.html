@@ -1,25 +1,96 @@
 {% extends "base.html" %}
 
 {% block head %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/stila.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 {% block body %}
+<body>
+    <div class="container text-center">
+        <div>
+            <div class="row">
+                <h1 class="title">Filtros</h1>
+                <form method="GET" action="{% url 'index' %}">
+                    {% for alergeno in alergenos_available %}
+                        <input type="checkbox" name="alergenos" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
+                        <label for="alergenos">
+                            {{ alergeno.nombre }}
+                        </label>
+                    {% endfor %}
+                    <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %}>
+                    <label for="vegano">Vegano</label>
+                    <button type="submit" class="btn btn-primary mb-3">Filtrar</button>
+                </form>
+            </div>
 
-<div class="container text-center">
-    <div class="row">
-        {% for producto in lista_producto %}
-            <div class="col-4">
-                <div class="card">
-                    <img src="{{producto.imagen}}" alt="error" style="width:100%">
-                    <p class="nombre">{{producto.nombre}}</p>
-                    <p class="ingredientes">{{producto.ingredientes}}</p>
-                    <p class="marca">{{producto.marca}}</p>
-                    <p>{{producto.supermercados.all|join:"/"}}</p>
-                </div> 
-            </div>    
-        {% endfor %}
+            <div class="row">
+                <h1 class="title">Mostrando todos los productos registrados</h1>
+            </div>
+
+            <div class="row">
+                {% for producto in lista_producto.object_list %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
+                            <p class="nombre">{{producto.nombre}}</p>
+                            <p class="marca">{{producto.marca}}</p>
+                            <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>
+                            <div class="row">
+                                <div class="col">
+                                {% for alergeno in  producto.alergenos.all%}
+                                    {% if alergeno.imagen != None  %}                                        
+                                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                {% endfor %}
+            </div>
+            <div class="container">
+                <div class="col-md-6">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            {% if lista_producto.has_previous and lista_producto.has_next%}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Previous</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
+                                <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number}}</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                            {% if not lista_producto.has_previous%}
+                                <li class="page-item disabled">
+                                    <a class="page-link">Previous</a>
+                                </li>
+                                <li class="page-item disabled"><a class="page-link">1</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number }}</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number|add:"1"}}">{{ lista_producto.next_page_number|add:"1"}}</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                            {% if not lista_producto.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Previous</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number|add:"-1"}}">{{ lista_producto.previous_page_number|add:"-1" }}</a></li>
+                                <li class="page-item "><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
+                                <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</body>
 {% endblock %}

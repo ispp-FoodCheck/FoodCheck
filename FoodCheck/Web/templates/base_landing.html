@@ -22,7 +22,6 @@
       integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
     <link rel="stylesheet" href="{% static 'aos.css' %}" />
 
@@ -50,19 +49,6 @@
             format("woff");
         /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
       }
-      
-<body>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <img src="{% static 'imgs/logo_final.png' %}" alt="Bootstrap" width="70" height="65">
-      </a>
-      <a class="navbar-brand" href="/shopping_list">
-        <img src="{% static 'imgs/Shopping_cart.png' %}" alt="Bootstrap" width="70" height="65">
-      </a>
-      
-    </div>
-  </nav>
 
       @font-face {
         font-family: "Inter";
@@ -77,7 +63,6 @@
             format("woff");
         /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
       }
-
 
       @font-face {
         font-family: "Inter";
@@ -98,14 +83,14 @@
     <title>{% block title %}FoodCheck{% endblock %}</title>
   </head>
 
-  <header class="">
+  <body>
     <nav
       id="navScroll"
-      class="navbar navbar-expand-lg navbar-light sticky-top navbar-colors scrolled shadow-sm scrolled-custom"
+      class="navbar navbar-expand-lg navbar-light fixed-top navbar-colors"
       tabindex="0"
     >
       <div class="container">
-        <a class="navbar-brand pe-4 fs-4" href="/home">
+        <a class="navbar-brand pe-4 fs-4" href="/">
           <img src="{% static 'imgs/logo-food.png' %}" alt="Bootstrap" />
         </a>
 
@@ -124,16 +109,40 @@
           class="collapse navbar-collapse navbar-colors"
           id="navbarSupportedContent"
         >
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link nav-link-colors"
+                href="/#services"
+                aria-label="Brings you to the frontpage"
+              >
+                Funcionalidades
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-colors" href="/#objectives">
+                Nuestra misión
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-colors" href="/#aboutus">
+                Sobre nosotros
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-colors" href="/#workwithus">
+                Ayudanos
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-  </header>
-
-  <body class="">
     <main>{% block body %}{% endblock %}</main>
-    <div class="container my-5">
+    <div
+      class="container my-5"
+      style="display: flex; justify-content: center; align-items: center"
+    >
       <footer
         class="text-center text-lg-start text-white"
         style="background-color: #1c2331"
@@ -190,28 +199,26 @@
     </script>
 
     <script>
-      // Obtener el header
-      var header = document.querySelector(".navbar");
+      let scrollpos = window.scrollY;
+      const header = document.querySelector(".navbar");
+      const header_height = header.offsetHeight;
 
-      // Obtener la posición del header
-      var sticky = header.offsetTop;
+      const add_class_on_scroll = () =>
+        header.classList.add("scrolled", "shadow-sm", "scrolled-custom");
+      const remove_class_on_scroll = () =>
+        header.classList.remove("scrolled", "shadow-sm", "scrolled-custom");
 
-      // Función que se ejecuta cuando se hace scroll
-      function checkSticky() {
-        // Si la posición del scroll es mayor que la del header
-        if (window.pageYOffset > sticky) {
-          // Añadir la clase .sticky al header
-          header.classList.remove("sticky-top");
-          header.classList.add("fixed-top");
+      window.addEventListener("scroll", function () {
+        scrollpos = window.scrollY;
+
+        if (scrollpos >= header_height) {
+          add_class_on_scroll();
         } else {
-          // Quitar la clase .sticky al header
-          header.classList.remove("fixed-top");
-          header.classList.add("sticky-top");
+          remove_class_on_scroll();
         }
-      }
 
-      // Añadir un evento de scroll a la ventana
-      window.addEventListener("scroll", checkSticky);
+        console.log(scrollpos);
+      });
     </script>
   </body>
 </html>
