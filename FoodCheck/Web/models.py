@@ -26,7 +26,7 @@ class Producto(models.Model):
     marca = models.CharField(max_length=50)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    vegano = models.BooleanField(blank=True)
+    vegano = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
