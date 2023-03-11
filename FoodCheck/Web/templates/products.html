@@ -50,45 +50,46 @@
             {% endfor %}
         </div>
 
-        <div class="container">
+        <div class="container" id="boton-paginacion">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
                     {% if lista_producto.has_previous and lista_producto.has_next%}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Previous</a>
+                            <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Anterior</a>
                         </li>
                         <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
                         <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
                         <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number}}</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Next</a>
+                            <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Siguiente</a>
                         </li>
                     {% endif %}
                     {% if not lista_producto.has_previous%}
                         <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
+                            <a class="page-link">Anterior</a>
                         </li>
                         <li class="page-item disabled"><a class="page-link">1</a></li>
                         <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number }}</a></li>
                         <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number|add:"1"}}">{{ lista_producto.next_page_number|add:"1"}}</a></li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Next</a>
+                            <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Siguiente</a>
                         </li>
                     {% endif %}
                     {% if not lista_producto.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Previous</a>
+                            <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Anterior</a>
                         </li>
                         <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number|add:"-1"}}">{{ lista_producto.previous_page_number|add:"-1" }}</a></li>
                         <li class="page-item "><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
                         <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
                         <li class="page-item disabled">
-                            <a class="page-link">Next</a>
+                            <a class="page-link">Siguiente</a>
                         </li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
+
     </div>
 </div>
 {% endblock %}

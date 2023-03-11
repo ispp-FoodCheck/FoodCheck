@@ -10,8 +10,8 @@
 <div class="container">
 
     <div class="row"> 
-        <div class="card col-md-4 mt-1" >
-            <img src="{{producto.imagen}}" alt="error" width="300" height="300">
+        <div class="card col-md-4 mt-1 text-center" >
+            <img src="{{producto.imagen}}" alt="error" style="width:100%">
             <p class="nombre">{{producto.nombre}}</p>
             <p class="marca">{{producto.marca}}</p>
             <p class="valoracion">{{producto.valoracionMedia}} ★</p>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="card col-md-4 mt-2">
+        <div class="card col-md-4 mt-2 text-center">
             <p class="title">Opiniones</p>
             <ul class="list-group list-group-flush" style="height: 200px; overflow-y: scroll;">
                 {% for valoracion in valoraciones %}
@@ -55,7 +55,7 @@
                         <span id="limite-caracteres">/ 200</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Enviar</button>
+                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Añadir Valoración</button>
             </form>
         </div>
     </div>

@@ -15,12 +15,11 @@
 
     color: black;
     font-size: large;
-    text-align: center;
     letter-spacing: -0.5px;
 }
 
 .nombre {
-    font-size: 20px;
+    font-size: 125%;
 }
 
 .marca{
@@ -29,6 +28,8 @@
 }
 
 .valoracion {
-    font-size: 50px;
+    font-size: 225%;
 }
+
+
 

@@ -22,7 +22,7 @@ h1.title {
 }
 
 .nombre {
-    font-size: 20px;
+    font-size: 110%;
     font-weight: bold;
 }
 
@@ -34,6 +34,10 @@ h1.title {
 .supermercados {
     color: #545454;
     font-weight: normal;
+}
+
+#boton-paginacion {
+    margin-top: 5%;
 }
 
 
