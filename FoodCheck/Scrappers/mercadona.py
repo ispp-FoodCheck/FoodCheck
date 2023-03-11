@@ -37,8 +37,10 @@ KEYWORDS_INTOLERANCIAS = {
 def hacer_peticion(url):
     time.sleep(random.random() * (TIEMPO_MAX_POR_PETICION - TIEMPO_MIN_POR_PETICION) + TIEMPO_MIN_POR_PETICION)
     try:
-        respuesta = urlopen(url).read()
-        return json.loads(respuesta)
+        conexion = urlopen(url)
+        datos = json.loads(conexion.read())
+        conexion.close()
+        return datos
     except Exception as e:
         if 'Too Many Requests' in str(e):
             print(f'Pausando Scrapping durante {TIEMPO_EXCESO_DE_PETICIONES/60} minutos por exceso de peticiones')
@@ -96,6 +98,7 @@ def actualizar_datos_mercadona():
     
     categorias = obtener_categorias()
     productos_comprobados = set()
+    random.shuffle(categorias)
 
     for categoria in categorias:
         cantidad_actual = 0
@@ -111,12 +114,18 @@ def actualizar_datos_mercadona():
                 continue
             
             ingredientes = re.sub(r'<\/?\w+>', '', p['ingredientes'])
-            alergenos = re.findall(r'<strong>(.*?)<\/strong>', p['alergenos'])
+            alergenos = map(lambda x: x.lower(), p['alergenos'].split('.'))
             lista_alergenos = []
-            for alergeno in alergenos:
+            for posible_alergeno in alergenos:
                 intolerancia = None
-                if alergeno.lower() in KEYWORDS_INTOLERANCIAS.keys():
-                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[alergeno.lower()])[0]
+                if 'libre' in posible_alergeno:
+                    continue
+                alergeno = re.search(r'<strong>(.*?)<\/strong>', posible_alergeno)
+                if alergeno is None:
+                    continue
+                alergeno = alergeno.group(1)
+                if alergeno in KEYWORDS_INTOLERANCIAS.keys():
+                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[alergeno])[0]
                 else:
                     intolerancia = Alergeno.objects.get_or_create(nombre=alergeno)[0]
                 lista_alergenos.append(intolerancia)
