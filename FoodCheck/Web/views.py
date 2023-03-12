@@ -36,7 +36,8 @@ def index(request):
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
-    
+    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
+
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
@@ -49,10 +50,16 @@ def product_details(request, id_producto):
             valoracion = Valoracion.objects.create(comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
             valoracion.save()
 
-    valoraciones = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
-    
-    diccionario = {'producto':prod, 'valoraciones':valoraciones}
+            valoraciones = Valoracion.objects.filter(producto=prod).all()
+            puntuaciones = [v.puntuacion for v in valoraciones]
+            puntuaciones.append(int(puntuacion))
+            media = sum(puntuaciones) / len(puntuaciones)
+            prod.valoracionMedia = media
+            prod.save()
+            
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario}
     return render(request, "product_details.html", diccionario)
+
 @require_safe
 def shopping_list(request):
     # Ahora mismo muestra entre 8 productos aleatorios
