@@ -5,9 +5,26 @@ import sys
 import os
 from Web.models import Producto, Supermercado, Alergeno
 
-num_elementos = '5'
+num_elementos = '10'
 
 url_keywords = "https://www.carrefour.es/search-api/suggestions/v1/empathize?lang=es&catalog=food&rows=" + num_elementos
+
+KEYWORDS_INTOLERANCIAS = {
+    'Cereales que contienen gluten': 'gluten',
+    'Crustáceos': 'crustaceos',
+    'Huevo': 'huevos',
+    'Cacahuetes': 'cacahuetes',
+    'Pescado': 'pescado',
+    'Soja': 'soja',
+    'Leche': 'lacteos',
+    'Frutos de cáscara': 'frutos secos',
+    'Apio': 'apio',
+    'Mostaza': 'mostaza',
+    'Semillas de sésamo': 'sesamo',
+    'Sulfitos': 'sulfitos',
+    'Altramuces o lupino': 'altramuz',
+    'Moluscos': 'moluscos',
+}
 
 
 def find_keywords():
@@ -159,16 +176,27 @@ def actualizar_datos_carrefour():
 
                 alergenos = []
                 for i in detailed_product['alergenos'].split(", "):
-                    try:
+                    if i== '-' or i=='No tiene':
+                        break
+                    try:                        
+                        i = KEYWORDS_INTOLERANCIAS[i]
                         alergeno = Alergeno.objects.get(nombre=i)
                         alergenos.append(alergeno)
-                    except:
+
+                    except KeyError:
+                        KEYWORDS_INTOLERANCIAS[i]=i
                         alergeno = Alergeno.objects.create(
                             nombre=i,
                             imagen='null'
                         )
                         alergenos.append(alergeno)
 
+                    except Alergeno.DoesNotExist:
+                        alergeno = Alergeno.objects.create(
+                            nombre=i,
+                            imagen='null'
+                        )
+                        alergenos.append(alergeno)
                 producto.alergenos.set(alergenos)
                 producto.save()
 
@@ -183,15 +211,29 @@ def actualizar_datos_carrefour():
                 producto.supermercados.set([carrefour])
                 alergenos = []
                 for i in detailed_product['alergenos'].split(", "):
-                    try:
+                    if i== '-' or i=='No tiene':
+                        break
+                    try:                        
+                        i = KEYWORDS_INTOLERANCIAS[i]
                         alergeno = Alergeno.objects.get(nombre=i)
                         alergenos.append(alergeno)
-                    except:
+
+                    except KeyError:
+                        KEYWORDS_INTOLERANCIAS[i]=i
                         alergeno = Alergeno.objects.create(
                             nombre=i,
                             imagen='null'
                         )
                         alergenos.append(alergeno)
+
+                    except Alergeno.DoesNotExist:
+                        alergeno = Alergeno.objects.create(
+                            nombre=i,
+                            imagen='null'
+                        )
+                        alergenos.append(alergeno)
+                                                
                 producto.alergenos.set(alergenos)
                 producto.save()
+
         iteration += 1
