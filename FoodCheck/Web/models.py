@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import URLValidator, RegexValidator
+from django.core.validators import URLValidator
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -27,7 +27,6 @@ class Producto(models.Model):
     vegano = models.BooleanField(default=True)
     supermercados = models.ManyToManyField(Supermercado)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
-    vegano = models.BooleanField(default=True)
     valoracionMedia = models.FloatField(default=0)
 
     def __str__(self):

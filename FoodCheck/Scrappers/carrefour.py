@@ -2,10 +2,9 @@ import re
 from urllib.request import urlopen
 import json
 import sys
-import os
 from Web.models import Producto, Supermercado, Alergeno
 
-num_elementos = '10'
+num_elementos = '20'
 
 url_keywords = "https://www.carrefour.es/search-api/suggestions/v1/empathize?lang=es&catalog=food&rows=" + num_elementos
 
@@ -162,78 +161,45 @@ def actualizar_datos_carrefour():
     for product_id in products_ids:
         update_progress(iteration, len(products_ids))
         detailed_product = product_details(product_id)
-        if not isinstance(detailed_product, int):
-            try:
-                producto = Producto.objects.get(
-                    id=int(detailed_product['ean']))
-                producto.nombre = detailed_product['nombre']
-                producto.imagen = detailed_product['imagen']
-                producto.ingredientes = detailed_product['ingredientes']
-                producto.marca = detailed_product['marca']
-                producto.vegano = detailed_product['vegano']
-                if carrefour not in producto.supermercados.all():
-                    producto.supermercados.add(carrefour)
-
-                alergenos = []
-                for i in detailed_product['alergenos'].split(", "):
-                    if i== '-' or i=='No tiene':
-                        break
-                    try:                        
-                        i = KEYWORDS_INTOLERANCIAS[i]
-                        alergeno = Alergeno.objects.get(nombre=i)
-                        alergenos.append(alergeno)
-
-                    except KeyError:
-                        KEYWORDS_INTOLERANCIAS[i]=i
-                        alergeno = Alergeno.objects.create(
-                            nombre=i,
-                            imagen='null'
-                        )
-                        alergenos.append(alergeno)
-
-                    except Alergeno.DoesNotExist:
-                        alergeno = Alergeno.objects.create(
-                            nombre=i,
-                            imagen='null'
-                        )
-                        alergenos.append(alergeno)
-                producto.alergenos.set(alergenos)
-                producto.save()
-
-            except Producto.DoesNotExist:
-                producto = Producto.objects.create(
-                    id=int(detailed_product['ean']),
-                    nombre=detailed_product['nombre'],
-                    imagen=detailed_product['imagen'],
-                    ingredientes=detailed_product['ingredientes'],
-                    vegano=detailed_product['vegano'],
-                    marca=detailed_product['marca'])
-                producto.supermercados.set([carrefour])
-                alergenos = []
-                for i in detailed_product['alergenos'].split(", "):
-                    if i== '-' or i=='No tiene':
-                        break
-                    try:                        
-                        i = KEYWORDS_INTOLERANCIAS[i]
-                        alergeno = Alergeno.objects.get(nombre=i)
-                        alergenos.append(alergeno)
-
-                    except KeyError:
-                        KEYWORDS_INTOLERANCIAS[i]=i
-                        alergeno = Alergeno.objects.create(
-                            nombre=i,
-                            imagen='null'
-                        )
-                        alergenos.append(alergeno)
-
-                    except Alergeno.DoesNotExist:
-                        alergeno = Alergeno.objects.create(
-                            nombre=i,
-                            imagen='null'
-                        )
-                        alergenos.append(alergeno)
-                                                
-                producto.alergenos.set(alergenos)
-                producto.save()
+        if isinstance(detailed_product, int):
+            continue
+        
+        producto, created = Producto.objects.get_or_create(id=int(detailed_product['ean']), defaults={
+                'nombre': detailed_product['nombre'],
+                'imagen': detailed_product['imagen'],
+                'ingredientes': detailed_product['ingredientes'],
+                'marca': detailed_product['marca']
+            })
+        if created:
+            producto.supermercados.set([carrefour])
+        else:
+            producto.nombre = detailed_product['nombre']
+            producto.imagen = detailed_product['imagen']
+            producto.ingredientes = detailed_product['ingredientes']
+            producto.marca = detailed_product['marca']
+            if carrefour not in producto.supermercados.all():
+                producto.supermercados.add(carrefour)
+        producto.save()
+        
+        alergenos = []
+        for i in detailed_product['alergenos'].split(", "):
+            if i== '-' or i=='No tiene':
+                break
+            alergeno = None
+            if i in KEYWORDS_INTOLERANCIAS.keys():
+                alergeno = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[i])[0]
+            else:
+                alergeno = Alergeno.objects.get_or_create(nombre=i)[0]
+            alergenos.append(alergeno)
+        producto.alergenos.set(alergenos)
+        producto.save()
+        
+        ing = producto.ingredientes
+        non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()
+        for non_vegan in non_vegans_ing_list:
+            if non_vegan.lower() in ing.lower(): 
+                producto.vegano = False
+                break
+        producto.save()
 
         iteration += 1
