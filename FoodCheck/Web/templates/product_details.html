@@ -14,7 +14,7 @@
             <img src="{{producto.imagen}}" alt="error" style="width:100%">
             <p class="nombre">{{producto.nombre}}</p>
             <p class="marca">{{producto.marca}}</p>
-            <p class="valoracion">{{producto.valoracionMedia}} ★</p>
+            <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
             <p class="ingredientes">{{producto.ingredientes}}</p>
             <p>{{producto.supermercados.all|join:"/"}}</p>
             <div class="row">
