@@ -8,8 +8,8 @@ from Web.models import Producto, Supermercado, Alergeno
 
 
 TIEMPO_EXCESO_DE_PETICIONES = 300
-TIEMPO_MIN_POR_PETICION = 3
-TIEMPO_MAX_POR_PETICION = 5
+TIEMPO_MIN_POR_PETICION = 1
+TIEMPO_MAX_POR_PETICION = 2
 
 API_URL = 'https://tienda.mercadona.es/api/'
 ENDPOINT_CATEGORIAS = API_URL + 'categories/'
@@ -70,7 +70,7 @@ def obtener_productos_de_categoria(id_categoria):
         try:
             categorias = datos['categories']
             break
-        except:
+        except TypeError:
             print('Error con la categoria %s' % id_categoria)
     for categoria in categorias:
         productos = categoria['products']

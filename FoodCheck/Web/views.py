@@ -69,7 +69,7 @@ def shopping_list(request):
         productos.add(Producto.objects.all()[randint(0, num_prods-1)])
 
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
-   
+
     for producto in productos:
         for supermercado in producto.supermercados.all():
             if supermercado in productos_agrupados_por_supermercado.keys():
