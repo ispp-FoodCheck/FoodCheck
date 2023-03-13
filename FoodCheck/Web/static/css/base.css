@@ -1,0 +1,28 @@
+nav.navbar {
+  background-color: #07644A;
+}
+
+footer {
+  padding-top: 1%;
+}
+
+#enviar { 
+  background-color: #07644A;
+  opacity: 1;
+
+  font-size: 100%;
+  font-weight: bold;
+  border-width: 0px;
+  border-radius: 7%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-md-4 card mt-1, .col-md-4 card mt-2 {
+  width: 50%;
+  padding: 20px;
+}
