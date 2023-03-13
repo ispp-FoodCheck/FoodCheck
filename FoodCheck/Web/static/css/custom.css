@@ -1,0 +1,23 @@
+.navbar-colors {
+  background-color: #10654e !important;
+}
+
+.nav-link-colors {
+  color: #8c9f9c !important;
+}
+
+.nav-link-colors:hover {
+  color: #ffffff !important;
+}
+
+.nav-link-colors:hover {
+  color: #ffffff;
+}
+
+body {
+  background-color: #FFFFD6 !important;
+}
+
+.scrolled-custom {
+  background-color: #10654e !important;
+}
