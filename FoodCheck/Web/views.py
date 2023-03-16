@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from random import randint
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .models import Producto, Valoracion, Usuario, Alergeno
 from django.views.decorators.http import require_safe, require_http_methods
 from django.db.models.functions import Lower
@@ -14,20 +15,22 @@ def landing_page(request):
     return render(request, "landing.html", context)
 
 def index(request):
-    alergenos_selected = request.GET.getlist('alergenos')
+    vegano_selected = False
+    alergenos_selected = request.POST.getlist('alergenos')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
     palabra_buscador = request.GET.get('canal_de_texto')
 
-    if request.user.is_authenticated and alergenos_selected == None:
-        alergenos_selected = list(request.user.alergenos.all())
+    if request.user.is_authenticated and len(alergenos_selected) == 0 and request.method == 'GET':
+        alergenos_selected = list(request.user.alergenos.all().values_list('nombre', flat=True))
+        print(request.user.es_vegano)
+        if request.user.es_vegano:
+            vegano_selected = True
 
     lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)
 
-    if request.GET.get('vegano'):
+    if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
-    else:
-        vegano_selected = False
     
     if palabra_buscador != None:
         lista_producto= lista_producto.annotate(nombre_m=Lower('nombre')).filter(nombre_m__icontains=unidecode(palabra_buscador.lower()))
@@ -39,6 +42,7 @@ def index(request):
     diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected, 'total_de_paginas': total_de_paginas}
     return render(request,"products.html",diccionario)
 
+@login_required(login_url='authentication:login')
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
@@ -52,7 +56,7 @@ def product_details(request, id_producto):
         puntuacion = request.POST.get('valoracion')
 
         if (puntuacion != ''):
-            usuario = Usuario.objects.filter(id=1)[0]
+            usuario = request.user
             valoracion = Valoracion.objects.create(comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
             valoracion.save()
 

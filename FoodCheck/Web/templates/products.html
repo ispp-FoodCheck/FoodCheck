@@ -17,7 +17,8 @@
         </div>
         <div class="row">
             <h1 class="title">Filtros</h1>
-            <form method="GET" action="{% url 'index' %}">
+            <form method="POST" action="{% url 'index' %}">
+                {% csrf_token %}
                 {% for alergeno in alergenos_available %}
                     <input type="checkbox" name="alergenos" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
                     <label for="alergenos">
@@ -27,6 +28,7 @@
                 <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %}>
                 <label for="vegano">Vegano</label>
                 <button type="submit" class="btn btn-primary mb-3">Filtrar</button>
+                <a class="btn btn-primary mb-3" href="home">Mis filtros</a> 
             </form>
         </div>
 

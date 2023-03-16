@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Web',
     'Scrappers',
+    'authentication',
 ]
+
+AUTH_USER_MODEL = 'Web.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
