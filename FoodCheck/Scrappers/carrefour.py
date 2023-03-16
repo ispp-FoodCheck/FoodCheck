@@ -3,27 +3,11 @@ from urllib.request import urlopen
 import json
 import sys
 from Web.models import Producto, Supermercado, Alergeno
+from Scrappers.alergenos import MAPA_INTOLERANCIAS_CARREFOUR, obtener_alergenos_de_texto
 
 num_elementos = '20'
 
 url_keywords = "https://www.carrefour.es/search-api/suggestions/v1/empathize?lang=es&catalog=food&rows=" + num_elementos
-
-KEYWORDS_INTOLERANCIAS = {
-    'Cereales que contienen gluten': 'gluten',
-    'Crustáceos': 'crustaceos',
-    'Huevo': 'huevos',
-    'Cacahuetes': 'cacahuetes',
-    'Pescado': 'pescado',
-    'Soja': 'soja',
-    'Leche': 'lacteos',
-    'Frutos de cáscara': 'frutos secos',
-    'Apio': 'apio',
-    'Mostaza': 'mostaza',
-    'Semillas de sésamo': 'sesamo',
-    'Sulfitos': 'sulfitos',
-    'Altramuces o lupino': 'altramuz',
-    'Moluscos': 'moluscos',
-}
 
 
 def find_keywords():
@@ -181,17 +165,23 @@ def actualizar_datos_carrefour():
                 producto.supermercados.add(carrefour)
         producto.save()
         
-        alergenos = []
+        alergenos = obtener_alergenos_de_texto(detailed_product['nombre'])
+        alergenos.extend(obtener_alergenos_de_texto(detailed_product['ingredientes']))
+        alergenos = set(alergenos)
         for i in detailed_product['alergenos'].split(", "):
-            if i== '-' or i=='No tiene':
+            if i== '-':
                 break
             alergeno = None
-            if i in KEYWORDS_INTOLERANCIAS.keys():
-                alergeno = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[i])[0]
+            if i in MAPA_INTOLERANCIAS_CARREFOUR.keys():
+                alergeno = Alergeno.objects.get_or_create(nombre=MAPA_INTOLERANCIAS_CARREFOUR[i])[0]
             else:
                 alergeno = Alergeno.objects.get_or_create(nombre=i)[0]
-            alergenos.append(alergeno)
-        producto.alergenos.set(alergenos)
+            if i=='No tiene':
+                if alergeno in alergenos:
+                    alergenos.remove(alergeno)
+                continue
+            alergenos.add(alergeno)
+        producto.alergenos.set(list(alergenos))
         producto.save()
         
         ing = producto.ingredientes
