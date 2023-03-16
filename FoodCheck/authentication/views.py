@@ -7,8 +7,8 @@ from django.utils.http import require_http_methods
 import Web.forms as forms
 from .decorators import user_not_authenticated
 
-@require_http_methods(["GET", "POST"])
 @user_not_authenticated
+@require_http_methods(["GET", "POST"])
 def registro(request):
     if request.method == 'POST':
         form = forms.RegistroForm(request.POST)
@@ -19,14 +19,14 @@ def registro(request):
         form = forms.RegistroForm()
     return render(request, 'register.html', {'form': form})
 
-@require_http_methods("GET")
 @login_required
+@require_http_methods("GET")
 def logout_view(request):
     logout(request)
     return redirect('index')
 
-@require_http_methods(["GET", "POST"])
 @user_not_authenticated
+@require_http_methods(["GET", "POST"])
 def login_view(request):
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
