@@ -1,19 +1,13 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils import timezone
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.core.mail import EmailMessage
-from django.db.models import Q
+from django.utils.http import require_safe
 
 import Web.forms as forms
-import Web.models as models
 from .decorators import user_not_authenticated
 
+@require_safe
 @user_not_authenticated
 def registro(request):
     if request.method == 'POST':
@@ -25,11 +19,13 @@ def registro(request):
         form = forms.RegistroForm()
     return render(request, 'register.html', {'form': form})
 
+@require_safe
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
 
+@require_safe
 @user_not_authenticated
 def login_view(request):
     if request.method == 'POST':
