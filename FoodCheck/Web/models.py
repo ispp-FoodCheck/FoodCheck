@@ -20,7 +20,7 @@ class Supermercado(models.Model):
     
 class Producto(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    nombre = models.CharField(max_length=100)
+    nombre = models.TextField(max_length=100)
     imagen = models.URLField(validators=[URLValidator()])
     #precio = models.FloatField()
     ingredientes = models.CharField(max_length=2500)
