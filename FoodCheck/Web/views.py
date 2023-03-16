@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from random import randint
 from django.core.paginator import Paginator
-from .models import Producto, Valoracion, Usuario, Alergeno
+from .models import Producto, Valoracion, User, Alergeno
 from django.views.decorators.http import require_safe
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -13,26 +14,29 @@ def landing_page(request):
     return render(request, "landing.html", context)
 
 def index(request):
-    alergenos_selected = request.GET.getlist('alergenos')
+    vegano_selected = False
+    alergenos_selected = request.POST.getlist('alergenos')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
 
-    if request.user.is_authenticated and alergenos_selected == None:
-        alergenos_selected = list(request.user.alergenos.all())
+    if request.user.is_authenticated and len(alergenos_selected) == 0 and request.method == 'GET':
+        alergenos_selected = list(request.user.alergenos.all().values_list('nombre', flat=True))
+        print(request.user.es_vegano)
+        if request.user.es_vegano:
+            vegano_selected = True
 
     lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)
 
-    if request.GET.get('vegano'):
+    if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
-    else:
-        vegano_selected = False
     
     paginacion= Paginator(lista_producto,12)
-    numero_pagina= request.GET.get('page')
+    numero_pagina= request.POST.get('page')
     objetos_de_la_pagina= paginacion.get_page(numero_pagina)
     diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
     return render(request,"products.html",diccionario)
 
+@login_required(login_url='authentication:login')
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
@@ -46,7 +50,7 @@ def product_details(request, id_producto):
         puntuacion = request.POST.get('valoracion')
 
         if (puntuacion != ''):
-            usuario = Usuario.objects.filter(id=1)[0]
+            usuario = request.user
             valoracion = Valoracion.objects.create(comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
             valoracion.save()
 

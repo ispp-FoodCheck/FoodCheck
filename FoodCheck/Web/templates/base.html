@@ -176,6 +176,36 @@
                 Mi lista
               </a>
             </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="{% url 'authentication:logout' %}"
+                  aria-label="Brings you to the frontpage"
+                >
+                  Cerrar sesión
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="{% url 'authentication:login' %}"
+                  aria-label="Brings you to the frontpage"
+                >
+                  Iniciar sesión
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="{% url 'authentication:register' %}"
+                  aria-label="Brings you to the frontpage"
+                >
+                  Registrarse
+                </a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>
