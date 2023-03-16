@@ -2,12 +2,12 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.utils.http import require_safe
+from django.utils.http import require_http_methods
 
 import Web.forms as forms
 from .decorators import user_not_authenticated
 
-@require_safe
+@require_http_methods(["GET", "POST"])
 @user_not_authenticated
 def registro(request):
     if request.method == 'POST':
@@ -19,13 +19,13 @@ def registro(request):
         form = forms.RegistroForm()
     return render(request, 'register.html', {'form': form})
 
-@require_safe
+@require_http_methods("GET")
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
 
-@require_safe
+@require_http_methods(["GET", "POST"])
 @user_not_authenticated
 def login_view(request):
     if request.method == 'POST':
