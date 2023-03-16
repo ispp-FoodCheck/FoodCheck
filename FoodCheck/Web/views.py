@@ -2,8 +2,9 @@ from django.shortcuts import render
 from random import randint
 from django.core.paginator import Paginator
 from .models import Producto, Valoracion, Usuario, Alergeno
-from django.views.decorators.http import require_safe
-
+from django.views.decorators.http import require_safe, require_http_methods
+from django.db.models.functions import Lower
+from unidecode import unidecode
 # Create your views here.
 
 def landing_page(request):
@@ -15,6 +16,7 @@ def landing_page(request):
 def index(request):
     alergenos_selected = request.GET.getlist('alergenos')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
+    palabra_buscador = request.GET.get('canal_de_texto')
 
     if request.user.is_authenticated and alergenos_selected == None:
         alergenos_selected = list(request.user.alergenos.all())
@@ -27,10 +29,14 @@ def index(request):
     else:
         vegano_selected = False
     
+    if palabra_buscador != None:
+        lista_producto= lista_producto.annotate(nombre_m=Lower('nombre')).filter(nombre_m__icontains=unidecode(palabra_buscador.lower()))
+
     paginacion= Paginator(lista_producto,12)
+    total_de_paginas= paginacion.num_pages
     numero_pagina= request.GET.get('page')
     objetos_de_la_pagina= paginacion.get_page(numero_pagina)
-    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
+    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected, 'total_de_paginas': total_de_paginas}
     return render(request,"products.html",diccionario)
 
 def product_details(request, id_producto):
