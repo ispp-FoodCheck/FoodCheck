@@ -1,11 +1,14 @@
-from django.shortcuts import render
 from random import randint
-from django.core.paginator import Paginator
+
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion, Usuario, Alergeno
-from django.views.decorators.http import require_safe, require_http_methods
+from django.core.paginator import Paginator
 from django.db.models.functions import Lower
+from django.shortcuts import render
+from django.views.decorators.http import require_safe
 from unidecode import unidecode
+
+from .models import Alergeno, Producto, User, Valoracion
+
 # Create your views here.
 
 def landing_page(request):
@@ -16,13 +19,14 @@ def landing_page(request):
 
 def index(request):
     vegano_selected = False
-    alergenos_selected = request.POST.getlist('alergenos')
+    numero_pagina= request.POST.get('page') or 1
+    alergenos_selected = request.POST.getlist('alergenos_selected')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
-    palabra_buscador = request.GET.get('canal_de_texto')
+    palabra_buscador = request.POST.get('canal_de_texto') or ''
+    print(alergenos_selected)
 
     if request.user.is_authenticated and len(alergenos_selected) == 0 and request.method == 'GET':
         alergenos_selected = list(request.user.alergenos.all().values_list('nombre', flat=True))
-        print(request.user.es_vegano)
         if request.user.es_vegano:
             vegano_selected = True
 
@@ -37,9 +41,9 @@ def index(request):
 
     paginacion= Paginator(lista_producto,12)
     total_de_paginas= paginacion.num_pages
-    numero_pagina= request.GET.get('page')
+    
     objetos_de_la_pagina= paginacion.get_page(numero_pagina)
-    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected, 'total_de_paginas': total_de_paginas}
+    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador}
     return render(request,"products.html",diccionario)
 
 @login_required(login_url='authentication:login')
