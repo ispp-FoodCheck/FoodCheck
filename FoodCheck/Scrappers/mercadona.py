@@ -3,6 +3,7 @@ import json
 import time
 import random
 import re
+from unidecode import unidecode
 
 from Web.models import Producto, Supermercado, Alergeno
 
@@ -149,9 +150,10 @@ def actualizar_datos_mercadona():
             producto.save()
             
             ing = producto.ingredientes
+            p_name = producto.nombre
             non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()
             for non_vegan in non_vegans_ing_list:
-                if non_vegan.lower() in ing.lower(): 
+                if ((non_vegan.lower() in unidecode(ing.lower())) or (non_vegan.lower() in unidecode(p_name.lower()))): 
                     producto.vegano = False
                     break
             producto.save()
