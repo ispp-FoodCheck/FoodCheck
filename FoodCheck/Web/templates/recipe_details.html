@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row" id="row-details">
+        <div class="card col-md-4 mt-1 text-center">
+            <p class="nombre">{{receta.nombre}}</p>
+            <p class="propietario">Receta realizada por: {{receta.propietario}}</p>
+            <p class="tiempoPreparacion">Tiempo estimado: {{receta.tiempoPreparacion}} minutos</p>
+            <p class="ingredientes">{{receta.productos.all|join:", "}}</p>
+            <p class="descripcion">{{receta.descripcion}}</p>
+            <div class="row">
+                <div class="col">
+                    {% for alergeno in alergenos %}
+                    {% if alergeno.imagen != None %}
+                    <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const textarea = document.getElementById('cuerpo');
+    const currentChars = document.getElementById('caracteres-actuales');
+
+    textarea.addEventListener('input', () => {
+        const charactersTyped = textarea.value.length;
+        currentChars.textContent = charactersTyped;
+    });
+</script>
+{% endblock %}
