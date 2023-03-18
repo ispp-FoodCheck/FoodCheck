@@ -10,18 +10,16 @@
 <div class="container text-center">
     <div>
         <div class="row">
-           <form class="search" id='search' method="GET">
-                <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder = "Busca tu producto"></input>
-                <button class="btn btn-primary mb-3" type="submit">Buscar producto</button>
-           </form> 
         </div>
         <div class="row">
-            <h1 class="title">Filtros</h1>
-            <form method="POST" action="{% url 'index' %}">
+            <form method="POST" action="{% url 'index' %}" id="filter-form">
+                <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder = "Busca tu producto" value="{{ palabra_buscador }}">
+                <button class="btn btn-primary mb-3" type="submit">Buscar producto</button>
+                <h1 class="title">Filtros</h1>
                 {% csrf_token %}
                 {% for alergeno in alergenos_available %}
-                    <input type="checkbox" name="alergenos" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
-                    <label for="alergenos">
+                    <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
+                    <label for="alergenos_selected">
                         {{ alergeno.nombre }}
                     </label>
                 {% endfor %}
@@ -66,41 +64,55 @@
                             <a class="page-link">Anterior</a>
                         </li>
                             <li class="page-item disabled"><a class="page-link">1</a></li>
-                            <li class="page-item disabled"><a class="page-link">2</a></li>
-                            <li class="page-item disabled"><a class="page-link">3</a></li>
                         <li class="page-item disabled">
                             <a class="page-link">Siguiente</a>
                         </li>
                     {% else %}
-                        {% if lista_producto.has_previous and lista_producto.has_next%}
+                        {% if lista_producto.has_previous and lista_producto.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Anterior</a>
+                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
                             </li>
-                            <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
-                            <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
-                            <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number}}</a></li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Siguiente</a>
+                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">{{ lista_producto.previous_page_number }}</button></li>
+                            <li class="page-item disabled">
+                                <a class="page-link">{{ lista_producto.number }}</a></li>
+                            <li class="page-item">
+                                <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">{{ lista_producto.next_page_number}}</button></li>
+                            <li class="page-item">
+                                <button class="page-link" onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
                             </li>
                         {% endif %}
-                        {% if not lista_producto.has_previous%}
+                        {% if not lista_producto.has_previous %}
                             <li class="page-item disabled">
                                 <a class="page-link">Anterior</a>
                             </li>
                             <li class="page-item disabled"><a class="page-link">1</a></li>
-                            <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number}}">{{ lista_producto.next_page_number }}</a></li>
-                            <li class="page-item"><a class="page-link" href="?page={{lista_producto.next_page_number|add:"1"}}">{{ lista_producto.next_page_number|add:"1"}}</a></li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ lista_producto.next_page_number }}">Siguiente</a>
+                                <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">{{ lista_producto.next_page_number }}</button>
+                            </li>
+                            {% if not total_de_paginas == 2 %}
+                                <li class="page-item">
+                                    <button class="page-link" onclick="createForm({{lista_producto.next_page_number|add:'1'}})">{{ lista_producto.next_page_number|add:"1"}}</button>
+                                </li>
+                            {% endif %}
+                            <li class="page-item">
+                                <button class="page-link" onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
                             </li>
                         {% endif %}
                         {% if not lista_producto.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{lista_producto.previous_page_number}}">Anterior</a>
+                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
                             </li>
-                            <li class="page-item"><a class="page-link" href="?page={{lista_producto.previous_page_number|add:"-1"}}">{{ lista_producto.previous_page_number|add:"-1" }}</a></li>
-                            <li class="page-item "><a class="page-link" href="?page={{lista_producto.previous_page_number}}">{{ lista_producto.previous_page_number }}</a></li>
-                            <li class="page-item disabled"><a class="page-link">{{ lista_producto.number }}</a></li>
+                            {% if not total_de_paginas == 2 %}
+                                <li class="page-item">
+                                    <button class="page-link" onclick="createForm({{lista_producto.previous_page_number|add:'-1'}})">{{ lista_producto.previous_page_number|add:"-1" }}</button>
+                                </li>
+                            {% endif %}
+                            <li class="page-item ">
+                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">{{ lista_producto.previous_page_number }}</button></li>
+                            <li class="page-item disabled">
+                                <a class="page-link">{{ lista_producto.number }}</a>
+                            </li>
                             <li class="page-item disabled">
                                 <a class="page-link">Siguiente</a>
                             </li>
@@ -112,4 +124,23 @@
 
     </div>
 </div>
+<script>
+    let form = document.getElementById('filter-form');
+
+    form.addEventListener('formdata', (e) => {
+        e.preventDefault();
+        console.log({{ lista_producto.number }});
+        if(!e.formData.has('page')) e.formData.append('page', {{ lista_producto.number }});
+    });
+
+    function createForm(newPage) {
+        let newForm = document.getElementById('filter-form');
+        let pageInput = document.createElement('input');
+        pageInput.type = 'hidden';
+        pageInput.name = 'page';
+        pageInput.value = newPage;
+        newForm.appendChild(pageInput);
+        newForm.submit();
+    }
+</script>
 {% endblock %}
