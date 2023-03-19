@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_safe
 from unidecode import unidecode
 
-from .models import Alergeno, Producto, User, Valoracion, Receta
+from .models import Alergeno, Producto, User, Valoracion, Receta, RecetasDesbloqueadasUsuario
 
 # Create your views here.
 
@@ -109,6 +109,57 @@ def shopping_list(request):
 
     return render(request, "shopping_list.html", {"productos_agrupados_por_supermercado": productos_agrupados_por_supermercado})
 
+def my_recipes(request):
+    numero_pagina = request.POST.get('page') or 1
+    lista_recetas = Receta.objects.filter(propietario=request.user)
+
+    diccionario_recetas_alergenos = dict()
+
+    for receta in lista_recetas:
+        distinct_alergenos = set()
+        for prod in receta.productos.all():
+            for alergeno in prod.alergenos.all():
+                distinct_alergenos.add(alergeno)
+        diccionario_recetas_alergenos[receta] = distinct_alergenos
+
+    paginacion = Paginator(lista_recetas, 12)
+    total_de_paginas = paginacion.num_pages
+
+    objetos_de_la_pagina = paginacion.get_page(numero_pagina)
+
+    context = {'lista_producto': objetos_de_la_pagina,
+               'total_de_paginas': total_de_paginas,
+               'recetas': diccionario_recetas_alergenos}
+
+    return render(request, "my_recipes.html", context)
+
+def unlock_recipes(request):
+    numero_pagina = request.POST.get('page') or 1
+    lista_recetas_desbloquedas = RecetasDesbloqueadasUsuario.objects.filter(usuario=request.user)
+
+    lista_recetas = []
+    for receta_desbloquedas in lista_recetas_desbloquedas:
+        lista_recetas.append(receta_desbloquedas.receta)
+    
+    diccionario_recetas_alergenos = dict()
+
+    for receta in lista_recetas:
+        distinct_alergenos = set()
+        for prod in receta.productos.all():
+            for alergeno in prod.alergenos.all():
+                distinct_alergenos.add(alergeno)
+        diccionario_recetas_alergenos[receta] = distinct_alergenos
+
+    paginacion = Paginator(lista_recetas, 12)
+    total_de_paginas = paginacion.num_pages
+
+    objetos_de_la_pagina = paginacion.get_page(numero_pagina)
+
+    context = {'lista_producto': objetos_de_la_pagina,
+               'total_de_paginas': total_de_paginas,
+               'recetas': diccionario_recetas_alergenos}
+
+    return render(request, "unlock_recipes.html", context)
 
 def recipes_list(request):
     filtro_busqueda = request.POST.get('busqueda')

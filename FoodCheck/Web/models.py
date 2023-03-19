@@ -48,7 +48,7 @@ class ListaCompra(models.Model):
     productos = models.ManyToManyField(Producto)
 
     def __str__(self):
-        return "Lista de la compra: "+self.nombre + ' - ' + self.usuario.nombre
+        return "Lista de la compra: "+self.nombre + ' - ' + self.usuario.username
     
 class Receta(models.Model):
     id = models.AutoField(primary_key=True)
@@ -70,7 +70,7 @@ class Valoracion(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario.nombre + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
+        return self.usuario.username + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
     
 class RecetasDesbloqueadasUsuario(models.Model):
     id = models.AutoField(primary_key=True)
@@ -80,4 +80,4 @@ class RecetasDesbloqueadasUsuario(models.Model):
     fechaBloqueo = models.DateField()
 
     def __str__(self):
-        return self.usuario.nombre + ' - ' + self.receta.nombre + ' - ' + str(self.disponible)
+        return self.usuario.username + ' - ' + self.receta.nombre + ' - ' + str(self.disponible)

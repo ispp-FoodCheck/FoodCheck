@@ -14,7 +14,12 @@
         <div class="row">
             <form method="POST" action="{% url 'index' %}" id="filter-form">
                 <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder = "Busca tu producto" value="{{ palabra_buscador }}">
-                <button class="btn btn-primary mb-3" type="submit">Buscar producto</button>
+                <div class="row-md-2">
+                    </br>
+                    <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;">
+                        Buscar producto
+                    </button>
+                </div>
                 <h1 class="title">Filtros</h1>
                 {% csrf_token %}
                 {% for alergeno in alergenos_available %}
@@ -25,8 +30,13 @@
                 {% endfor %}
                 <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %}>
                 <label for="vegano">Vegano</label>
-                <button type="submit" class="btn btn-primary mb-3">Filtrar</button>
-                <a class="btn btn-primary mb-3" href="home">Mis filtros</a> 
+                <div class="row-md-2">
+                    </br>
+                    <button type="submit" class="btn btn-primary mb-3" style="border-radius: 12px;">
+                        Filtrar
+                    </button>
+                    <a class="btn btn-primary mb-3" href="home" style="border-radius: 12px;">Mis filtros</a> 
+                </div>
             </form>
         </div>
 

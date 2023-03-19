@@ -8,25 +8,52 @@
 {% block body %}
 
 <div class="container">
-
-    <div class="row" id="row-details">
-        <div class="card col-md-4 mt-1 text-center">
-            <p class="nombre">{{receta.nombre}}</p>
-            <p class="propietario">Receta realizada por: {{receta.propietario}}</p>
-            <p class="tiempoPreparacion">Tiempo estimado: {{receta.tiempoPreparacion}} minutos</p>
-            <p class="ingredientes">{{receta.productos.all|join:", "}}</p>
-            <p class="descripcion">{{receta.descripcion}}</p>
-            <div class="row">
-                <div class="col">
-                    {% for alergeno in alergenos %}
-                    {% if alergeno.imagen != None %}
-                    <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
-                    {% endif %}
-                    {% endfor %}
+    <div class="col text-center">
+        <div class="row" id="row-details">
+            <h1 class="title">Detalles de la receta</h1>
+            <div class="card col-md-4 mt-1 text-center">
+                <p class="nombre">{{receta.nombre}}</p>
+                <p class="propietario">Receta realizada por: {{receta.propietario}}</p>
+                <p class="tiempoPreparacion">Tiempo estimado: {{receta.tiempoPreparacion}} minutos</p>
+                <p class="descripcion">{{receta.descripcion}}</p>
+                <div class="row">
+                    <div class="col">
+                        {% for alergeno in alergenos %}
+                        {% if alergeno.imagen != None %}
+                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-
+        <h1 class="title">Ingredientes</h1>
+        <div class="row" id="row-details">
+            {% for producto in receta.productos.all %}
+            <div class="card col-md-4 mt-1 text-center">
+                <a href="/product/{{producto.id}}/details">
+                <p> {{producto.nombre}}</p>
+                {% if producto.imagen != None %}
+                <div class="row">
+                    <div class="col">
+                        <img src="{{producto.imagen}}" alt="error" style="width:70%">
+                    </div>
+                </div>
+                {% endif %}
+                </br>
+                </a>
+                <div class="row">
+                    <div class="col">
+                    {% for alergeno in  producto.alergenos.all%}
+                        {% if alergeno.imagen != None  %}                                        
+                            <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

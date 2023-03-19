@@ -2,33 +2,11 @@
 <link rel="stylesheet" href="{% static 'css/recipes.css' %}" />
 {% endblock %} {% block body %}
 
-<div class="container text-center">
-    <div class="row text-center">
-        <div class="row">
-            <form method="POST" action="{% url 'recipes_list' %}" id="filter-form">
-                {% csrf_token %}
-                <input class="search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
-                    value="{{ busqueda }}" />
-                    <div class="row-md-2">
-                    </br>
-                        <button class="btn btn-primary mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
-                            Buscar recetas
-                        </button>
-                    </div>
+<div class="container">
+    <div class = "row text-center">
+        <h1 class="title">Mostrando sus recetas desbloqueadas</h1>
 
-            </form>
-        </div>
-
-        {% if filtro_productos %}
-        <div class="row">
-            <h1 class="title">Mostrando las recetas con: {{filtro_productos}}</h1>
-        </div>
-        {% else %}
-        <div class="row">
-            <h1 class="title">Mostrando las recetas</h1>
-        </div>
-        {% endif %}
-
+        {% if recetas.items|length != 0%}
         <div class="row" id="row-details">
             {% for receta, alergenos in recetas.items %}
             <div class="card col-md-4 mt-1 text-center">
@@ -47,7 +25,14 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
+        
+        {% if recetas.items|length == 0%}
+            <a>Aún no tiene ninguna receta desbloqueada</h1>
+        {% endif %}
 
+        {% if recetas.items|length != 0%}
+        <div class="row">
             <div class="container" id="boton-paginacion">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-end">
@@ -133,8 +118,10 @@
                     </ul>
                 </nav>
             </div>
+
+        </div>
+        {% endif %}
         </div>
     </div>
-
     {% endblock %}
 </div>
