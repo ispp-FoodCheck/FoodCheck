@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import AbstractUser
+from django_resized import ResizedImageField
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -22,7 +25,6 @@ class Producto(models.Model):
     id = models.BigIntegerField(primary_key=True)
     nombre = models.TextField(max_length=100)
     imagen = models.URLField(validators=[URLValidator()])
-    #precio = models.FloatField()
     ingredientes = models.CharField(max_length=2500)
     marca = models.CharField(max_length=50)
     vegano = models.BooleanField(default=True)
@@ -53,14 +55,20 @@ class ListaCompra(models.Model):
 class Receta(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.TextField(max_length=50)
-    descripcion = models.CharField(max_length=200)
-    tiempoPreparacion = models.IntegerField()
+    descripcion = models.CharField(max_length=4000)
+    tiempoPreparacion = models.TextField(max_length=70)
     publica = models.BooleanField()
     propietario = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = ResizedImageField(size=[300, 300], upload_to='recetas', null=True)
     productos = models.ManyToManyField(Producto)
 
     def __str__(self):
         return self.nombre + ' - ' + self.propietario.username
+
+@receiver(pre_delete, sender=Receta)
+def receta_delete(sender, instance, **kwargs):
+    # Pass false so FileField doesn't save the model.
+    instance.imagen.delete(False)
 
 class Valoracion(models.Model):
     id = models.AutoField(primary_key=True)

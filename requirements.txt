@@ -1,2 +1,4 @@
 mysqlclient
-unidecode
+Unidecode
+Pillow
+django-resized

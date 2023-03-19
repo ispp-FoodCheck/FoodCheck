@@ -6,6 +6,7 @@ from django.db.models.functions import Lower
 from django.shortcuts import render
 from django.views.decorators.http import require_safe
 from unidecode import unidecode
+from django.shortcuts import redirect
 
 from .models import Alergeno, Producto, User, Valoracion, Receta, RecetasDesbloqueadasUsuario
 
@@ -109,6 +110,7 @@ def shopping_list(request):
 
     return render(request, "shopping_list.html", {"productos_agrupados_por_supermercado": productos_agrupados_por_supermercado})
 
+@login_required(login_url='authentication:login')
 def my_recipes(request):
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(propietario=request.user)
@@ -133,6 +135,7 @@ def my_recipes(request):
 
     return render(request, "my_recipes.html", context)
 
+@login_required(login_url='authentication:login')
 def unlock_recipes(request):
     numero_pagina = request.POST.get('page') or 1
     lista_recetas_desbloquedas = RecetasDesbloqueadasUsuario.objects.filter(usuario=request.user)
@@ -205,9 +208,41 @@ def recipe_details(request, id_receta):
 
     return render(request, "recipe_details.html", context)
 
-def new_recipes(request):
 
+def new_recipes(request):
     context = {
 
     }
-    return render(request, "landing.html", context)
+
+    if request.method == "POST":
+        nombre = request.POST.get('nombre')
+        descripcion = request.POST.get('cuerpo')
+        tiempo_horas = request.POST.get('horas')
+        tiempo_minutos = request.POST.get('minutos')
+        tiempo_segundos = request.POST.get('segundos')
+        publica = request.POST.get('checkbox_publica')
+        img = request.FILES.get('receta_imagen')
+
+        print("imagen:")
+        print(img)
+
+        if publica == "si": 
+            publica=True
+        else:
+            publica=False
+
+        propietario = request.user
+
+        # El tiempo de preparación se guarda como campo de texto (solo se usa para visualizar)
+        tiempoPreparacion = str(tiempo_horas) + " horas, " + str(tiempo_minutos) + " minutos, " + str(tiempo_segundos) + " segundos "
+
+        receta = Receta.objects.create(
+                nombre=nombre, descripcion=descripcion, tiempoPreparacion=tiempoPreparacion,
+                  publica=publica, propietario=propietario, imagen=img)
+        receta.save()
+
+        #productos = "xd"
+
+        return redirect('/my_recipes/')
+
+    return render(request, "new_recipe.html", context)

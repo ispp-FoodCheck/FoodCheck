@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block head %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/recipes.css' %}" />
+{% endblock %} {% block body %}
+
+<div class="container text-center">
+    <div class="row">
+        <h1 class="title">Crear una receta</h1>
+        <form method="POST" id="filter-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <input class="form-control" id="nombre" name="nombre" placeholder="Nombre de la receta"
+                    required></input>
+            </div>
+            <div class="mt-3">
+                <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="4000"
+                    placeholder="Instrucciones para realizar la receta" required></textarea>
+                <div class="d-flex justify-content-end">
+                    <span id="caracteres-actuales">0</span>
+                    <span id="limite-caracteres">/ 4000</span>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <input class="form-control" type="file" id="receta_imagen" name="receta_imagen" onchange="preview()">
+                <p onclick="clearImage()" class="btn btn-primary mt-3">Eliminar imagen</p>
+                <p>Vista previa de la imagen:</p>
+                <img id="frame" src="" class="img-fluid" />
+            </div>
+
+            <!--Formulario tiempo preparación-->
+            <h5 class="tiempoPreparacion">¿Cúanto tiempo lleva prepararla?</h5>
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-2">
+                    <label for="horas">Horas</label>
+                    <input type="number" class="form-control" id="horas" name="horas" min="00" max="99" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="minutos">Minutos</label>
+                    <input type="number" class="form-control" id="minutos" name="minutos" min="00" max="59" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="segundos">Segundos</label>
+                    <input type="number" class="form-control" id="segundos" name="segundos" min="00" max="59" required>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <p>¿Quieres que sea pública? <input type="checkbox" id="checkbox_publica" name="checkbox_publica"
+                        value="si" checked="true" disabled></p>
+            </div>
+
+            <button class="btn btn-primary mt-3" type="submit" id="boton-busqueda">
+                Crear receta
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    const textarea = document.getElementById('cuerpo');
+    const currentChars = document.getElementById('caracteres-actuales');
+
+    textarea.addEventListener('input', () => {
+        const charactersTyped = textarea.value.length;
+        currentChars.textContent = charactersTyped;
+    });
+</script>
+
+<script>
+    function preview() {
+        frame.src = URL.createObjectURL(event.target.files[0]);
+    }
+    function clearImage() {
+        document.getElementById('receta_imagen').value = null;
+        frame.src = "";
+    }
+</script>
+
+{% endblock %}
+</div>

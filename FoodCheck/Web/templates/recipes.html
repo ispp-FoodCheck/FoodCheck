@@ -9,12 +9,12 @@
                 {% csrf_token %}
                 <input class="search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
                     value="{{ busqueda }}" />
-                    <div class="row-md-2">
+                <div class="row-md-2">
                     </br>
-                        <button class="btn btn-primary mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
-                            Buscar recetas
-                        </button>
-                    </div>
+                    <button class="btn btn-primary mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
+                        Buscar recetas
+                    </button>
+                </div>
 
             </form>
         </div>
@@ -31,110 +31,117 @@
 
         <div class="row" id="row-details">
             {% for receta, alergenos in recetas.items %}
-            <div class="card col-md-4 mt-1 text-center">
-                <a href="/recipe/{{receta.id}}/details">
-                <p class="nombre">{{receta.nombre}}</p>
-                </a>
-                <div class="row">
-                    <div class="col">
-                    {% for alergeno in alergenos%}
-                        {% if alergeno.imagen != None  %}      
+            <div class="col-md-4">
+                <div class="card mt-1 text-center">
+                    {% if receta.imagen %}
+                    <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
+                    {% else %}
+                    <img src="" alt="error" style="width:100%">
+                    {% endif %}
+                    <a href="/recipe/{{receta.id}}/details">
+                        <p class="nombre">{{receta.nombre}}</p>
+                    </a>
+                    <div class="row">
+                        <div class="col">
+                            {% for alergeno in alergenos%}
+                            {% if alergeno.imagen != None %}
                             <img src="{{alergeno.imagen}}" alt="error" style="width:70px">
-                        {% endif %}
-                    {% endfor %}
-                    </div> 
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
 
-            <div class="container" id="boton-paginacion">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-end">
-                        {% if total_de_paginas == 1%}
-                        <li class="page-item disabled">
-                            <a class="page-link">Anterior</a>
-                        </li>
-                        <li class="page-item disabled"><a class="page-link">1</a></li>
-                        <li class="page-item disabled">
-                            <a class="page-link">Siguiente</a>
-                        </li>
-                        {% else %} {% if recetas.has_previous and recetas.has_next %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
-                                Anterior
-                            </button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
-                                {{ recetas.previous_page_number }}
-                            </button>
-                        </li>
-                        <li class="page-item disabled">
-                            <a class="page-link">{{ recetas.number }}</a>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.next_page_number}})">
-                                {{ recetas.next_page_number}}
-                            </button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{ recetas.next_page_number }})">
-                                Siguiente
-                            </button>
-                        </li>
-                        {% endif %} {% if not recetas.has_previous %}
-                        <li class="page-item disabled">
-                            <a class="page-link">Anterior</a>
-                        </li>
-                        <li class="page-item disabled"><a class="page-link">1</a></li>
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.next_page_number}})">
-                                {{recetas.next_page_number }}
-                            </button>
-                        </li>
-                        {% if not total_de_paginas == 2 %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.next_page_number|add:'1'}})">
-                                {{recetas.next_page_number|add:"1"}}
-                            </button>
-                        </li>
-                        {% endif %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{ recetas.next_page_number }})">
-                                Siguiente
-                            </button>
-                        </li>
-                        {% endif %} {% if not recetas.has_next %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
-                                Anterior
-                            </button>
-                        </li>
-                        {% if not total_de_paginas == 2 %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.previous_page_number|add:'-1'}})">
-                                {{ recetas.previous_page_number|add:"-1" }}
-                            </button>
-                        </li>
-                        {% endif %}
-                        <li class="page-item">
-                            <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
-                                {{ recetas.previous_page_number }}
-                            </button>
-                        </li>
-                        <li class="page-item disabled">
-                            <a class="page-link">{{ recetas.number }}</a>
-                        </li>
-                        <li class="page-item disabled">
-                            <a class="page-link">Siguiente</a>
-                        </li>
-                        {% endif %} {% endif%}
-                    </ul>
-                </nav>
-            </div>
+        <div class="container" id="boton-paginacion">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    {% if total_de_paginas == 1%}
+                    <li class="page-item disabled">
+                        <a class="page-link">Anterior</a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link">1</a></li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Siguiente</a>
+                    </li>
+                    {% else %} {% if recetas.has_previous and recetas.has_next %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
+                            Anterior
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
+                            {{ recetas.previous_page_number }}
+                        </button>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">{{ recetas.number }}</a>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.next_page_number}})">
+                            {{ recetas.next_page_number}}
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{ recetas.next_page_number }})">
+                            Siguiente
+                        </button>
+                    </li>
+                    {% endif %} {% if not recetas.has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Anterior</a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link">1</a></li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.next_page_number}})">
+                            {{recetas.next_page_number }}
+                        </button>
+                    </li>
+                    {% if not total_de_paginas == 2 %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.next_page_number|add:'1'}})">
+                            {{recetas.next_page_number|add:"1"}}
+                        </button>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{ recetas.next_page_number }})">
+                            Siguiente
+                        </button>
+                    </li>
+                    {% endif %} {% if not recetas.has_next %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
+                            Anterior
+                        </button>
+                    </li>
+                    {% if not total_de_paginas == 2 %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.previous_page_number|add:'-1'}})">
+                            {{ recetas.previous_page_number|add:"-1" }}
+                        </button>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{recetas.previous_page_number}})">
+                            {{ recetas.previous_page_number }}
+                        </button>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">{{ recetas.number }}</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Siguiente</a>
+                    </li>
+                    {% endif %} {% endif%}
+                </ul>
+            </nav>
         </div>
     </div>
+</div>
 
-    {% endblock %}
+{% endblock %}
 </div>
