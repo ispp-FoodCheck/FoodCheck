@@ -23,5 +23,8 @@ urlpatterns = [
     path('home', views.index, name='index'),
     path('shopping_list/', views.shopping_list, name='shopping_list'),
     path('product/<int:id_producto>/details', views.product_details, name='product_details'),
+    path('product/<int:id_producto>/add', views.add_product, name='add_product'),
+    path('product/<int:id_producto>/remove', views.remove_product, name='remove_product'),
+    
     path('', include('authentication.urls')),
 ]

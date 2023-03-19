@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_safe
 from unidecode import unidecode
 
-from .models import Alergeno, Producto, User, Valoracion
+from .models import Alergeno, Producto, User, Valoracion, ListaCompra
 
 # Create your views here.
 
@@ -76,12 +76,9 @@ def product_details(request, id_producto):
 
 @require_safe
 def shopping_list(request):
-    # Ahora mismo muestra entre 8 productos aleatorios
-    productos = set()
-    for i in range(10):
-        num_prods = len(Producto.objects.all())
-        productos.add(Producto.objects.all()[randint(0, num_prods-1)])
 
+    productos = ListaCompra.objects.get(usuario = request.user).productos.all()
+    print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
 
     for producto in productos:
@@ -92,6 +89,38 @@ def shopping_list(request):
                 productos_agrupados_por_supermercado[supermercado] = productos_supermercado
             else:
                 productos_agrupados_por_supermercado[supermercado] = set([producto])
-    print(productos_agrupados_por_supermercado)
 
     return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado})
+
+@require_safe
+def add_product(request, id_producto):
+
+    lista_compra = ListaCompra.objects.filter(usuario = request.user).all()
+    producto_a_añadir = Producto.objects.get(id__exact = id_producto)
+
+    if len(lista_compra) == 0:
+        lista_compra = ListaCompra(usuario = User.objects.get(USERNAME_FIELD = request.user))
+    else:
+        lista_compra = lista_compra[0]
+
+
+    if lista_compra.productos is not None:
+        lista_compra.productos.add(producto_a_añadir)
+    else:
+        lista_compra.productos = [producto_a_añadir]
+
+    lista_compra.save()
+
+    return shopping_list(request)
+
+@require_safe
+def remove_product(request, id_producto):
+
+    lista_compra = ListaCompra.objects.get(usuario = request.user)
+    producto_a_quitar = Producto.objects.get(id__exact = id_producto)
+
+    if lista_compra is not None:
+        lista_compra.productos.remove(producto_a_quitar)
+        lista_compra.save()
+
+    return shopping_list(request)
