@@ -24,8 +24,7 @@
                 <h1 class="title">Filtros</h1>
                 {% csrf_token %}
                 {% for alergeno in alergenos_available %}
-                <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in
-                    alergenos_selected %} checked {% endif %}>
+                <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
                 <label for="alergenos_selected">
                     {{ alergeno.nombre }}
                 </label>
