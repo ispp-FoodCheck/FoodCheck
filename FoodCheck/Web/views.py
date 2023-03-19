@@ -223,9 +223,6 @@ def new_recipes(request):
         publica = request.POST.get('checkbox_publica')
         img = request.FILES.get('receta_imagen')
 
-        print("imagen:")
-        print(img)
-
         if publica == "si": 
             publica=True
         else:
@@ -241,7 +238,7 @@ def new_recipes(request):
                   publica=publica, propietario=propietario, imagen=img)
         receta.save()
 
-        #productos = "xd"
+        #productos = ""
 
         return redirect('/my_recipes/')
 

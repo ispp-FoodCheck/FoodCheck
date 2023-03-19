@@ -15,13 +15,17 @@
             <div class="col-md-4">
                 <div class="card mt-1 text-center">
                     {% if receta.imagen %}
-                    <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
+                    <a href="/recipe/{{receta.id}}/details">
+                        <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
+                    </a>
+                    <p class="nombre">{{receta.nombre}}</p>
                     {% else %}
                     <img src="" alt="error" style="width:100%">
-                    {% endif %}
-                    <a href="/recipe/{{receta.id}}/details">
+                    <a href="/recipe/{{receta.id}}/details"></a>
                         <p class="nombre">{{receta.nombre}}</p>
                     </a>
+                    {% endif %}
+                    
                     <div class="row">
                         <div class="col">
                             {% for alergeno in alergenos%}

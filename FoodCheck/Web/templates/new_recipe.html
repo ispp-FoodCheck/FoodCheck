@@ -21,14 +21,19 @@
             </div>
 
             <div class="mt-3">
+                <h5>Selecciona los ingredientes de la receta:</h5>
+            </div>
+
+            <div class="mt-3">
                 <input class="form-control" type="file" id="receta_imagen" name="receta_imagen" onchange="preview()">
                 <p onclick="clearImage()" class="btn btn-primary mt-3">Eliminar imagen</p>
                 <p>Vista previa de la imagen:</p>
-                <img id="frame" src="" class="img-fluid" />
+                <img id="frame" src="" class="img-fluid" style="width: 50%;" />
+                <!-- Deberíamos poner un alert o handlear la excepcion si el archivo qeu se sube no es una imagen -->
             </div>
 
             <!--Formulario tiempo preparación-->
-            <h5 class="tiempoPreparacion">¿Cúanto tiempo lleva prepararla?</h5>
+            <h5>¿Cúanto tiempo lleva prepararla?</h5>
             <div class="row justify-content-center mt-3">
                 <div class="col-md-2">
                     <label for="horas">Horas</label>

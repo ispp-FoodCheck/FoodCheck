@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django_resized import ResizedImageField
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
+from django import forms
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
