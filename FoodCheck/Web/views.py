@@ -1,8 +1,13 @@
-from django.shortcuts import render
 from random import randint
+
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Producto, Valoracion, Usuario, Alergeno
+from django.db.models.functions import Lower
+from django.shortcuts import render
 from django.views.decorators.http import require_safe
+from unidecode import unidecode
+
+from .models import Alergeno, Producto, User, Valoracion
 
 # Create your views here.
 
@@ -13,26 +18,35 @@ def landing_page(request):
     return render(request, "landing.html", context)
 
 def index(request):
-    alergenos_selected = request.GET.getlist('alergenos')
+    vegano_selected = False
+    numero_pagina= request.POST.get('page') or 1
+    alergenos_selected = request.POST.getlist('alergenos_selected')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
+    palabra_buscador = request.POST.get('canal_de_texto') or ''
+    print(alergenos_selected)
 
-    if request.user.is_authenticated and alergenos_selected == None:
-        alergenos_selected = list(request.user.alergenos.all())
+    if request.user.is_authenticated and len(alergenos_selected) == 0 and request.method == 'GET':
+        alergenos_selected = list(request.user.alergenos.all().values_list('nombre', flat=True))
+        if request.user.es_vegano:
+            vegano_selected = True
 
     lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)
 
-    if request.GET.get('vegano'):
+    if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
-    else:
-        vegano_selected = False
     
+    if palabra_buscador != None:
+        lista_producto= lista_producto.annotate(nombre_m=Lower('nombre')).filter(nombre_m__icontains=unidecode(palabra_buscador.lower()))
+
     paginacion= Paginator(lista_producto,12)
-    numero_pagina= request.GET.get('page')
+    total_de_paginas= paginacion.num_pages
+    
     objetos_de_la_pagina= paginacion.get_page(numero_pagina)
-    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
+    diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador}
     return render(request,"products.html",diccionario)
 
+@login_required(login_url='authentication:login')
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
@@ -46,7 +60,7 @@ def product_details(request, id_producto):
         puntuacion = request.POST.get('valoracion')
 
         if (puntuacion != ''):
-            usuario = Usuario.objects.filter(id=1)[0]
+            usuario = request.user
             valoracion = Valoracion.objects.create(comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
             valoracion.save()
 
