@@ -1,10 +1,11 @@
+from datetime import date, timedelta
 from random import randint
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models.functions import Lower
 from django.shortcuts import render
-from django.views.decorators.http import require_safe
+from django.views.decorators.http import require_safe, require_POST, require_GET, require_http_methods
 from unidecode import unidecode
 from django.shortcuts import redirect
 
@@ -111,6 +112,7 @@ def shopping_list(request):
     return render(request, "shopping_list.html", {"productos_agrupados_por_supermercado": productos_agrupados_por_supermercado})
 
 @login_required(login_url='authentication:login')
+@require_safe
 def my_recipes(request):
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(propietario=request.user)
@@ -136,13 +138,15 @@ def my_recipes(request):
     return render(request, "my_recipes.html", context)
 
 @login_required(login_url='authentication:login')
+@require_safe
 def unlock_recipes(request):
     numero_pagina = request.POST.get('page') or 1
     lista_recetas_desbloquedas = RecetasDesbloqueadasUsuario.objects.filter(usuario=request.user)
 
     lista_recetas = []
     for receta_desbloquedas in lista_recetas_desbloquedas:
-        lista_recetas.append(receta_desbloquedas.receta)
+        if request.user.premiumHasta >= date.today() or receta_desbloquedas.fechaBloqueo >= date.today():
+            lista_recetas.append(receta_desbloquedas.receta)
     
     diccionario_recetas_alergenos = dict()
 
@@ -164,10 +168,11 @@ def unlock_recipes(request):
 
     return render(request, "unlock_recipes.html", context)
 
+@require_http_methods(["GET", "POST"])
 def recipes_list(request):
     filtro_busqueda = request.POST.get('busqueda')
     numero_pagina = request.POST.get('page') or 1
-    lista_recetas = Receta.objects.all()
+    lista_recetas = Receta.objects.filter(publica=True)
 
     if filtro_busqueda != None:
         lista_recetas = lista_recetas.annotate(nombre_m=Lower('nombre')).filter(
@@ -182,7 +187,6 @@ def recipes_list(request):
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
-
     paginacion = Paginator(lista_recetas, 12)
     total_de_paginas = paginacion.num_pages
 
@@ -196,6 +200,7 @@ def recipes_list(request):
     return render(request, "recipes.html", context)
 
 @login_required(login_url='authentication:login')
+@require_http_methods(["GET", "POST"])
 def recipe_details(request, id_receta):
     receta = Receta.objects.filter(id=id_receta)[0]
 
@@ -204,11 +209,39 @@ def recipe_details(request, id_receta):
         for alergeno in prod.alergenos.all():
             distinct_alergenos.add(alergeno)
 
-    context = {'receta': receta, 'alergenos': distinct_alergenos}
+    visible = False
+    usuario = request.user
+    if(receta.propietario == usuario):
+        visible = True
+    elif RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta).exists():
+        if(RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()):
+            visible = True
+
+    desbloqueo = False
+
+    if visible==False:
+        if usuario.recetaDiaria==None or usuario.recetaDiaria<date.today():
+            desbloqueo = True
+        elif usuario.premiumHasta!=None:
+            if usuario.premiumHasta >= date.today():
+                desbloqueo = True
+
+    context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': visible, 'desbloqueaoDisponible': desbloqueo}
+
+    if request.method == "POST":
+        if desbloqueo:
+            usuario.recetaDiaria = date.today()
+            usuario.save()
+            #Sacar la fecha de dentro de una semana
+            fechaDesbloqueo = date.today() + timedelta(days=7)
+            RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fechaDesbloqueo)
+            visible = True
+            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': visible, 'desbloqueaoDisponible': desbloqueo}
 
     return render(request, "recipe_details.html", context)
 
-
+@login_required(login_url='authentication:login')
+@require_http_methods(["GET", "POST"])
 def new_recipes(request):
     productos = Producto.objects.all()
     context = {

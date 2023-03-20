@@ -37,10 +37,10 @@
             </div>
 
             <div class="mt-3">
-                <input class="form-control" type="file" id="receta_imagen" name="receta_imagen" onchange="preview()">
-                <p onclick="clearImage()" class="btn btn-primary mt-3">Eliminar imagen</p>
-                <p>Vista previa de la imagen:</p>
-                <img id="frame" src="" class="img-fluid" style="width: 50%;" />
+                <input class="form-control" type="file" accept="image/png, image/gif, image/jpeg" id="receta_imagen" name="receta_imagen" onchange="preview()" required>
+                <p onclick="clearImage()" class="btn btn-primary mt-3" style="border-radius: 12px;">Eliminar imagen</p>
+                <p>Vista previa de la imagen:</p>                
+                <img id="frame" src="" class="img-fluid" style="width: 50%;" alt="error"/>
                 <!-- Deberíamos poner un alert o handlear la excepcion si el archivo qeu se sube no es una imagen -->
             </div>
 
@@ -63,10 +63,10 @@
 
             <div class="mt-3">
                 <p>¿Quieres que sea pública? <input type="checkbox" id="checkbox_publica" name="checkbox_publica"
-                        value="si" checked="true" disabled></p>
+                        value="si" checked="true" ></p>
             </div>
 
-            <button class="btn btn-primary mt-3" type="submit" id="boton-busqueda">
+            <button class="btn btn-primary mt-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
                 Crear receta
             </button>
 

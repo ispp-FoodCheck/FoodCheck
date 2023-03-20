@@ -33,8 +33,8 @@
             {% for receta, alergenos in recetas.items %}
             <div class="col-md-4">
                 <div class="card mt-1 text-center">
-                    {% if receta.imagen %}
                     <a href="/recipe/{{receta.id}}/details">
+                    {% if receta.imagen != None%}
                         <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
                     </a>
                     <p class="nombre">{{receta.nombre}}</p>

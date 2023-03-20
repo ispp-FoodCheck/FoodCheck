@@ -39,7 +39,7 @@ class Producto(models.Model):
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     telefono = models.CharField(max_length=50)
-    recetaDiaria = models.BooleanField(null=True)
+    recetaDiaria = models.DateField(null=True)
     premiumHasta = models.DateField(null=True)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
     es_vegano = models.BooleanField(default=False)
@@ -85,8 +85,7 @@ class RecetasDesbloqueadasUsuario(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
-    disponible = models.BooleanField()
     fechaBloqueo = models.DateField()
 
     def __str__(self):
-        return self.usuario.username + ' - ' + self.receta.nombre + ' - ' + str(self.disponible)
+        return self.usuario.username + ' - ' + self.receta.nombre
