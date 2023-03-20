@@ -21,7 +21,19 @@
             </div>
 
             <div class="mt-3">
-                <h5>Selecciona los ingredientes de la receta:</h5>
+                <h5>Selecciona los productos que componen la receta:</h5>
+                <label for="productos">Productos:</label>
+
+                <!-- Selector múltiple, similar al de Django admin (usando tecla Ctrl)-->
+                <select name="productos[]" id="productos" multiple>
+                    {% for producto in productos %}
+                        {% if producto in receta.productos.all %}
+                            <option value="{{ producto.id }}" selected>{{ producto.nombre }}</option>
+                        {% else %}
+                            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="mt-3">

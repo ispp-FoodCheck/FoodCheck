@@ -210,8 +210,9 @@ def recipe_details(request, id_receta):
 
 
 def new_recipes(request):
+    productos = Producto.objects.all()
     context = {
-
+        'productos': productos
     }
 
     if request.method == "POST":
@@ -222,6 +223,8 @@ def new_recipes(request):
         tiempo_segundos = request.POST.get('segundos')
         publica = request.POST.get('checkbox_publica')
         img = request.FILES.get('receta_imagen')
+
+        productosEscogidos = request.POST.getlist('productos[]') #recoge las id en formato lista
 
         if publica == "si": 
             publica=True
@@ -236,9 +239,8 @@ def new_recipes(request):
         receta = Receta.objects.create(
                 nombre=nombre, descripcion=descripcion, tiempoPreparacion=tiempoPreparacion,
                   publica=publica, propietario=propietario, imagen=img)
+        receta.productos.set(productosEscogidos) #se setea la lista de productos
         receta.save()
-
-        #productos = ""
 
         return redirect('/my_recipes/')
 
