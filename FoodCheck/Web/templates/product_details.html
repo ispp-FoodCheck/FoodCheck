@@ -17,6 +17,7 @@
             <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
             <p class="ingredientes">{{producto.ingredientes}}</p>
             <p>{{producto.supermercados.all|join:"/"}}</p>
+            <a class="btn btn-primary mb-3" href="/product/{{producto.id}}/add">Añadir a lista de la compra</a>
             <div class="row">
                 <div class="col">
                 {% for alergeno in producto.alergenos.all%}
