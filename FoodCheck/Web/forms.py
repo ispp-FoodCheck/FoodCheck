@@ -31,3 +31,10 @@ class RegistroForm(UserCreationForm):
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='Nombre de User o correo electrónico')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+
+class AllergenReportForm(forms.Form):
+    allergens = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Alergeno.objects.all(),
+        label="Seleccione los alérgenos:"
+    )

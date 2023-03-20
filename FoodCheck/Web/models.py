@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -81,3 +82,21 @@ class RecetasDesbloqueadasUsuario(models.Model):
 
     def __str__(self):
         return self.usuario.nombre + ' - ' + self.receta.nombre + ' - ' + str(self.disponible)
+    
+class ReporteAlergenos(models.Model):
+    id = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    alergenos = models.ManyToManyField(Alergeno)
+    fecha = models.DateTimeField(default=datetime.now())
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario","producto"],
+                name="unique_usuario_producto"
+            )
+        ]
+    
+    def __str__(self):
+        return "Reporte: user(" + str(self.usuario.id) + ") - producto (" + str(self.producto.id) + ")"
