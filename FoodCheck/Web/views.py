@@ -9,7 +9,7 @@ from django.views.decorators.http import require_safe, require_POST, require_GET
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, User, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario
+from .models import Alergeno, Producto, User, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
 # Create your views here.
 
 
@@ -114,7 +114,11 @@ def allergen_report(request, id_producto):
 @require_safe
 @login_required(login_url='authentication:login')
 def shopping_list(request):
-    productos = ListaCompra.objects.get(usuario = request.user).productos.all()
+    lista_compra = ListaCompra.objects.filter(usuario=request.user)
+    if(lista_compra.exists()==False):
+                ListaCompra.objects.create(usuario=request.user)
+                lista_compra = ListaCompra.objects.filter(usuario=request.user)
+    productos = lista_compra.get().productos.all()
     print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
 
@@ -273,19 +277,31 @@ def recipe_details(request, id_receta):
 
     context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
-    if request.method == "POST" and puede_desbloquear:
-        usuario.recetaDiaria = date.today()
-        usuario.save()
-        #Sacar la fecha de dentro de una semana
-        fecha_desbloqueo = date.today() + timedelta(days=7)
-        RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
-        ingredientes_visibles = True
-        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+    if(request.method == "POST"):
+        if("desbloqueo" in request.POST and puede_desbloquear):
+            usuario.recetaDiaria = date.today()
+            usuario.save()
+            #Sacar la fecha de dentro de una semana
+            fecha_desbloqueo = date.today() + timedelta(days=7)
+            RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+            ingredientes_visibles = True
+            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
-    if request.method == "POST" and usuario==receta.propietario and receta.publica==False:
-        receta.publica = True
-        receta.save()
-        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+        elif("publicar" in request.POST and receta.propietario==usuario and receta.publica==False):
+            receta.publica = True
+            receta.save()
+            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+        
+        elif("añadir-productos" in request.POST and ingredientes_visibles):
+            lista_compra_usuario = ListaCompra.objects.filter(usuario=usuario)
+            if(lista_compra_usuario.exists()==False):
+                ListaCompra.objects.create(usuario=usuario)
+                lista_compra_usuario = ListaCompra.objects.filter(usuario=usuario)
+            for producto in receta.productos.all():
+                lista_compra_usuario[0].productos.add(producto)
+            lista_compra_usuario[0].save()
+
+            return redirect('/shopping_list/')
 
     return render(request, "recipe_details.html", context)
 
