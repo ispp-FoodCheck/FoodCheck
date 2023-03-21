@@ -27,6 +27,11 @@
                     {% endfor %}
                 </div>
             </div>
+            {% if not ha_reportado %}
+                <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button">Reportar alérgenos</a>
+            {% else%}
+                <p>Su reporte está siendo revisado</p>
+            {% endif %}
         </div>
 
         <div class="card col-md-4 mt-2 text-center">

@@ -1,15 +1,15 @@
 from datetime import date, timedelta
 from random import randint
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models.functions import Lower
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_safe, require_POST, require_GET, require_http_methods
 from unidecode import unidecode
-from django.shortcuts import redirect
-from .models import Alergeno, Producto, User, Valoracion, Receta, RecetasDesbloqueadasUsuario, ListaCompra
-
+from .forms import AllergenReportForm
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from .models import Alergeno, Producto, User, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario
 # Create your views here.
 
 
@@ -58,8 +58,8 @@ def index(request):
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
-    valoraciones_con_comentario = Valoracion.objects.filter(
-        producto=prod).exclude(comentario__isnull=True).all()
+    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
+    ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
 
     # form valoracion
     if request.method == 'POST':
@@ -80,11 +80,36 @@ def product_details(request, id_producto):
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
-
-    diccionario = {'producto': prod,
-                   'valoraciones': valoraciones_con_comentario}
+            
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado}
     return render(request, "product_details.html", diccionario)
 
+@login_required(login_url='authentication:login')
+def allergen_report(request, id_producto):
+    
+    formulario = AllergenReportForm()
+    producto = Producto.objects.filter(id=id_producto)[0]
+
+    if request.method == 'POST':
+        formulario =AllergenReportForm(request.POST)
+        if formulario.is_valid():
+            usuario = request.user
+            
+            alergenos = [alergeno for alergeno in formulario.cleaned_data["allergens"]]
+            for alergeno in alergenos:
+                print(f'{alergeno.nombre} - {alergeno.id}')
+
+            reporte = ReporteAlergenos.objects.create(usuario=usuario, producto=producto)
+            reporte.alergenos.set(alergenos)
+            reporte.save()
+
+            return redirect(f'/product/{id_producto}/details')
+
+    context = {
+        'formulario': formulario,
+    }
+
+    return render(request, 'allergen_report.html', context)
 
 @require_safe
 @login_required(login_url='authentication:login')
@@ -104,6 +129,37 @@ def shopping_list(request):
 
     return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado})
 
+########### REPORTE DE ALERGENOS ###########
+def is_superuser(user):
+    return user.is_superuser
+
+@user_passes_test(is_superuser, login_url='admin:login', redirect_field_name=REDIRECT_FIELD_NAME)
+def reports_list(request):
+    reportes = ReporteAlergenos.objects.order_by('-fecha')
+
+    context = {
+        'reportes': reportes,
+    }
+    return render(request, 'reports_list.html', context)
+
+@user_passes_test(is_superuser, login_url='admin:login', redirect_field_name=REDIRECT_FIELD_NAME)
+def report_details(request, id_report):
+    reporte = ReporteAlergenos.objects.filter(id=id_report)[0]
+
+    # peticion aceptada
+    if request.method == 'POST':
+        action = request.POST.get("action")
+        if action == "aceptar":
+            producto = Producto.objects.filter(id=reporte.producto.id)[0]
+            producto.alergenos.add(*reporte.alergenos.all())
+        reporte.delete()
+        return redirect('/report/list')
+
+    context = {
+        'reporte': reporte,
+    }
+    return render(request, 'report_details.html', context)
+    
 @login_required(login_url='authentication:login')
 @require_safe
 def my_recipes(request):
