@@ -81,8 +81,10 @@ input.invalid {
   color: black;
 }
 </style>
+
 <div class="container text-center">
   <form style="width: 100%;" method="post" id="regForm" action="">
+    {% include 'messaging.html' %}
     <h1>Registro</h1>
     {% csrf_token %}
     <div class="tab">Información básica:
