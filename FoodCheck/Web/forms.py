@@ -35,6 +35,6 @@ class LoginForm(forms.Form):
 class AllergenReportForm(forms.Form):
     allergens = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        queryset=Alergeno.objects.all(),
+        queryset=Alergeno.objects.filter(imagen__isnull=False),
         label="Seleccione los alérgenos:"
     )
