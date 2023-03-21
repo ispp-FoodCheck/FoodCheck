@@ -26,6 +26,18 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% if puede_publicar %}
+                <form method="POST" id="publicar-form">
+                    {% csrf_token %}
+                    <div class="mt-3">
+                        <button class="btn btn-primary mt-3" type="submit" id="boton-publicar" style="border-radius: 12px;">
+                            Publicar receta
+                        </button>
+                    </div>
+                </form>
+                </br>
+                <a> Si conviertes la receta en pública no podrás cambiarla a privada más adelante </a>
+                {% endif %}
             </div>
         </div>
         <h1 class="title">Ingredientes</h1>

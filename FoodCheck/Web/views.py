@@ -217,7 +217,7 @@ def recipe_details(request, id_receta):
     if ingredientes_visibles==False and (usuario.recetaDiaria==None or usuario.recetaDiaria < date.today()) or (usuario.premiumHasta!=None and usuario.premiumHasta >= date.today()):
         puede_desbloquear = True
 
-    context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear}
+    context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
     if request.method == "POST" and puede_desbloquear:
         usuario.recetaDiaria = date.today()
@@ -226,7 +226,12 @@ def recipe_details(request, id_receta):
         fecha_desbloqueo = date.today() + timedelta(days=7)
         RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
         ingredientes_visibles = True
-        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear}
+        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+
+    if request.method == "POST" and usuario==receta.propietario and receta.publica==False:
+        receta.publica = True
+        receta.save()
+        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
     return render(request, "recipe_details.html", context)
 
