@@ -145,7 +145,7 @@ def unlock_recipes(request):
 
     lista_recetas = []
     for receta_desbloquedas in lista_recetas_desbloquedas:
-        if request.user.premiumHasta >= date.today() or receta_desbloquedas.fechaBloqueo >= date.today():
+        if (request.user.premiumHasta != None and request.user.premiumHasta >= date.today()) or receta_desbloquedas.fechaBloqueo >= date.today():
             lista_recetas.append(receta_desbloquedas.receta)
     
     diccionario_recetas_alergenos = dict()
@@ -202,41 +202,38 @@ def recipes_list(request):
 @login_required(login_url='authentication:login')
 @require_http_methods(["GET", "POST"])
 def recipe_details(request, id_receta):
+
     receta = Receta.objects.filter(id=id_receta)[0]
+    usuario = request.user
+    receta_ya_desbloqueada = RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta).exists()
 
     distinct_alergenos = set()
     for prod in receta.productos.all():
         for alergeno in prod.alergenos.all():
             distinct_alergenos.add(alergeno)
 
-    visible = False
-    usuario = request.user
+    ingredientes_visibles = False
+
     if(receta.propietario == usuario):
-        visible = True
-    elif RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta).exists():
-        if(RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()):
-            visible = True
+        ingredientes_visibles = True
+    elif receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()):
+        ingredientes_visibles = True
 
-    desbloqueo = False
 
-    if visible==False:
-        if usuario.recetaDiaria==None or usuario.recetaDiaria<date.today():
-            desbloqueo = True
-        elif usuario.premiumHasta!=None:
-            if usuario.premiumHasta >= date.today():
-                desbloqueo = True
+    puede_desbloquear = False
+    if ingredientes_visibles==False and (usuario.recetaDiaria==None or usuario.recetaDiaria < date.today()) or (usuario.premiumHasta!=None and usuario.premiumHasta >= date.today()):
+        puede_desbloquear = True
 
-    context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': visible, 'desbloqueaoDisponible': desbloqueo}
+    context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear}
 
-    if request.method == "POST":
-        if desbloqueo:
-            usuario.recetaDiaria = date.today()
-            usuario.save()
-            #Sacar la fecha de dentro de una semana
-            fechaDesbloqueo = date.today() + timedelta(days=7)
-            RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fechaDesbloqueo)
-            visible = True
-            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': visible, 'desbloqueaoDisponible': desbloqueo}
+    if request.method == "POST" and puede_desbloquear:
+        usuario.recetaDiaria = date.today()
+        usuario.save()
+        #Sacar la fecha de dentro de una semana
+        fecha_desbloqueo = date.today() + timedelta(days=7)
+        RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+        ingredientes_visibles = True
+        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear}
 
     return render(request, "recipe_details.html", context)
 
@@ -257,7 +254,7 @@ def new_recipes(request):
         publica = request.POST.get('checkbox_publica')
         img = request.FILES.get('receta_imagen')
 
-        productosEscogidos = request.POST.getlist('productos[]') #recoge las id en formato lista
+        productos_escogidos = request.POST.getlist('productos[]') #recoge las id en formato lista
 
         if publica == "si": 
             publica=True
@@ -267,12 +264,12 @@ def new_recipes(request):
         propietario = request.user
 
         # El tiempo de preparación se guarda como campo de texto (solo se usa para visualizar)
-        tiempoPreparacion = str(tiempo_horas) + " horas, " + str(tiempo_minutos) + " minutos, " + str(tiempo_segundos) + " segundos "
+        tiempo_preparacion = str(tiempo_horas) + " horas, " + str(tiempo_minutos) + " minutos, " + str(tiempo_segundos) + " segundos "
 
         receta = Receta.objects.create(
-                nombre=nombre, descripcion=descripcion, tiempoPreparacion=tiempoPreparacion,
+                nombre=nombre, descripcion=descripcion, tiempoPreparacion=tiempo_preparacion,
                   publica=publica, propietario=propietario, imagen=img)
-        receta.productos.set(productosEscogidos) #se setea la lista de productos
+        receta.productos.set(productos_escogidos) #se setea la lista de productos
         receta.save()
 
         return redirect('/my_recipes/')
