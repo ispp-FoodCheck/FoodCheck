@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
-from Web.models import User, Alergeno
+from Web.models import User, Alergeno, ListaCompra
 
 class RegistroForm(UserCreationForm):
     email = forms.EmailField()
@@ -24,6 +24,8 @@ class RegistroForm(UserCreationForm):
         user.es_vegano=self.cleaned_data['es_vegano']
         if commit:
             user.save()
+            user_lista = ListaCompra.objects.create(usuario=user)
+            user_lista.save()
         for alergeno in self.cleaned_data['alergenos']:
             user.alergenos.add(alergeno.id)
         return user
