@@ -87,8 +87,8 @@ def product_details(request, id_producto):
 
 
 @require_safe
+@login_required(login_url='authentication:login')
 def shopping_list(request):
-
     productos = ListaCompra.objects.get(usuario = request.user).productos.all()
     print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
@@ -207,13 +207,11 @@ def recipe_details(request, id_receta):
 
     ingredientes_visibles = False
 
-    if(receta.propietario == usuario):
+    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()))):
         ingredientes_visibles = True
-    elif receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()):
-        ingredientes_visibles = True
-
 
     puede_desbloquear = False
+    
     if ingredientes_visibles==False and (usuario.recetaDiaria==None or usuario.recetaDiaria < date.today()) or (usuario.premiumHasta!=None and usuario.premiumHasta >= date.today()):
         puede_desbloquear = True
 
@@ -281,15 +279,16 @@ def add_product(request, id_producto):
     producto_a_añadir = Producto.objects.get(id__exact = id_producto)
 
     if len(lista_compra) == 0:
-        lista_compra = ListaCompra(usuario = User.objects.get(USERNAME_FIELD = request.user))
+        lista_compra = ListaCompra(usuario = request.user)
+        lista_compra.save()
     else:
         lista_compra = lista_compra[0]
 
 
-    if lista_compra.productos is not None:
+    if len(lista_compra.productos.all()) != 0:
         lista_compra.productos.add(producto_a_añadir)
     else:
-        lista_compra.productos = [producto_a_añadir]
+        lista_compra.productos.set([producto_a_añadir])
 
     lista_compra.save()
 

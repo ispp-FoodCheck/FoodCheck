@@ -46,11 +46,11 @@ class User(AbstractUser):
 
 class ListaCompra(models.Model):
     id = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     productos = models.ManyToManyField(Producto)
 
     def __str__(self):
-        return "Lista de la compra de" , self.usuario.id
+        return "Lista de la compra de " + self.usuario.username
     
 class Receta(models.Model):
     id = models.AutoField(primary_key=True)
