@@ -28,5 +28,7 @@ urlpatterns = [
     path('recipes/', views.recipes_list, name='recipes_list'),
     path('recipe/<int:id_receta>/details', views.recipe_details, name='recipe_details'),
     path('recipes/new', views.new_recipes, name='new_recipes'),
+    path('product/<int:id_producto>/add', views.add_product, name='add_product'),
+    path('product/<int:id_producto>/remove', views.remove_product, name='remove_product'),    
     path('', include('authentication.urls')),
 ]
