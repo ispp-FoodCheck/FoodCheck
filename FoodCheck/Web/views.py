@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, HttpResponse
 from random import randint
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from .models import Producto, Valoracion, Usuario, Alergeno
+from .models import Producto, Valoracion, User, Alergeno
 from django.views.decorators.http import require_safe, require_http_methods
 from django.db.models.functions import Lower
 from unidecode import unidecode
