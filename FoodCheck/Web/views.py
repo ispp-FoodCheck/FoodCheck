@@ -154,6 +154,9 @@ def report_details(request, id_report):
         if action == "aceptar":
             producto = Producto.objects.filter(id=reporte.producto.id)[0]
             producto.alergenos.add(*reporte.alergenos.all())
+            user = reporte.usuario
+            user.premiumHasta = date.today() + timedelta(days=7)
+            user.save()
         reporte.delete()
         return redirect('/report/list')
 
