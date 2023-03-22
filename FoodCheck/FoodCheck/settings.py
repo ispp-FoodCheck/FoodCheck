@@ -128,5 +128,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Web', 'media')
+MEDIA_URL = 'media/'
+
 STRIPE_API_KEY = 'YOUR_STRIPE_API_KEY_HERE'
 STRIPE_PRICE_ID = 'YOUR_STRIPE_PRICE_ID_HERE'

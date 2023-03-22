@@ -23,6 +23,16 @@ urlpatterns = [
     path('home', views.index, name='index'),
     path('shopping_list/', views.shopping_list, name='shopping_list'),
     path('product/<int:id_producto>/details', views.product_details, name='product_details'),
+    path('my_recipes/', views.my_recipes, name='my_recipes'),
+    path('unlock_recipes/', views.unlock_recipes, name='unlock_recipes'),
+    path('recipes/', views.recipes_list, name='recipes_list'),
+    path('recipe/<int:id_receta>/details', views.recipe_details, name='recipe_details'),
+    path('recipes/new', views.new_recipes, name='new_recipes'),
+    path('product/<int:id_producto>/add', views.add_product, name='add_product'),
+    path('product/<int:id_producto>/remove', views.remove_product, name='remove_product'),    
     path('', include('authentication.urls')),
     path('', include('payments.urls')),
+    path('allergen_report/product/<int:id_producto>', views.allergen_report, name='allergen_report'),
+    path('report/list', views.reports_list, name='reports_list'),
+    path('report/<int:id_report>', views.report_details, name='report_details')
 ]
