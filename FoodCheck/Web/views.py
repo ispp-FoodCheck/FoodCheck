@@ -1,16 +1,14 @@
 from datetime import date, timedelta
-from random import randint
+from django.shortcuts import render, redirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
+from django.views.decorators.http import require_safe, require_http_methods
 from django.db.models.functions import Lower
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_safe, require_POST, require_GET, require_http_methods
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, User, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
-# Create your views here.
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
 
 
 def landing_page(request):
