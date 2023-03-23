@@ -61,6 +61,10 @@
                             <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
                             {% endif %}
                             {% endfor %}
+                            {% if producto.vegano == 1 %}
+                                <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                            {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
