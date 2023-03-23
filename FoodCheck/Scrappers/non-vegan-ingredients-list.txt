@@ -24,8 +24,8 @@ acido lactico
 gelatina
 lecitina
 omega 3
-vitamina D3
-D3
+vitamina d3
+d3
 monogliceridos de acidos grasos
 miel
 guanina
@@ -68,8 +68,8 @@ retinolo
 lecitina de yema de huevo
 lecitina de huevo
 lecitina de yema
-vitamina D2
-D2
+vitamina d2
+d2
 crustaceos
 moluscos
 gelatina aspic
@@ -81,29 +81,103 @@ lanolina
 albumina
 clara de huevo
 castoreum
-E322
-E441
-E120
-E913
-E101
-E106
-E631
-E901
-E904
-E920
-E921
-E966
-E1105
-E-322
-E-441
-E-120
-E-913
-E-101
-E-106
-E-631
-E-901
-E-904
-E-920
-E-921
-E-966
-E-1105
+trucha
+carpa
+anguila
+salmon
+merluza
+mero
+pez espada
+atun
+bacalao
+rape
+lubina
+sardina
+anchoa
+lenguado
+caballa
+gamba
+langostino
+pulpo
+camaron
+calamar
+ostra
+almeja
+berberecho
+centollo
+cangrejo
+perca
+pez
+pescado
+corvina
+pargo
+mero
+arenque
+langosta
+carabinero
+vieira
+tiburon
+gambon
+cigala
+buey de mar
+necora
+surimi
+mejillon
+sepia
+emperador
+anguriña
+panga
+tintorera
+pota
+poton
+abadejo
+salmonete
+acedia
+chipiron
+marrajo
+bonito
+melva
+sardinilla
+zamburiña
+concha fina
+navaja
+bogavante
+cañailla
+caracol
+panga
+gallo
+chanquitos
+rabas
+boqueron
+corvina
+rodaballo
+caviar
+hueva
+lumpo
+palometa
+e322
+e441
+e120
+e913
+e101
+e106
+e631
+e901
+e904
+e920
+e921
+e966
+e1105
+e-322
+e-441
+e-120
+e-913
+e-101
+e-106
+e-631
+e-901
+e-904
+e-920
+e-921
+e-966
+e-1105
