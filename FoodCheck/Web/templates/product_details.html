@@ -1,27 +1,28 @@
 {% extends "base.html" %}
 
 {% block head %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/product_details.css' %}">
 {% endblock %}
 
 {% block body %}
 
 <div class="container">
 
-    <div class="row" id="row-details"> 
-        <div class="card col-md-4 mt-1 text-center" >
-            <img src="{{producto.imagen}}" alt="error" style="width:100%">
+    <div class="row" id="row-details">
+        <div class="card col-md-4 mt-1 text-center">
+            <img src="{{producto.imagen}}" alt="error" style="width:100%;">
             <p class="nombre">{{producto.nombre}}</p>
             <p class="marca">{{producto.marca}}</p>
             <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
             <p class="ingredientes">{{producto.ingredientes}}</p>
             <p>{{producto.supermercados.all|join:"/"}}</p>
+            <a class="btn btn-primary mb-3" href="/product/{{producto.id}}/add">Añadir a lista de la compra</a>
             <div class="row">
                 <div class="col">
-                {% for alergeno in producto.alergenos.all%}
-                    {% if alergeno.imagen != None  %}                                        
-                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                    {% for alergeno in producto.alergenos.all%}
+                    {% if alergeno.imagen != None %}
+                    <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
                     {% endif %}
                 {% endfor %}
                 {% if producto.vegano == 1 %}
@@ -29,6 +30,11 @@
                 {% endif %}
                 </div>
             </div>
+            {% if not ha_reportado %}
+                <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button">Reportar alérgenos</a>
+            {% else%}
+                <p>Su reporte está siendo revisado</p>
+            {% endif %}
         </div>
 
         <div class="card col-md-4 mt-2 text-center">
@@ -51,14 +57,15 @@
                 </div>
                 <input type="hidden" name="valoracion" id="valoracion" value="0">
                 <div>
-                    {% comment %} <label for="cuerpo" class="form-label">Escribe tu comentario aquí:</label> {% endcomment %}
-                    <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200" placeholder = "¿Qué opinas del producto?"></textarea>
+                    <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200"
+                        placeholder="¿Qué opinas del producto?"></textarea>
                     <div class="d-flex justify-content-end">
                         <span id="caracteres-actuales">0</span>
                         <span id="limite-caracteres">/ 200</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true">Añadir Valoración</button>
+                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true"
+                    style="border-radius: 12px;">Añadir Valoración</button>
             </form>
         </div>
     </div>

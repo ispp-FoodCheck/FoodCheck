@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h2>Has cerrado la sesión.</h2>
+<div class="border-top pt-3" style="min-height:65vh;">
+    <div class="form-group">
+        <button class="btn btn-outline-info" type="submit"><a href="{% url 'login' %}">Iniciar sesión</a></button>
+    </div>
+</div>
+{% endblock %}
