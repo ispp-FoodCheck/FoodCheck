@@ -24,4 +24,5 @@ urlpatterns = [
     path('shopping_list/', views.shopping_list, name='shopping_list'),
     path('product/<int:id_producto>/details', views.product_details, name='product_details'),
     path('', include('authentication.urls')),
+    path('premium', views.premium, name="premium")
 ]
