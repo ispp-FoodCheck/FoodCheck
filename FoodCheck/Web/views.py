@@ -228,6 +228,7 @@ def recipes_list(request):
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(publica=True)
     filtro_busqueda_id_productos = request.POST.getlist('productos[]')
+    productos_filtrados = Producto.objects.filter(id__in=filtro_busqueda_id_productos)
     
     if filtro_busqueda != None:
         lista_recetas = lista_recetas.annotate(nombre_m=Lower('nombre')).filter(
@@ -236,6 +237,7 @@ def recipes_list(request):
     if filtro_busqueda_id_productos !=None:
             
         lista_recetas = list(filter(lambda receta: all(str(id) in [str(producto.id) for producto in receta.productos.all()] for id in filtro_busqueda_id_productos), lista_recetas))
+
 
         
     diccionario_recetas_alergenos = dict()
@@ -255,7 +257,8 @@ def recipes_list(request):
     context = {'lista_producto': objetos_de_la_pagina,
                'total_de_paginas': total_de_paginas,
                'recetas': diccionario_recetas_alergenos,
-               'filtro_productos': filtro_busqueda}
+               'filtro_productos': filtro_busqueda,
+               'productos_selec': productos_filtrados}
 
     return render(request, "recipes.html", context)
 
