@@ -1,1 +1,5 @@
 mysqlclient
+stripe
+Unidecode
+Pillow
+django-resized

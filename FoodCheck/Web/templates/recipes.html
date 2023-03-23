@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block head %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/recipes.css' %}" />
+{% endblock %} {% block body %}
+
+<div class="container text-center">
+    <div class="row text-center">
+        {% if filtro_productos %}
+        <h1 class="title">Mostrando recetas</h1>
+        <h3>con el nombre: {{filtro_productos}}</h3>
+        {% else %}
+        <h1 class="title">Mostrando recetas</h1>
+        {% endif %}
+        <div class="row mt-2">
+            <form method="POST" action="{% url 'recipes_list' %}" id="filter-form">
+                {% csrf_token %}
+                <input class="search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
+                    value="{{ busqueda }}" />
+                <div class="row-md-2">
+                    </br>
+                    <button class="btn btn-primary mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
+                        Buscar recetas
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        {% include 'recipe_template.html' %}
+        
+    </div>
+</div>
+{% endblock %}

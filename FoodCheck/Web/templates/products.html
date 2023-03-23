@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block head %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -13,20 +13,31 @@
         </div>
         <div class="row">
             <form method="POST" action="{% url 'index' %}" id="filter-form">
-                <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder = "Busca tu producto" value="{{ palabra_buscador }}">
-                <button class="btn btn-primary mb-3" type="submit">Buscar producto</button>
+                <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder="Busca tu producto"
+                    value="{{ palabra_buscador }}">
+                <div class="row-md-2">
+                    </br>
+                    <button class="btn btn-primary mb-3" type="submit" style="border-radius: 12px;">
+                        Buscar producto
+                    </button>
+                </div>
                 <h1 class="title">Filtros</h1>
                 {% csrf_token %}
                 {% for alergeno in alergenos_available %}
-                    <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
-                    <label for="alergenos_selected">
-                        {{ alergeno.nombre }}
-                    </label>
+                <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %}>
+                <label for="alergenos_selected">
+                    {{ alergeno.nombre }}
+                </label>
                 {% endfor %}
                 <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %}>
                 <label for="vegano">Vegano</label>
-                <button type="submit" class="btn btn-primary mb-3">Filtrar</button>
-                <a class="btn btn-primary mb-3" href="home">Mis filtros</a> 
+                <div class="row-md-2">
+                    </br>
+                    <button type="submit" class="btn btn-primary mb-3" style="border-radius: 12px;">
+                        Filtrar
+                    </button>
+                    <a class="btn btn-primary mb-3" href="home" style="border-radius: 12px;">Mis filtros</a>
+                </div>
             </form>
         </div>
 
@@ -36,23 +47,28 @@
 
         <div class="row">
             {% for producto in lista_producto.object_list %}
-                <div class="col-md-4">
-                    <div class="card">
-                        <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error" style="width:100%"></a>
-                        <p class="nombre">{{producto.nombre}}</p>
-                        <p class="marca">{{producto.marca}}</p>
-                        <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>
-                        <div class="row">
-                            <div class="col">
-                            {% for alergeno in  producto.alergenos.all%}
-                                {% if alergeno.imagen != None  %}                                        
-                                    <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
-                                {% endif %}
+            <div class="col-md-4">
+                <div class="card">
+                    <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error"
+                            style="width:100%"></a>
+                    <p class="nombre">{{producto.nombre}}</p>
+                    <p class="marca">{{producto.marca}}</p>
+                    <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>
+                    <div class="row">
+                        <div class="col">
+                            {% for alergeno in producto.alergenos.all%}
+                            {% if alergeno.imagen != None %}
+                            <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                            {% endif %}
                             {% endfor %}
+                            {% if producto.vegano == 1 %}
+                                <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                            {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
+            </div>
             {% endfor %}
         </div>
 
@@ -60,64 +76,79 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
                     {% if total_de_paginas == 1%}
-                        <li class="page-item disabled">
-                            <a class="page-link">Anterior</a>
-                        </li>
-                            <li class="page-item disabled"><a class="page-link">1</a></li>
-                        <li class="page-item disabled">
-                            <a class="page-link">Siguiente</a>
-                        </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Anterior</a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link">1</a></li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Siguiente</a>
+                    </li>
                     {% else %}
-                        {% if lista_producto.has_previous and lista_producto.has_next %}
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">{{ lista_producto.previous_page_number }}</button></li>
-                            <li class="page-item disabled">
-                                <a class="page-link">{{ lista_producto.number }}</a></li>
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">{{ lista_producto.next_page_number}}</button></li>
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
-                            </li>
-                        {% endif %}
-                        {% if not lista_producto.has_previous %}
-                            <li class="page-item disabled">
-                                <a class="page-link">Anterior</a>
-                            </li>
-                            <li class="page-item disabled"><a class="page-link">1</a></li>
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">{{ lista_producto.next_page_number }}</button>
-                            </li>
-                            {% if not total_de_paginas == 2 %}
-                                <li class="page-item">
-                                    <button class="page-link" onclick="createForm({{lista_producto.next_page_number|add:'1'}})">{{ lista_producto.next_page_number|add:"1"}}</button>
-                                </li>
-                            {% endif %}
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
-                            </li>
-                        {% endif %}
-                        {% if not lista_producto.has_next %}
-                            <li class="page-item">
-                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
-                            </li>
-                            {% if not total_de_paginas == 2 %}
-                                <li class="page-item">
-                                    <button class="page-link" onclick="createForm({{lista_producto.previous_page_number|add:'-1'}})">{{ lista_producto.previous_page_number|add:"-1" }}</button>
-                                </li>
-                            {% endif %}
-                            <li class="page-item ">
-                                <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">{{ lista_producto.previous_page_number }}</button></li>
-                            <li class="page-item disabled">
-                                <a class="page-link">{{ lista_producto.number }}</a>
-                            </li>
-                            <li class="page-item disabled">
-                                <a class="page-link">Siguiente</a>
-                            </li>
-                        {% endif %}
-                    {% endif%}
+                    {% if lista_producto.has_previous and lista_producto.has_next %}
+                    <li class="page-item">
+                        <button class="page-link"
+                            onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">
+                            {{lista_producto.previous_page_number}}</button>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">{{ lista_producto.number }}</a>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">
+                            {{lista_producto.next_page_number}}</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link"
+                            onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
+                    </li>
+                    {% endif %}
+                    {% if not lista_producto.has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Anterior</a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link">1</a></li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{lista_producto.next_page_number}})">
+                            {{lista_producto.next_page_number }}</button>
+                    </li>
+                    {% if not total_de_paginas == 2 %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="createForm({{lista_producto.next_page_number|add:'1'}})">
+                            {{lista_producto.next_page_number|add:"1"}}</button>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <button class="page-link"
+                            onclick="createForm({{ lista_producto.next_page_number }})">Siguiente</button>
+                    </li>
+                    {% endif %}
+                    {% if not lista_producto.has_next %}
+                    <li class="page-item">
+                        <button class="page-link"
+                            onclick="createForm({{lista_producto.previous_page_number}})">Anterior</button>
+                    </li>
+                    {% if not total_de_paginas == 2 %}
+                    <li class="page-item">
+                        <button class="page-link"
+                            onclick="createForm({{lista_producto.previous_page_number|add:'-1'}})">
+                            {{ lista_producto.previous_page_number|add:"-1" }}</button>
+                    </li>
+                    {% endif %}
+                    <li class="page-item ">
+                        <button class="page-link" onclick="createForm({{lista_producto.previous_page_number}})">
+                            {{ lista_producto.previous_page_number }}</button>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">{{ lista_producto.number }}</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Siguiente</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
                 </ul>
             </nav>
         </div>
@@ -130,7 +161,7 @@
     form.addEventListener('formdata', (e) => {
         e.preventDefault();
         console.log({{ lista_producto.number }});
-        if(!e.formData.has('page')) e.formData.append('page', {{ lista_producto.number }});
+    if (!e.formData.has('page')) e.formData.append('page', {{ lista_producto.number }});
     });
 
     function createForm(newPage) {

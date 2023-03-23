@@ -7,5 +7,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         actualizar_datos_carrefour()
-        actualizar_datos_mercadona()
+        actualizar_datos_mercadona()        
         self.stdout.write(self.style.SUCCESS('Datos actualizados exitosamente'))

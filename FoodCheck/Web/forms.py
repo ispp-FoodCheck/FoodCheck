@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
-from Web.models import User, Alergeno
+from Web.models import User, Alergeno, ListaCompra
 
 class RegistroForm(UserCreationForm):
     email = forms.EmailField()
@@ -24,6 +24,8 @@ class RegistroForm(UserCreationForm):
         user.es_vegano=self.cleaned_data['es_vegano']
         if commit:
             user.save()
+            user_lista = ListaCompra.objects.create(usuario=user)
+            user_lista.save()
         for alergeno in self.cleaned_data['alergenos']:
             user.alergenos.add(alergeno)
         return user
@@ -31,3 +33,10 @@ class RegistroForm(UserCreationForm):
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='Nombre de User o correo electrónico')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+
+class AllergenReportForm(forms.Form):
+    allergens = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Alergeno.objects.filter(imagen__isnull=False),
+        label="Seleccione los alérgenos:"
+    )
