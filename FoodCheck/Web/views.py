@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
@@ -9,6 +9,9 @@ from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
+from django.http import JsonResponse
+from django.core import serializers
+import json
 
 
 def landing_page(request):
@@ -306,11 +309,6 @@ def recipe_details(request, id_receta):
 @login_required(login_url='authentication:login')
 @require_http_methods(["GET", "POST"])
 def new_recipes(request):
-    productos = Producto.objects.all()
-    context = {
-        'productos': productos
-    }
-
     if request.method == "POST":
         nombre = request.POST.get('nombre')
         descripcion = request.POST.get('cuerpo')
@@ -340,7 +338,7 @@ def new_recipes(request):
 
         return redirect('/my_recipes/')
 
-    return render(request, "new_recipe.html", context)
+    return render(request, "new_recipe.html")
 
 @require_safe
 def add_product(request, id_producto):
@@ -375,3 +373,12 @@ def remove_product(request, id_producto):
         lista_compra.save()
 
     return shopping_list(request)
+
+@require_safe
+def get_products_endpoint(request):
+    if request.GET.get('nombre'):
+        productos = Producto.objects.annotate(nombre_m=Lower('nombre')).filter(nombre_m__icontains=unidecode(request.GET.get('nombre').lower()))[:10]
+    else:
+        productos = []
+    data = json.dumps(list(map(lambda x: (x.id, x.nombre, x.imagen), productos)))
+    return HttpResponse(data, content_type='application/json')
