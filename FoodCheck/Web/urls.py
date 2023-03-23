@@ -35,5 +35,6 @@ urlpatterns = [
     path('', include('rs.urls')),
     path('allergen_report/product/<int:id_producto>', views.allergen_report, name='allergen_report'),
     path('report/list', views.reports_list, name='reports_list'),
-    path('report/<int:id_report>', views.report_details, name='report_details')
+    path('report/<int:id_report>', views.report_details, name='report_details'),
+    path('api/products', views.get_products_endpoint, name='products_api')
 ]
