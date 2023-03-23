@@ -227,11 +227,17 @@ def recipes_list(request):
     filtro_busqueda = request.POST.get('busqueda')
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(publica=True)
-
+    filtro_busqueda_id_productos = request.POST.getlist('productos[]')
+    
     if filtro_busqueda != None:
         lista_recetas = lista_recetas.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(filtro_busqueda.lower()))
+        
+    if filtro_busqueda_id_productos !=None:
+            
+        lista_recetas = list(filter(lambda receta: all(str(id) in [str(producto.id) for producto in receta.productos.all()] for id in filtro_busqueda_id_productos), lista_recetas))
 
+        
     diccionario_recetas_alergenos = dict()
 
     for receta in lista_recetas:
