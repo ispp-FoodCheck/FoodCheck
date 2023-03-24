@@ -237,7 +237,7 @@ def recipes_list(request):
             nombre_m__icontains=unidecode(filtro_busqueda.lower()))
         
     if len(filtro_busqueda_id_productos)>0  :
-        if((request.user.premiumHasta != None and request.user.premiumHasta >= date.today())):
+        if request.user.premiumHasta != None and request.user.premiumHasta >= date.today():
             lista_recetas = list(filter(lambda receta: all(str(id) in [str(producto.id) for producto in receta.productos.all()] for id in filtro_busqueda_id_productos), lista_recetas))
         else:
             message = 'La funcionalidad de filtrar por productos es solo para usuarios premium'            
