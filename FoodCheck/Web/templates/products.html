@@ -10,8 +10,6 @@
 <div class="container text-center">
     <div>
         <div class="row">
-        </div>
-        <div class="row">
             <form method="POST" action="{% url 'index' %}" id="filter-form">
                 <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder="Busca tu producto"
                     value="{{ palabra_buscador }}">
@@ -67,7 +65,7 @@
             </div>
             {% endfor %}
         </div>
-
+        
         <div class="container" id="boton-paginacion">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">

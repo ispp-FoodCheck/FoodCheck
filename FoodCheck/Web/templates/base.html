@@ -188,6 +188,24 @@
   </head>
 
   <body class="pt-custom">
+
+    <div class="ad">
+      <a id="ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/"><img id="side-ad" class="ad-img" src="{% static 'imgs/publicidad/publi2.png' %}"></a>
+    </div>
+
+    <div class="container-fluid" id="mobile-ad-container">
+      <div class="ad-mobile">
+        <div class="row">
+          <div class="col-12">
+            <span class="cerrar" onclick="document.getElementById('mobile-ad-container').style.display='none'">&times;</span>
+              <a id="wide-ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/"><img id='wide-ad' class="ad-img-mobile img-fluid"
+                  src="{% static 'imgs/publicidad/publi2-wide.png' %}"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <main>{% block body %}{% endblock %}</main>
 
     <div class="container my-5">
@@ -243,6 +261,31 @@
       AOS.init({
         duration: 800, // values from 0 to 3000, with step 50ms
       });
+    </script>
+
+    <script>
+
+
+
+      window.onload = function () {
+        var myImage = document.getElementById("side-ad");
+        var myLink = document.getElementById("ad-href");
+        var imageArray = ["{% static 'imgs/publicidad/publi1.png' %}", "{% static 'imgs/publicidad/publi2.png' %}"];
+        var linkArray = ["https://store.steampowered.com/app/1229490/ULTRAKILL/", "https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/"];
+        var imageIndex = 0;
+
+        function changeImageandLink() {
+          myImage.setAttribute("src", imageArray[imageIndex]);
+          myLink.setAttribute("href", linkArray[imageIndex])
+          imageIndex++;
+          if (imageIndex >= imageArray.length) {
+            imageIndex = 0;
+          }
+        }
+
+        setInterval(changeImageandLink, 5000);
+      }
+
     </script>
   </body>
 </html>
