@@ -89,6 +89,7 @@ def allergen_report(request, id_producto):
     
     formulario = AllergenReportForm()
     producto = Producto.objects.filter(id=id_producto)[0]
+    alergenos = Alergeno.objects.all()
 
     if request.method == 'POST':
         formulario =AllergenReportForm(request.POST)
@@ -107,6 +108,7 @@ def allergen_report(request, id_producto):
 
     context = {
         'formulario': formulario,
+        'alergenos': alergenos,
     }
 
     return render(request, 'allergen_report.html', context)
