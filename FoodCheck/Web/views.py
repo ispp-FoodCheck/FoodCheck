@@ -226,15 +226,26 @@ def unlock_recipes(request):
     return render(request, "unlock_recipes.html", context)
 
 @require_http_methods(["GET", "POST"])
+@login_required(login_url='authentication:login')
 def recipes_list(request):
     filtro_busqueda = request.POST.get('busqueda')
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(publica=True)
-
+    filtro_busqueda_id_productos = request.POST.getlist('productos[]')
+    productos_filtrados = Producto.objects.filter(id__in=filtro_busqueda_id_productos)
+    message = None
+    
     if filtro_busqueda != None:
         lista_recetas = lista_recetas.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(filtro_busqueda.lower()))
-
+        
+    if len(filtro_busqueda_id_productos)>0  :
+        if request.user.premiumHasta != None and request.user.premiumHasta >= date.today():
+            lista_recetas = list(filter(lambda receta: all(str(id) in [str(producto.id) for producto in receta.productos.all()] for id in filtro_busqueda_id_productos), lista_recetas))
+        else:
+            message = 'La funcionalidad de filtrar por productos es solo para usuarios premium'            
+    
+        
     diccionario_recetas_alergenos = dict()
 
     for receta in lista_recetas:
@@ -248,11 +259,13 @@ def recipes_list(request):
     total_de_paginas = paginacion.num_pages
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
-
+    
     context = {'lista_producto': objetos_de_la_pagina,
                'total_de_paginas': total_de_paginas,
                'recetas': diccionario_recetas_alergenos,
-               'filtro_productos': filtro_busqueda}
+               'filtro_productos': filtro_busqueda,
+               'productos_selec': productos_filtrados,
+               'solo_premium':message}
 
     return render(request, "recipes.html", context)
 
