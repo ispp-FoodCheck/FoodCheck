@@ -5,10 +5,11 @@ comidas = ['Carne ternera', 'Carne pollo', 'Leche', 'Leche de avellanas', 'Pizza
 nombres = ['Migue','Juan','Kiko','Pablo','Marta','Nacho','Maria','Julia','Josemi','Clara','David','Dolores','Povedano','Gomez','Dani','Ricardo','Nuria']
 
 def generar_puntuaciones():
-    # random.seed(4)
+    #random.seed(4)
     puntuaciones = {}
 
     for nombre in nombres:
         puntuaciones[nombre] = {comida:random.randint(0, 5) for comida in random.choices(comidas, k=9)}
+        puntuaciones['MigueIgual'] = puntuaciones['Migue']
 
     return puntuaciones

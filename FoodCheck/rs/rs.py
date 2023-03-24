@@ -6,39 +6,39 @@ from math import sqrt
 from generador import generar_puntuaciones
 
 
+
 # Returns the Pearson correlation coefficient for p1 and p2
-def sim_pearson(user_prod_rating,p1,p2):
-  # Get the list of mutually rated items
-  si={}
-  for item in user_prod_rating[p1]: 
-    if item in user_prod_rating[p2]: si[item]=1
+def sim_pearson(prefs, p1, p2):
+    # Get the list of mutually rated items
+    si = {}
+    for item in prefs[p1]: 
+        if item in prefs[p2]: si[item] = 1 #??
 
-  # if there are no ratings in common, return 0
-  if len(si)==0: return 0
+    # if they are no ratings in common, return 0
+    if len(si) == 0: return 0 #Si no teneis items en común, similaridad = 0
+  
+    # Sum calculations
+    n = len(si)
 
-  # Sum calculations
-  n=len(si)
-  
-  # Sums of all the preferences #Coge la puntuación de cada item que ha puntuao p1 y las suma
-  sum1=sum([user_prod_rating[p1][it] for it in si])
-  #Coge la puntuación de cada item que ha puntuao p2(que también ha puntuao pq) y las suma
-  sum2=sum([user_prod_rating[p2][it] for it in si])
-  
-  # Sums of the squares
-  sum1Sq=sum([pow(user_prod_rating[p1][it],2) for it in si])
-  sum2Sq=sum([pow(user_prod_rating[p2][it],2) for it in si])	
-  
-  # Sum of the products
-  pSum=sum([user_prod_rating[p1][it]*user_prod_rating[p2][it] for it in si])
-  
-  # Calculate r (Pearson score)
-  num=pSum-(sum1*sum2/n)
-  den=sqrt((sum1Sq-pow(sum1,2)/n)*(sum2Sq-pow(sum2,2)/n))
-  if den==0: return 0
+    # Sums of all the preferences
+    sum1 = sum([prefs[p1][it] for it in si]) #Si Migue a platano le ha dao un 3, a mandarina un 4 y a platnao un 5 pues = 3+4+5 = 12
+    sum2 = sum([prefs[p2][it] for it in si])
 
-  r=num/den
+    # Sums of the squares
+    sum1Sq = sum([pow(prefs[p1][it], 2) for it in si]) #Si Migue a platano le ha dao un 3, a mandarina un 4 y a platnao un 5 pues = 9+16+25 = 50
+    sum2Sq = sum([pow(prefs[p2][it], 2) for it in si])	
 
-  return r
+    # Sum of the products
+    pSum = sum([prefs[p1][it] * prefs[p2][it] for it in si])
+
+    # Calculate r (Pearson score)
+    num = pSum - (sum1 * sum2 / n)
+    den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
+    if den == 0: return 0
+
+    r = num / den
+
+    return r
 
 # Returns the best matches for person from the prefs dictionary. #Devuelve las n personas que más se parecen a person.
 # Number of results and similarity function are optional params.
@@ -56,20 +56,19 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
   totals={}
   simSums={}
   for other in prefs:
-    # don't compare me to myself
-    if other==person: continue
+    if other==person: continue # don't compare me to myself
     sim=similarity(prefs,person,other)
-
-    # ignore scores of zero or lower
-    if sim<=0: continue
+    print("Similaridad de ", person, " con ", other, ": ", sim)
+    
+    if sim<=0: continue# ignore scores of zero or lower
     for item in prefs[other]:
 	    
-      # only score movies I haven't seen yet
+      # only score what I haven't seen yet
       if item not in prefs[person] or prefs[person][item]==0:
-        # Similarity * Score
+        # Similarity * Score. #Totals es un diccionario que contiene: clave: item. Valor: suma acumulativa de la puntuación de un usuario * coeficiente del user con la persona objetivo.
         totals.setdefault(item,0)
         totals[item]+=prefs[other][item]*sim
-        # Sum of similarities
+        # Sum of similarities #SimSums es un diccionario que contiene: clave: item. Valor: suma acumulativa del coeficiente de sim entre usuario y usuario objetivo.
         simSums.setdefault(item,0)
         simSums[item]+=sim
 
@@ -84,25 +83,43 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
   #Rankings es una lista de tuplas que contiene (Puntuacion pa recomendar el item, item).
   rankings=[(total/simSums[item],item) for item,total in totals.items()]
 
-  #Pone primero la puntuación porque defecto se ordena en base la primer elemento de la tupla.
+  #Pone primero la puntuación porque por defecto se ordena en base la primer elemento de la tupla.
   #Se ordena de menor a mayor y por eso se hace el reverse.
   rankings.sort()
   rankings.reverse()
   return rankings
 
 
-
+def returnDiccMatchesAlready(lista, dicc):
+  res= {}
+  for puntuacion, usuario in lista:
+    res[usuario] = dicc[usuario]
+  return res
 
 #####Puntuaciones contiene un diccionario tal que: {Usuarios, {Productos, Valoracion del usuario}}
 puntuaciones = generar_puntuaciones()
-print(list(puntuaciones))
-resultado = topMatches(puntuaciones, list(puntuaciones)[0])
-print(resultado)
+print("PUNTUACIONES")
+print(list(puntuaciones.items()))
+print("\n---------------------------------\n")
+#resultado = topMatches(puntuaciones, list(puntuaciones)[0])
+#print(resultado)
+#print("\n---------------------------------\n")
+#dicc_reducido = returnDiccMatchesAlready(resultado,puntuaciones)
 #sim_pearson(puntuaciones,'migue','chema')
-
-
+#print(dicc_reducido)
+#print("\n---------------------------------\n")
+print(getRecommendations(puntuaciones,'Migue'))
+print("\n---------------------------------\n")
 #Traza de test:
 #Primero: Ver qué usuarios se pareecen más a un usuario dado (Migue)
 #Segundo: Tenemos los usuarios que se parecen más a Migue.
 #Tercero: Ahora tenemos que encontrar los productos que esos Usuarios   #Qué pasa si los usuarios si los
+'''
+()
+('Clara', {'Pizza barbacoa': 1, 'Platano': 4, 'Mandarina': 1, 'Bollicao': 1, 'Nocilla': 4, 'Carne pollo': 0, 'Arroz': 4, 'Chocoflakes': 3})
 
+(2-1) (1-0) (5-4) 
+'''
+
+migueclara = {'Migue': {'Lechuga': 5, 'Mandarina': 2, 'Melon': 3, 'Pan de centeno': 5, 'Carne pollo': 1, 'Pera': 3, 'Platano': 5, 'Kiwi': 5},'Clara': {'Pizza barbacoa': 1, 'Platano': 4, 'Mandarina': 1, 'Bollicao': 1, 'Nocilla': 4, 'Carne pollo': 0, 'Arroz': 4, 'Chocoflakes': 3}}
+print("Puntuacion: ",sim_pearson(migueclara, 'Migue', 'Clara'))

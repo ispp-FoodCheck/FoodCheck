@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Scrappers',
     'authentication',
     'payments',
+    'rs',
 ]
 
 AUTH_USER_MODEL = 'Web.User'
