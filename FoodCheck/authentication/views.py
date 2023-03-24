@@ -48,3 +48,8 @@ def login_view(request):
         form = forms.LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+@user_not_authenticated
+def terms_view(request):
+    return render(request, 'terms.html')
