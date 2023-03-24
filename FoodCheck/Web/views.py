@@ -294,7 +294,7 @@ def recipe_details(request, id_receta):
 
     ingredientes_visibles = False
 
-    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()))):
+    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta!=None and usuario.premiumHasta>= date.today()))):
         ingredientes_visibles = True
 
     puede_desbloquear = False
@@ -310,7 +310,9 @@ def recipe_details(request, id_receta):
             usuario.save()
             #Sacar la fecha de dentro de una semana
             fecha_desbloqueo = date.today() + timedelta(days=7)
-            RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.get_or_create(usuario=usuario, receta=receta)
+            receta_desbloqueada[0].fechaBloqueo = fecha_desbloqueo
+            receta_desbloqueada[0].save()
             ingredientes_visibles = True
             context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
