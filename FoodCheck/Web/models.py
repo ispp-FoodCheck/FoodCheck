@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import URLValidator
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 from django_resized import ResizedImageField
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -43,6 +44,7 @@ class User(AbstractUser):
     premiumHasta = models.DateField(null=True)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
     es_vegano = models.BooleanField(default=False)
+    subscription = models.CharField(max_length=200, null=True, blank=False)
 
 class ListaCompra(models.Model):
     id = models.AutoField(primary_key=True)
@@ -88,3 +90,21 @@ class RecetasDesbloqueadasUsuario(models.Model):
 
     def __str__(self):
         return self.usuario.username + ' - ' + self.receta.nombre
+
+class ReporteAlergenos(models.Model):
+    id = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    alergenos = models.ManyToManyField(Alergeno)
+    fecha = models.DateTimeField(default=datetime.now())
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario","producto"],
+                name="unique_usuario_producto"
+            )
+        ]
+    
+    def __str__(self):
+        return "Reporte: user(" + str(self.usuario.id) + ") - producto (" + str(self.producto.id) + ")"

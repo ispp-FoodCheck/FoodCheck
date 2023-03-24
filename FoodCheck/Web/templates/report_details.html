@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="row" >
+        <div class="card col-md-8">
+            <h2>Reporte del usuario: {{reporte.usuario}}</h2>
+            
+            <br>
+            <h2><a href="/product/{{reporte.producto.id}}/details">Información del producto</a></h2>
+            <p><b>Nombre:</b> {{reporte.producto}}</p>
+            <p><b>Ingredientes:</b> {{reporte.producto.ingredientes}}</p>
+
+            {% for alergeno in reporte.producto.alergenos.all%}
+                <img src="{{alergeno.imagen}}" alt="{{alergeno.nombre}}" title="{{alergeno.nombre}}" style="width:10%">
+            {% endfor %}
+
+            <br>
+            <h2>Alergenos reportados</h2>
+            {% for alergeno in reporte.alergenos.all%}
+                <img src="{{alergeno.imagen}}" alt="{{alergeno.nombre}}" title="{{alergeno.nombre}}" style="width:10%">
+            {% endfor %}
+
+            <br>
+            <h2>Aceptar petición</h2>
+            <form method="POST">{% csrf_token %}
+                <button type="submit" class="btn btn-success" name="action" value="aceptar">Aceptar</button>
+                <button type="submit" class="btn btn-danger" name="action" value="denegar">Denegar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

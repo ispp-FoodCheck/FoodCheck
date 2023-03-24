@@ -24,9 +24,17 @@
                     {% if alergeno.imagen != None %}
                     <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
                     {% endif %}
-                    {% endfor %}
+                {% endfor %}
+                {% if producto.vegano == 1 %}
+                        <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                {% endif %}
                 </div>
             </div>
+            {% if not ha_reportado %}
+                <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button">Reportar alérgenos</a>
+            {% else%}
+                <p>Su reporte está siendo revisado</p>
+            {% endif %}
         </div>
 
         <div class="card col-md-4 mt-2 text-center">
