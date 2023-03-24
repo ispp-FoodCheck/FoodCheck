@@ -3,6 +3,7 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+
 {% endblock %}
 
 {% block body %}
@@ -24,7 +25,10 @@
                     {% if alergeno.imagen != None %}
                     <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
                     {% endif %}
-                    {% endfor %}
+                {% endfor %}
+                {% if producto.vegano == 1 %}
+                        <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                {% endif %}
                 </div>
             </div>
             {% if not ha_reportado %}
@@ -65,9 +69,20 @@
                     style="border-radius: 12px;">Añadir Valoración</button>
             </form>
         </div>
+        
     </div>
-
+    
 </div>
+<div class=" text-center">
+    {% if recetas.items|length != 0 %}
+    <h4>Recetas que contienen este producto </h4>
+    {% include 'recipe_carrousel.html' %}
+    {% else %}
+    <a>Aún no tiene ninguna receta</h1>
+    {% endif %}
+</div>
+
+
 
 <script>
     // Código para generar las estrellas de valoración

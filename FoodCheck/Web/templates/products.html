@@ -10,8 +10,6 @@
 <div class="container text-center">
     <div>
         <div class="row">
-        </div>
-        <div class="row">
             <form method="POST" action="{% url 'index' %}" id="filter-form">
                 <input class="search" id="canal_de_texto" name="canal_de_texto" placeholder="Busca tu producto"
                     value="{{ palabra_buscador }}">
@@ -61,13 +59,17 @@
                             <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
                             {% endif %}
                             {% endfor %}
+                            {% if producto.vegano == 1 %}
+                                <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-
+        
         <div class="container" id="boton-paginacion">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">

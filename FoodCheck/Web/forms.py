@@ -27,7 +27,7 @@ class RegistroForm(UserCreationForm):
             user_lista = ListaCompra.objects.create(usuario=user)
             user_lista.save()
         for alergeno in self.cleaned_data['alergenos']:
-            user.alergenos.add(alergeno.id)
+            user.alergenos.add(alergeno)
         return user
 
 class LoginForm(forms.Form):

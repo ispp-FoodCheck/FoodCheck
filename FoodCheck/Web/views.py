@@ -1,16 +1,17 @@
 from datetime import date, timedelta
-from random import randint
+from django.shortcuts import render, redirect, HttpResponse
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
+from django.views.decorators.http import require_safe, require_http_methods
 from django.db.models.functions import Lower
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_safe, require_POST, require_GET, require_http_methods
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, User, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario
-# Create your views here.
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
+from django.http import JsonResponse
+from django.core import serializers
+import json
 
 
 def landing_page(request):
@@ -60,6 +61,17 @@ def product_details(request, id_producto):
     prod = Producto.objects.filter(id=id_producto)[0]
     valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
+    
+    lista_recetas = Receta.objects.filter(productos__id=id_producto)
+    diccionario_recetas_alergenos = dict()
+
+    for receta in lista_recetas:
+        distinct_alergenos = set()
+        for productoReceta in receta.productos.all():
+            for alergeno in productoReceta.alergenos.all():
+                distinct_alergenos.add(alergeno)
+        diccionario_recetas_alergenos[receta] = distinct_alergenos
+
 
     # form valoracion
     if request.method == 'POST':
@@ -81,7 +93,7 @@ def product_details(request, id_producto):
             prod.valoracionMedia = media
             prod.save()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado}
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
     return render(request, "product_details.html", diccionario)
 
 @login_required(login_url='authentication:login')
@@ -116,7 +128,11 @@ def allergen_report(request, id_producto):
 @require_safe
 @login_required(login_url='authentication:login')
 def shopping_list(request):
-    productos = ListaCompra.objects.get(usuario = request.user).productos.all()
+    lista_compra = ListaCompra.objects.filter(usuario=request.user)
+    if(lista_compra.exists()==False):
+                ListaCompra.objects.create(usuario=request.user)
+                lista_compra = ListaCompra.objects.filter(usuario=request.user)
+    productos = lista_compra.get().productos.all()
     print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
 
@@ -154,6 +170,9 @@ def report_details(request, id_report):
         if action == "aceptar":
             producto = Producto.objects.filter(id=reporte.producto.id)[0]
             producto.alergenos.add(*reporte.alergenos.all())
+            user = reporte.usuario
+            user.premiumHasta = date.today() + timedelta(days=7)
+            user.save()
         reporte.delete()
         return redirect('/report/list')
 
@@ -220,15 +239,26 @@ def unlock_recipes(request):
     return render(request, "unlock_recipes.html", context)
 
 @require_http_methods(["GET", "POST"])
+@login_required(login_url='authentication:login')
 def recipes_list(request):
     filtro_busqueda = request.POST.get('busqueda')
     numero_pagina = request.POST.get('page') or 1
     lista_recetas = Receta.objects.filter(publica=True)
-
+    filtro_busqueda_id_productos = request.POST.getlist('productos[]')
+    productos_filtrados = Producto.objects.filter(id__in=filtro_busqueda_id_productos)
+    message = None
+    
     if filtro_busqueda != None:
         lista_recetas = lista_recetas.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(filtro_busqueda.lower()))
-
+        
+    if len(filtro_busqueda_id_productos)>0  :
+        if request.user.premiumHasta != None and request.user.premiumHasta >= date.today():
+            lista_recetas = list(filter(lambda receta: all(str(id) in [str(producto.id) for producto in receta.productos.all()] for id in filtro_busqueda_id_productos), lista_recetas))
+        else:
+            message = 'La funcionalidad de filtrar por productos es solo para usuarios premium'            
+    
+        
     diccionario_recetas_alergenos = dict()
 
     for receta in lista_recetas:
@@ -242,11 +272,13 @@ def recipes_list(request):
     total_de_paginas = paginacion.num_pages
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
-
+    
     context = {'lista_producto': objetos_de_la_pagina,
                'total_de_paginas': total_de_paginas,
                'recetas': diccionario_recetas_alergenos,
-               'filtro_productos': filtro_busqueda}
+               'filtro_productos': filtro_busqueda,
+               'productos_selec': productos_filtrados,
+               'solo_premium':message}
 
     return render(request, "recipes.html", context)
 
@@ -265,7 +297,7 @@ def recipe_details(request, id_receta):
 
     ingredientes_visibles = False
 
-    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()))):
+    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta!=None and usuario.premiumHasta>= date.today()))):
         ingredientes_visibles = True
 
     puede_desbloquear = False
@@ -275,30 +307,39 @@ def recipe_details(request, id_receta):
 
     context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
-    if request.method == "POST" and puede_desbloquear:
-        usuario.recetaDiaria = date.today()
-        usuario.save()
-        #Sacar la fecha de dentro de una semana
-        fecha_desbloqueo = date.today() + timedelta(days=7)
-        RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
-        ingredientes_visibles = True
-        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+    if(request.method == "POST"):
+        if("desbloqueo" in request.POST and puede_desbloquear):
+            usuario.recetaDiaria = date.today()
+            usuario.save()
+            #Sacar la fecha de dentro de una semana
+            fecha_desbloqueo = date.today() + timedelta(days=7)
+            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.get_or_create(usuario=usuario, receta=receta)
+            receta_desbloqueada[0].fechaBloqueo = fecha_desbloqueo
+            receta_desbloqueada[0].save()
+            ingredientes_visibles = True
+            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
-    if request.method == "POST" and usuario==receta.propietario and receta.publica==False:
-        receta.publica = True
-        receta.save()
-        context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+        elif("publicar" in request.POST and receta.propietario==usuario and receta.publica==False):
+            receta.publica = True
+            receta.save()
+            context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
+        
+        elif("añadir-productos" in request.POST and ingredientes_visibles):
+            lista_compra_usuario = ListaCompra.objects.filter(usuario=usuario)
+            if(lista_compra_usuario.exists()==False):
+                ListaCompra.objects.create(usuario=usuario)
+                lista_compra_usuario = ListaCompra.objects.filter(usuario=usuario)
+            for producto in receta.productos.all():
+                lista_compra_usuario[0].productos.add(producto)
+            lista_compra_usuario[0].save()
+
+            return redirect('/shopping_list/')
 
     return render(request, "recipe_details.html", context)
 
 @login_required(login_url='authentication:login')
 @require_http_methods(["GET", "POST"])
 def new_recipes(request):
-    productos = Producto.objects.all()
-    context = {
-        'productos': productos
-    }
-
     if request.method == "POST":
         nombre = request.POST.get('nombre')
         descripcion = request.POST.get('cuerpo')
@@ -328,7 +369,7 @@ def new_recipes(request):
 
         return redirect('/my_recipes/')
 
-    return render(request, "new_recipe.html", context)
+    return render(request, "new_recipe.html")
 
 @require_safe
 def add_product(request, id_producto):
@@ -363,3 +404,12 @@ def remove_product(request, id_producto):
         lista_compra.save()
 
     return shopping_list(request)
+
+@require_safe
+def get_products_endpoint(request):
+    if request.GET.get('nombre'):
+        productos = Producto.objects.annotate(nombre_m=Lower('nombre')).filter(nombre_m__icontains=unidecode(request.GET.get('nombre').lower()))[:10]
+    else:
+        productos = []
+    data = json.dumps(list(map(lambda x: (x.id, x.nombre, x.imagen), productos)))
+    return HttpResponse(data, content_type='application/json')

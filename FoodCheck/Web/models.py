@@ -44,6 +44,7 @@ class User(AbstractUser):
     premiumHasta = models.DateField(null=True)
     alergenos = models.ManyToManyField(Alergeno, blank=True)
     es_vegano = models.BooleanField(default=False)
+    subscription = models.CharField(max_length=200, null=True, blank=False)
 
 class ListaCompra(models.Model):
     id = models.AutoField(primary_key=True)

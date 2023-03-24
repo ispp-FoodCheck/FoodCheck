@@ -4,17 +4,39 @@
 
 <div class="container text-center">
     <div class="row text-center">
+        <h1 class="title">Mostrando recetas</h1>
         {% if filtro_productos %}
-        <h1 class="title">Mostrando recetas</h1>
-        <h3>tituladas {{filtro_productos}}</h3>
-        {% else %}
-        <h1 class="title">Mostrando recetas</h1>
+        <h4>Con el nombre: {{filtro_productos}}</h4>
         {% endif %}
+
+        {% if solo_premium %}
+        <h4>{{solo_premium}}</h4>    
+        {% endif %}
+
+        {% if productos_selec %}
+        <h4>Productos: {% for producto in productos_selec %}{{producto.nombre}}{% if not loop.last %}, {% endif %}{% endfor %}</h4>
+        {% endif %}
+        
         <div class="row mt-2">
             <form method="POST" action="{% url 'recipes_list' %}" id="filter-form">
                 {% csrf_token %}
                 <input class="search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
                     value="{{ busqueda }}" />
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+                <br>
+                <br>
+                <h4> ¡Busca recetas por productos! <h4>
+                <div class="mt-3">
+                    <input type="text" id="buscadorProductosReceta" onkeyup="buscarProductos()" placeholder="Añadir producto">
+                    <ul id="productoRecetas"></ul>
+                    <br>
+                    <h5>Lista actual de ingredientes:</h5>
+    
+                    <!-- Selector múltiple, similar al de Django admin (usando tecla Ctrl)-->
+                    <select class="form-select-lg" name="productos[]" id="productos" multiple></select>
+                </div>
+                {%endif%}
                 <div class="row-md-2">
                     </br>
                     <button class="btn btn-primary mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
@@ -29,4 +51,72 @@
         
     </div>
 </div>
+
+
+<script>
+    const textarea = document.getElementById('cuerpo');
+    const currentChars = document.getElementById('caracteres-actuales');
+
+    textarea.addEventListener('input', () => {
+        const charactersTyped = textarea.value.length;
+        currentChars.textContent = charactersTyped;
+    });
+</script>
+
+<script>
+    function preview() {
+        frame.src = URL.createObjectURL(event.target.files[0]);
+    }
+    function clearImage() {
+        document.getElementById('receta_imagen').value = null;
+        frame.src = "";
+    }
+</script>
+
+<script>
+    async function buscarProductos() {
+        let input = document.getElementById("buscadorProductosReceta");
+        let ul = document.getElementById("productoRecetas");
+        let nombre = input.value.toLowerCase();
+
+        let response = await fetch(`/api/products?nombre=${nombre}`);
+        let products = await response.json();
+        ul.innerHTML = '';
+        for (let product of products) {
+            let child = document.createElement('li');
+            let a = document.createElement('a');
+            let img = document.createElement('img');
+            img.src = product[2];
+            img.alt = 'error';
+            a.appendChild(img);
+            a.innerHTML += ' ' + product[1];
+            child.appendChild(a);
+            child.addEventListener('click', function(e) {
+                añadirProducto(product);
+            })
+            ul.appendChild(child);
+        }
+    }
+
+    function añadirProducto(producto) {
+        let productSelect = document.getElementById('productos');
+        let option = productSelect.querySelector(`option[value="${producto[0]}"]`);
+        if(option == null) {
+            option = document.createElement('option');
+            option.value = producto[0];
+            option.innerHTML = producto[1];
+            option.readonly = true;
+            productSelect.appendChild(option);
+            option.onclick = option.remove;
+        }
+        option.selected = true;
+    }
+
+    document.getElementById('productos').addEventListener('change', function(e) {
+        for(let child of e.target.children) {
+            child.selected = true;
+        }
+        e.target.blur();
+    })
+</script>
 {% endblock %}

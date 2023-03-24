@@ -8,8 +8,8 @@
 {% block body %}
 
 <div class="container text-center">
-    <div class="row">
-        <p class="h2" style="text-align: center;">Tu lista</a>
+    <div class="row text-center">
+        <h1 class="title">Tu lista de la compra</h1>
             {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
         <p class="supermercado">{{ supermercado }}</p>
         <div class="row">

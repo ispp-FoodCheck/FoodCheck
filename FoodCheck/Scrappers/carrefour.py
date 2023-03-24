@@ -3,6 +3,7 @@ from urllib.request import urlopen
 import json
 import sys
 from Web.models import Producto, Supermercado, Alergeno
+from unidecode import unidecode
 from Scrappers.alergenos import MAPA_INTOLERANCIAS_CARREFOUR, obtener_alergenos_de_texto
 
 num_elementos = '20'
@@ -185,9 +186,10 @@ def actualizar_datos_carrefour():
         producto.save()
         
         ing = producto.ingredientes
+        p_name = producto.nombre
         non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()
         for non_vegan in non_vegans_ing_list:
-            if non_vegan.lower() in ing.lower(): 
+            if ((non_vegan.lower() in unidecode(ing.lower())) or (non_vegan.lower() in unidecode(p_name.lower()))): 
                 producto.vegano = False
                 break
         producto.save()
