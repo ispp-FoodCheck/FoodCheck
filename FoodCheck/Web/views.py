@@ -61,13 +61,14 @@ def product_details(request, id_producto):
     prod = Producto.objects.filter(id=id_producto)[0]
     valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
+    
     lista_recetas = Receta.objects.filter(productos__id=id_producto)
     diccionario_recetas_alergenos = dict()
 
     for receta in lista_recetas:
         distinct_alergenos = set()
-        for prod in receta.productos.all():
-            for alergeno in prod.alergenos.all():
+        for productoReceta in receta.productos.all():
+            for alergeno in productoReceta.alergenos.all():
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
