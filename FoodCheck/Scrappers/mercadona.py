@@ -1,10 +1,12 @@
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 import json
 import time
 import random
 import re
+from unidecode import unidecode
 
 from Web.models import Producto, Supermercado, Alergeno
+from Scrappers.alergenos import MAPA_INTOLERANCIAS_MERCADONA, obtener_alergenos_de_texto
 
 
 TIEMPO_EXCESO_DE_PETICIONES = 300
@@ -15,29 +17,13 @@ API_URL = 'https://tienda.mercadona.es/api/'
 ENDPOINT_CATEGORIAS = API_URL + 'categories/'
 ENDPOINT_PRODUCTOS = API_URL + 'products/'
 
-KEYWORDS_INTOLERANCIAS = {
-    'cereales que contengan gluten': 'gluten',
-    'trigo y productos derivados': 'gluten',
-    'centeno y productos derivados': 'gluten',
-    'crustáceos y productos a base de crustáceos': 'crustaceos',
-    'huevos y productos a base de huevo': 'huevos',
-    'cacahuetes y productos a base de cacahuetes': 'cacahuetes',
-    'pescado y productos a base de pescado': 'pescado',
-    'soja y productos a base de soja': 'soja',
-    'leche y sus derivados (incluida la lactosa)': 'lacteos',
-    'frutos de cáscara': 'frutos secos',
-    'apio y productos derivados': 'apio',
-    'mostaza y productos derivados': 'mostaza',
-    'granos de sésamo y productos a base de granos de sésamo': 'sesamo',
-    'dióxido de azufre y sulfitos': 'sulfitos',
-    'altramuces y productos a base de altramuces': 'altramuz',
-    'moluscos y productos a base de moluscos': 'moluscos',
-}
-
 def hacer_peticion(url):
     time.sleep(random.random() * (TIEMPO_MAX_POR_PETICION - TIEMPO_MIN_POR_PETICION) + TIEMPO_MIN_POR_PETICION)
     try:
-        conexion = urlopen(url)
+        peticion = Request(url)
+        peticion.add_header('accept', 'application/json')
+        peticion.add_header('accept-encoding', 'utf-8')
+        conexion = urlopen(peticion)
         datos = json.loads(conexion.read())
         conexion.close()
         return datos
@@ -54,6 +40,9 @@ def hacer_peticion(url):
 def obtener_categorias():
     categorias_finales = []
     datos = hacer_peticion(ENDPOINT_CATEGORIAS)
+    if datos is None:
+        print("Error obteniendo productos del Mercadona")
+        return []
     categorias = datos['results']
 
     for categoria in categorias:
@@ -115,20 +104,24 @@ def actualizar_datos_mercadona():
             
             ingredientes = re.sub(r'<\/?\w+>', '', p['ingredientes'])
             alergenos = map(lambda x: x.lower(), p['alergenos'].split('.'))
-            lista_alergenos = []
+            lista_alergenos = obtener_alergenos_de_texto(p['nombre'])
+            lista_alergenos.extend(obtener_alergenos_de_texto(ingredientes))
+            lista_alergenos = set(lista_alergenos)
             for posible_alergeno in alergenos:
                 intolerancia = None
-                if 'libre' in posible_alergeno:
-                    continue
                 alergeno = re.search(r'<strong>(.*?)<\/strong>', posible_alergeno)
                 if alergeno is None:
                     continue
                 alergeno = alergeno.group(1)
-                if alergeno in KEYWORDS_INTOLERANCIAS.keys():
-                    intolerancia = Alergeno.objects.get_or_create(nombre=KEYWORDS_INTOLERANCIAS[alergeno])[0]
+                if alergeno in MAPA_INTOLERANCIAS_MERCADONA.keys():
+                    intolerancia = Alergeno.objects.get_or_create(nombre=MAPA_INTOLERANCIAS_MERCADONA[alergeno])[0]
                 else:
                     intolerancia = Alergeno.objects.get_or_create(nombre=alergeno)[0]
-                lista_alergenos.append(intolerancia)
+                if 'libre' in posible_alergeno:
+                    if intolerancia in lista_alergenos:
+                        lista_alergenos.remove(intolerancia)
+                    continue
+                lista_alergenos.add(intolerancia)
             
             producto, created = Producto.objects.get_or_create(id=int(p['ean']), defaults={
                 'nombre': p['nombre'],
@@ -145,13 +138,14 @@ def actualizar_datos_mercadona():
                 producto.marca = p['marca']
                 if mercadona not in producto.supermercados.all():
                     producto.supermercados.add(mercadona)
-            producto.alergenos.set(lista_alergenos)
+            producto.alergenos.set(list(lista_alergenos))
             producto.save()
             
             ing = producto.ingredientes
+            p_name = producto.nombre
             non_vegans_ing_list = open("Scrappers/non-vegan-ingredients-list.txt").read().splitlines()
             for non_vegan in non_vegans_ing_list:
-                if non_vegan.lower() in ing.lower(): 
+                if ((non_vegan.lower() in unidecode(ing.lower())) or (non_vegan.lower() in unidecode(p_name.lower()))): 
                     producto.vegano = False
                     break
             producto.save()

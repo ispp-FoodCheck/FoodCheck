@@ -43,3 +43,13 @@
 #button-row{
     justify-content: center;
 }
+
+h1.title {
+    color: black;
+    font-weight: bold;
+    letter-spacing: -2px;
+  }
+
+  .row {
+    margin-top: 5%;
+  }

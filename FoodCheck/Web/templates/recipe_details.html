@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="col text-center">
+        <div class="row" id="row-details">
+            <h1 class="title">Detalles de la receta</h1>
+            <div class="card col-md-4 mt-1 text-center">
+                <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
+                <p class="nombre">{{receta.nombre}}</p>
+                <p class="propietario">Receta realizada por: {{receta.propietario}}</p>
+                <p class="tiempoPreparacion">Tiempo estimado: {{receta.tiempoPreparacion}}</p>
+                <p class="descripcion">{{receta.descripcion}}</p>
+                <div class="row">
+                    <div class="col">
+                        {% for alergeno in alergenos %}
+                        {% if alergeno.imagen != None %}
+                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if puede_publicar %}
+                <form method="POST" id="publicar-form">
+                    {% csrf_token %}
+                    <div class="mt-3">
+                        <button class="btn btn-primary mt-3" type="submit" name="publicar" id="boton-publicar" style="border-radius: 12px;">
+                            Publicar receta
+                        </button>
+                    </div>
+                </form>
+                </br>
+                <a> Si conviertes la receta en pública no podrás cambiarla a privada más adelante </a>
+                {% endif %}
+            </div>
+        </div>
+        <h1 class="title">Ingredientes</h1>
+        <div class="row" id="row-details">
+            {% if visible %}
+                {% for producto in receta.productos.all %}
+                <div class="card col-md-2 mt-1 text-center">
+                    <a href="/product/{{producto.id}}/details">
+                        <p> {{producto.nombre}}</p>
+                        {% if producto.imagen != None %}
+                        <div class="row">
+                            <div class="col">
+                                <img src="{{producto.imagen}}" alt="error" style="width:70%">
+                            </div>
+                        </div>
+                        {% endif %}
+                        </br>
+                    </a>
+                    <div class="row">
+                        <div class="col">
+                            {% for alergeno in producto.alergenos.all%}
+                            {% if alergeno.imagen != None %}
+                            <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <form method="POST" id="añadir-productos-form">
+                    {% csrf_token %}
+                    <div class="mt-3">
+                        <button class="btn btn-primary mt-3" type="submit" name="añadir-productos" id="boton-productos-lista" style="border-radius: 12px;">
+                            Añadir productos a tu lista de la compra
+                        </button>
+                    </div>
+                </form>
+            {% else %}
+                <p>No tienes desbloqueada esta receta</p>
+                {% if desbloqueado_disponible %}
+                <form method="POST" id="desbloqueo-form">
+                    {% csrf_token %}
+                    <div class="mt-3">
+                        <button class="btn btn-primary mt-3" type="submit" name="desbloqueo" id="boton-desbloqueo" style="border-radius: 12px;">
+                            Desbloquear receta
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
