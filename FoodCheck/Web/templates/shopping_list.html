@@ -7,6 +7,17 @@
 
 {% block body %}
   
+<div class="row">
+    <div class="col-md-3">
+        <div class="tarjeta-usuario">
+            <ul style="list-style-type: none;">
+                {% for supermercado, numero in num_productos_por_supermercado.items %}
+                <li><b>Numero de Productos del {{supermercado}}: {{numero}}</b></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>  
+</div>
 
 <div class="container text-center">
     

@@ -157,9 +157,14 @@ def shopping_list(request):
                 productos_agrupados_por_supermercado[supermercado] = productos_supermercado
             else:
                 productos_agrupados_por_supermercado[supermercado] = set([producto])
+    
+    # Obtener el número de productos por supermercado
+    num_productos_por_supermercado = {}
+    for supermercado, productos in productos_agrupados_por_supermercado.items():
+        num_productos = len(productos)
+        num_productos_por_supermercado[supermercado] = num_productos
 
-    return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado})
-
+    return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado, "num_productos_por_supermercado":num_productos_por_supermercado})
 ########### REPORTE DE ALERGENOS ###########
 def is_superuser(user):
     return user.is_superuser
