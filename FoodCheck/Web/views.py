@@ -10,10 +10,11 @@ from django.contrib import messages
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto
 from django.http import JsonResponse
 from django.core import serializers
 import json
+from django.db.models import Avg
 
 from spanlp.palabrota import Palabrota
 
@@ -439,6 +440,8 @@ def delete_valoracion(request, valoracion_id):
         if request.user == valoracion.usuario:
             post_id = valoracion.producto.id
             valoracion.delete()
+            producto = Producto.objects.get(pk=post_id)
+            producto.actualizar_valoracion_media()
             messages.success(request, 'Valoracion deleted successfully.')
             return redirect('product_details', id_producto=post_id)
         else:
@@ -446,3 +449,5 @@ def delete_valoracion(request, valoracion_id):
             return redirect('product_details', id_producto=post_id)
     else:
         return redirect('product_details', id_producto=post_id)
+    
+
