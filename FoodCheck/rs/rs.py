@@ -2,8 +2,18 @@
 # set of movies
 
 from math import sqrt
+from Web.models import User, Valoracion
+from .generador import generar_puntuaciones
 
-from generador import generar_puntuaciones
+
+def get_all_valorations_correct_format():
+    res = {}
+    for user in User.objects.all():
+        user_rates = {}
+        for rate in Valoracion.objects.filter(usuario = user):
+            user_rates[rate.producto] = rate.puntuacion
+        res[user] = user_rates
+    return res
 
 
 
@@ -114,12 +124,7 @@ print("\n---------------------------------\n")
 #Primero: Ver qué usuarios se pareecen más a un usuario dado (Migue)
 #Segundo: Tenemos los usuarios que se parecen más a Migue.
 #Tercero: Ahora tenemos que encontrar los productos que esos Usuarios   #Qué pasa si los usuarios si los
-'''
-()
-('Clara', {'Pizza barbacoa': 1, 'Platano': 4, 'Mandarina': 1, 'Bollicao': 1, 'Nocilla': 4, 'Carne pollo': 0, 'Arroz': 4, 'Chocoflakes': 3})
 
-(2-1) (1-0) (5-4) 
-'''
 
 migueclara = {'Migue': {'Lechuga': 5, 'Mandarina': 2, 'Melon': 3, 'Pan de centeno': 5, 'Carne pollo': 1, 'Pera': 3, 'Platano': 5, 'Kiwi': 5},'Clara': {'Pizza barbacoa': 1, 'Platano': 4, 'Mandarina': 1, 'Bollicao': 1, 'Nocilla': 4, 'Carne pollo': 0, 'Arroz': 4, 'Chocoflakes': 3}}
 print("Puntuacion: ",sim_pearson(migueclara, 'Migue', 'Clara'))

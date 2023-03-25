@@ -1,14 +1,28 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from FoodCheck.Web.models import User
 from django.http import HttpResponse
+from rs.rs import get_all_valorations_correct_format, getRecommendations
+from payments.utils import es_premium
+from rs.generador import generar_puntuaciones
 
 @login_required(login_url='authentication:login')
 def recommendations(request):
-    user = User.objects.get(username = request.user)
-    if user is None:
-        return HttpResponse("Usuario no logeado")
-    else:
-        return HttpResponse(str(user))
+    user = request.user
+    #if not es_premium(user):
+    #    HttpResponse("Error: Usuario no premium")
+    
+    ratings = get_all_valorations_correct_format()
+    recs = [recs_rating[1] for recs_rating in getRecommendations(ratings,user)]
+    print(recs)
+    return HttpResponse(recs)
+
+
+
+
+            
+
+
+
+    
 
     
