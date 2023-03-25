@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+
+<style>
+#alForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  padding: 40px;
+  width: 100%;
+  min-width: 300px;
+}
+
+select {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  border: 1px solid #aaaaaa;
+}
+</style>
+
+<br>
+<br>
+<br>
+<div class="text-center container">
+    <form style="width: 100%;" id="alForm" method="post" action="">
+        <h1>Reporte de alergenos</h1>
+        {% csrf_token %}
+        <div>
+            <select class="mi-selector" multiple="multiple" name="allergens" id="allergens">
+            {% for alergeno in alergenos %}
+                <option value="{{alergeno.id}}">{{alergeno.nombre}}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <button style="margin-top: 10px;" type="sumbit" id="regBtn">Enviar</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.mi-selector').select2({
+            placeholder: 'Escoge los elérgenos',
+            allowClear: false
+        });
+    });
+</script>
+{% endblock %}

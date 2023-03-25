@@ -1,0 +1,31 @@
+<div class="scroll-horizontal">
+    <div class="row" id="row-details2">
+        {% for receta, alergenos in recetas.items %}
+        <div class="col-md-4">
+            <div class="card mt-1 text-center">
+                {% if receta.imagen != None%}
+                <a href="/recipe/{{receta.id}}/details">
+                    <img src="{{receta.imagen.url}}" alt="error" style="width: 100%;">
+                </a>
+                <p class="nombre">{{receta.nombre}}</p>
+                {% else %}
+                <img src="" alt="error" style="width:100%">
+                <a href="/recipe/{{receta.id}}/details"></a>
+                <p class="nombre">{{receta.nombre}}</p>
+                </a>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col">
+                        {% for alergeno in alergenos%}
+                        {% if alergeno.imagen != None %}
+                        <img src="{{alergeno.imagen}}" alt="error" style="width:2em">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
