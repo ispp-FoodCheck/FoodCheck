@@ -11,6 +11,8 @@
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
       crossorigin="anonymous"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" integrity="sha256-9yRP/2EFlblE92vzCA10469Ctd0jT48HnmmMw5rJZrA="></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -150,6 +152,60 @@
                   Recetas
                 </a>
               </li>
+              
+
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="/report/list"
+                    aria-label="Brings you to the recipes"
+                  >
+                    Reportes
+                  </a>
+                </li>
+                {% endif %}
+            </ul>
+            {% else %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 dropdown-menu-end">
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="{% url 'authentication:login' %}"
+                    aria-label="Brings you to the frontpage"
+                  >
+                    Iniciar sesión
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="{% url 'authentication:register' %}"
+                    aria-label="Brings you to the frontpage"
+                  >
+                    Registrarse
+                  </a>
+                </li>
+              </ul>
+            {% endif %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="  "
+                  >
+                {{user.username}}
+                {% if user.is_staff %}
+                <i class="fa-solid fa-toolbox"></i> 
+                {%endif%}
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+                <i class="fa-solid fa-star"></i>
+                {%endif%}
+                </a>
+              </li>
+
               {% if user.is_authenticated %}
               <li class="nav-item">
                 <a
@@ -160,26 +216,7 @@
                   Cerrar sesión
                 </a>
               </li>
-              {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="{% url 'authentication:login' %}"
-                  aria-label="Brings you to the frontpage"
-                >
-                  Iniciar sesión
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="{% url 'authentication:register' %}"
-                  aria-label="Brings you to the frontpage"
-                >
-                  Registrarse
-                </a>
-              </li>
-              {% endif %}
+              {%endif%}
             </ul>
           </div>
         </div>
@@ -196,20 +233,18 @@
     </div>
 
     <div class="container-fluid" id="mobile-ad-container">
-      <div class="ad-mobile">
-        <div class="row">
-          <div class="col-12">
+      <div class="ad-mobile">        
+          <div class="col-12"> 
             <span class="cerrar" onclick="document.getElementById('mobile-ad-container').style.display='none'">&times;</span>
               <a id="wide-ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/">
                 <img id='wide-ad' class="ad-img-mobile img-fluid" src="{% static 'imgs/publicidad/publi2-wide.png' %}" alt="barra de anuncio">
               </a>
-          </div>
-        </div>
+          </div>        
       </div>
     </div>
 
 
-    <main>{% block body %}{% endblock %}</main>
+    <main class='wrapper'>{% block body %}{% endblock %}</main>
 
     <div class="container my-5">
       <footer
@@ -290,5 +325,6 @@
       }
 
     </script>
+    
   </body>
 </html>

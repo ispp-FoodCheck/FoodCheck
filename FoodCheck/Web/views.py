@@ -61,6 +61,17 @@ def product_details(request, id_producto):
     prod = Producto.objects.filter(id=id_producto)[0]
     valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
+    
+    lista_recetas = Receta.objects.filter(productos__id=id_producto)
+    diccionario_recetas_alergenos = dict()
+
+    for receta in lista_recetas:
+        distinct_alergenos = set()
+        for productoReceta in receta.productos.all():
+            for alergeno in productoReceta.alergenos.all():
+                distinct_alergenos.add(alergeno)
+        diccionario_recetas_alergenos[receta] = distinct_alergenos
+
 
     # form valoracion
     if request.method == 'POST':
@@ -82,7 +93,7 @@ def product_details(request, id_producto):
             prod.valoracionMedia = media
             prod.save()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado}
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
     return render(request, "product_details.html", diccionario)
 
 @login_required(login_url='authentication:login')
@@ -90,6 +101,7 @@ def allergen_report(request, id_producto):
     
     formulario = AllergenReportForm()
     producto = Producto.objects.filter(id=id_producto)[0]
+    alergenos = Alergeno.objects.all()
 
     if request.method == 'POST':
         formulario =AllergenReportForm(request.POST)
@@ -108,6 +120,7 @@ def allergen_report(request, id_producto):
 
     context = {
         'formulario': formulario,
+        'alergenos': alergenos,
     }
 
     return render(request, 'allergen_report.html', context)
@@ -284,7 +297,7 @@ def recipe_details(request, id_receta):
 
     ingredientes_visibles = False
 
-    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta >= date.today()))):
+    if((receta.propietario == usuario) or (receta_ya_desbloqueada and (RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)[0].fechaBloqueo >= date.today() or usuario.premiumHasta!=None and usuario.premiumHasta>= date.today()))):
         ingredientes_visibles = True
 
     puede_desbloquear = False
@@ -300,7 +313,9 @@ def recipe_details(request, id_receta):
             usuario.save()
             #Sacar la fecha de dentro de una semana
             fecha_desbloqueo = date.today() + timedelta(days=7)
-            RecetasDesbloqueadasUsuario.objects.create(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.get_or_create(usuario=usuario, receta=receta)
+            receta_desbloqueada[0].fechaBloqueo = fecha_desbloqueo
+            receta_desbloqueada[0].save()
             ingredientes_visibles = True
             context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 

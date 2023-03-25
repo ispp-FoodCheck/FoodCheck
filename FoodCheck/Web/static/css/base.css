@@ -6,6 +6,13 @@ footer {
   padding-top: 1%;
 }
 
+html, body {
+  height: 80%; 
+}
+.wrapper {
+  min-height: 80%; 
+}
+
 #enviar { 
   background-color: #07644A;
   opacity: 1;
