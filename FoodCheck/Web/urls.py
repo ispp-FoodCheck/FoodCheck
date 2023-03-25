@@ -31,6 +31,7 @@ urlpatterns = [
     path('product/<int:id_producto>/add', views.add_product, name='add_product'),
     path('product/<int:id_producto>/remove', views.remove_product, name='remove_product'),    
     path('', include('authentication.urls')),
+    path('premium', views.premium, name="premium")
     path('', include('payments.urls')),
     path('', include('rs.urls')),
     path('allergen_report/product/<int:id_producto>', views.allergen_report, name='allergen_report'),
