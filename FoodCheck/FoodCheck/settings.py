@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Web',
     'Scrappers',
     'authentication',
+    'payments',
 ]
 
 AUTH_USER_MODEL = 'Web.User'
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -126,3 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Web', 'media')
+MEDIA_URL = 'media/'
+
+STRIPE_API_KEY = 'YOUR_STRIPE_API_KEY_HERE'
+STRIPE_PRICE_ID = 'YOUR_STRIPE_PRICE_ID_HERE'

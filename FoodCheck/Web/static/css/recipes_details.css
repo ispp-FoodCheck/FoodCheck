@@ -6,15 +6,6 @@
     align-items: center;
 }
 
-#row-details2 {
-    margin-top: 6%;
-    margin-bottom: 3%;
-
-    
-
-    display: flex;
-    flex-wrap: nowrap;
-}
 .card {
     margin: 2%;
     padding: 2%;
@@ -40,14 +31,5 @@
     font-size: 225%;
 }
 
-.scroll-horizontal {
-    width: 50%;
-    height: 50%;
-    margin: auto;
-    overflow-x: auto;
-    white-space: nowrap;
-    max-width: 60%;
-    justify-content: center;
-    align-items: center;
 
-}
+

@@ -1,0 +1,86 @@
+.row {
+  margin-top: 5%;
+}
+
+h1.title {
+  color: black;
+  font-weight: bold;
+  letter-spacing: -2px;
+}
+
+.card {
+  margin-top: 5%;
+  padding: 5%;
+
+  border-radius: 5%;
+  border-width: 0px;
+
+  color: black;
+  font-size: large;
+  text-align: left;
+  letter-spacing: -0.5px;
+}
+
+.nombre {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.marca {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.supermercados {
+  color: #545454;
+  font-weight: normal;
+}
+
+#boton-paginacion {
+  margin-top: 5%;
+}
+
+#boton-busqueda {
+  vertical-align: middle;
+}
+
+#buscadorProductosReceta {
+  width: 100%;
+  font-size: 18px;
+  padding: 11px;
+  border: 1px solid #ddd;
+}
+
+#productoRecetas {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+}
+
+#productoRecetas:has(li) {
+  max-height: 10rem;
+  overflow-y: scroll;
+}
+
+#productoRecetas li img {
+  width: auto;
+  height: 3rem;
+}
+
+#productoRecetas li a {
+  padding: 12px;
+  text-decoration: none;
+  color: black;
+  display: block;
+  border: none;
+  width: 100%;
+}
+
+#productoRecetas li a:hover {
+  background-color: #ddd;
+}
+
+#productos {
+  width: 100%;
+}
