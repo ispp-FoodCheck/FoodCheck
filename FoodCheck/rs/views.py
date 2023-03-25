@@ -8,13 +8,10 @@ from rs.generador import generar_puntuaciones
 @login_required(login_url='authentication:login')
 def recommendations(request):
     user = request.user
-    #if not es_premium(user):
-    #    HttpResponse("Error: Usuario no premium")
     
     ratings = get_all_valorations_correct_format()
     recs = [recs_rating[1] for recs_rating in getRecommendations(ratings,user)]
-    print(recs)
-    return HttpResponse(recs)
+    return render(request, "recommendations.html", {'products':recs})
 
 
 
