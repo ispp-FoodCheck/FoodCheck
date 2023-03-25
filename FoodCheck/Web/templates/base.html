@@ -153,7 +153,7 @@
                 </a>
               </li>
               {% now "Y-m-d" as now %}
-              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now|date %}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"

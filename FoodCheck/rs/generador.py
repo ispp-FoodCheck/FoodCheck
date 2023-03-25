@@ -9,7 +9,7 @@ def generar_puntuaciones():
     puntuaciones = {}
 
     for nombre in nombres:
-        puntuaciones[nombre] = {comida:random.randint(0, 5) for comida in random.choices(comidas, k=9)}
+        puntuaciones[nombre] = {comida:random.randint(1, 5) for comida in random.choices(comidas, k=15)}
         puntuaciones['MigueIgual'] = puntuaciones['Migue']
 
     return puntuaciones

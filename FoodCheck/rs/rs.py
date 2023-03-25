@@ -1,6 +1,3 @@
-# A dictionary of movie critics and their ratings of a small
-# set of movies
-
 from math import sqrt
 from Web.models import User, Valoracion
 from .generador import generar_puntuaciones
@@ -15,49 +12,24 @@ def get_all_valorations_correct_format():
         res[user] = user_rates
     return res
 
-
-
-# Returns the Pearson correlation coefficient for p1 and p2
 def sim_pearson(prefs, p1, p2):
-    # Get the list of mutually rated items
-    si = {}
-    for item in prefs[p1]: 
-        if item in prefs[p2]: si[item] = 1 #??
-
-    # if they are no ratings in common, return 0
-    if len(si) == 0: return 0 #Si no teneis items en común, similaridad = 0
+  products_rated_by_both = []
+  for item in prefs[p1]:
+    if item in prefs[p2]:
+      products_rated_by_both.append(item)
+  if len(products_rated_by_both) <= 0:
+     return 0
   
-    # Sum calculations
-    n = len(si)
-
-    # Sums of all the preferences
-    sum1 = sum([prefs[p1][it] for it in si]) #Si Migue a platano le ha dao un 3, a mandarina un 4 y a platnao un 5 pues = 3+4+5 = 12
-    sum2 = sum([prefs[p2][it] for it in si])
-
-    # Sums of the squares
-    sum1Sq = sum([pow(prefs[p1][it], 2) for it in si]) #Si Migue a platano le ha dao un 3, a mandarina un 4 y a platnao un 5 pues = 9+16+25 = 50
-    sum2Sq = sum([pow(prefs[p2][it], 2) for it in si])	
-
-    # Sum of the products
-    pSum = sum([prefs[p1][it] * prefs[p2][it] for it in si])
-
-    # Calculate r (Pearson score)
-    num = pSum - (sum1 * sum2 / n)
-    den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
-    if den == 0: return 0
-
-    r = num / den
-
-    return r
-
-# Returns the best matches for person from the prefs dictionary. #Devuelve las n personas que más se parecen a person.
-# Number of results and similarity function are optional params.
-def topMatches(prefs,person,n=5,similarity=sim_pearson):
-  scores=[(similarity(prefs,person,other),other) 
-                  for other in prefs if other!=person]
-  scores.sort()
-  scores.reverse()
-  return scores[0:n]
+  ra = sum(prefs[p1][product] for product in products_rated_by_both)/len(products_rated_by_both)
+  rb = sum(prefs[p2][product] for product in products_rated_by_both)/len(products_rated_by_both)
+  
+  numerator = sum((prefs[p1][product] - ra) * (prefs[p2][product] - rb) for product in products_rated_by_both)
+  denominator = sqrt(sum(pow((prefs[p1][product] - ra),2) for product in products_rated_by_both)) * sqrt(sum(pow((prefs[p2][product] - rb),2) for product in products_rated_by_both))
+  
+  if denominator == 0:
+     return 0
+  return numerator/denominator
+     
 
 
 #FUNCION PRINCIPAL: Hace recomendaciones de items a un usuario usando un RS Colaborativo basado en Usuarios.
@@ -80,15 +52,6 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
         # Sum of similarities #SimSums es un diccionario que contiene: clave: item. Valor: suma acumulativa del coeficiente de sim entre usuario y usuario objetivo.
         simSums.setdefault(item,0)
         simSums[item]+=sim
-
-  # Create the normalized list
-  '''
-  rankings = []
-  for item, total in totals.items():
-    res1 = total/simSums[item]
-    res2 = item
-    rankings.append( (res1, res2) )
-  '''
   #Rankings es una lista de tuplas que contiene (Puntuacion pa recomendar el item, item).
   rankings=[(total/simSums[item],item) for item,total in totals.items()]
 
@@ -98,9 +61,10 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
   rankings.reverse()
   return rankings
 
-
-def returnDiccMatchesAlready(lista, dicc):
-  res= {}
-  for puntuacion, usuario in lista:
-    res[usuario] = dicc[usuario]
-  return res
+#####Puntuaciones contiene un diccionario tal que: {Usuarios, {Productos, Valoracion del usuario}}
+'''
+puntuaciones = generar_puntuaciones()
+print("PUNTUACIONES")
+print(list(puntuaciones.items()))
+print("\n---------------------------------\n")
+print(getRecommendations(puntuaciones,'Migue')'''

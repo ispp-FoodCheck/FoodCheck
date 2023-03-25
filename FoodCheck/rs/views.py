@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from rs.rs import get_all_valorations_correct_format, getRecommendations
@@ -9,6 +9,8 @@ from Web.models import Producto
 @login_required(login_url='authentication:login')
 def recommendations(request):
     user = request.user
+    if not es_premium(user):
+        return redirect("/checkout")
     
     ratings = get_all_valorations_correct_format()
     recs = [recs_rating[1] for recs_rating in getRecommendations(ratings,user)]
