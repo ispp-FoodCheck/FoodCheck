@@ -68,7 +68,6 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
   for other in prefs:
     if other==person: continue # don't compare me to myself
     sim=similarity(prefs,person,other)
-    print("Similaridad de ", person, " con ", other, ": ", sim)
     
     if sim<=0: continue# ignore scores of zero or lower
     for item in prefs[other]:
@@ -105,26 +104,3 @@ def returnDiccMatchesAlready(lista, dicc):
   for puntuacion, usuario in lista:
     res[usuario] = dicc[usuario]
   return res
-
-#####Puntuaciones contiene un diccionario tal que: {Usuarios, {Productos, Valoracion del usuario}}
-puntuaciones = generar_puntuaciones()
-print("PUNTUACIONES")
-print(list(puntuaciones.items()))
-print("\n---------------------------------\n")
-#resultado = topMatches(puntuaciones, list(puntuaciones)[0])
-#print(resultado)
-#print("\n---------------------------------\n")
-#dicc_reducido = returnDiccMatchesAlready(resultado,puntuaciones)
-#sim_pearson(puntuaciones,'migue','chema')
-#print(dicc_reducido)
-#print("\n---------------------------------\n")
-print(getRecommendations(puntuaciones,'Migue'))
-print("\n---------------------------------\n")
-#Traza de test:
-#Primero: Ver qué usuarios se pareecen más a un usuario dado (Migue)
-#Segundo: Tenemos los usuarios que se parecen más a Migue.
-#Tercero: Ahora tenemos que encontrar los productos que esos Usuarios   #Qué pasa si los usuarios si los
-
-
-migueclara = {'Migue': {'Lechuga': 5, 'Mandarina': 2, 'Melon': 3, 'Pan de centeno': 5, 'Carne pollo': 1, 'Pera': 3, 'Platano': 5, 'Kiwi': 5},'Clara': {'Pizza barbacoa': 1, 'Platano': 4, 'Mandarina': 1, 'Bollicao': 1, 'Nocilla': 4, 'Carne pollo': 0, 'Arroz': 4, 'Chocoflakes': 3}}
-print("Puntuacion: ",sim_pearson(migueclara, 'Migue', 'Clara'))
