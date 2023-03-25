@@ -2684,8 +2684,7 @@ textarea.form-control-lg {
   border-top: 0.3em solid transparent;
   border-right: 0;
   border-bottom: 0.3em solid transparent;
-  border-left: 0.3em solid; 
-  vertical-align: 0; }
+  border-left: 0.3em solid; }
 
 .dropend .dropdown-toggle:empty::after {
   margin-left: 0; }
@@ -2711,8 +2710,7 @@ textarea.form-control-lg {
   content: "";
   border-top: 0.3em solid transparent;
   border-right: 0.3em solid;
-  border-bottom: 0.3em solid transparent; 
-  vertical-align: 0; }
+  border-bottom: 0.3em solid transparent; }
 
 .dropstart .dropdown-toggle:empty::after {
   margin-left: 0; }

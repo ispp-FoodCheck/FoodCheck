@@ -5,7 +5,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 const throttle = _interopDefault(require('lodash.throttle'));
 const debounce = _interopDefault(require('lodash.debounce'));
 
-const callback = function callback() {};
+let callback = function callback() {};
 
 function containsAOSNode(nodes) {
   let i = void 0,
@@ -318,7 +318,7 @@ const getPositionIn = function getPositionIn(el, defaultOffset, defaultAnchorPla
     finalEl = document.querySelectorAll(anchor)[0];
   }
 
-  const triggerPoint = offset(finalEl).top - windowHeight;
+  let triggerPoint = offset(finalEl).top - windowHeight;
 
   switch (anchorPlacement) {
     case 'top-bottom':
@@ -429,7 +429,7 @@ let initialized = false;
 /**
  * Default options
  */
-const options = {
+let options = {
   offset: 120,
   delay: 0,
   easing: 'ease',
