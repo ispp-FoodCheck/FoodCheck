@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from rs.rs import get_all_valorations_correct_format, getRecommendations
 from payments.utils import es_premium
 from rs.generador import generar_puntuaciones
+from Web.models import Producto
 
 @login_required(login_url='authentication:login')
 def recommendations(request):
@@ -12,14 +13,3 @@ def recommendations(request):
     ratings = get_all_valorations_correct_format()
     recs = [recs_rating[1] for recs_rating in getRecommendations(ratings,user)]
     return render(request, "recommendations.html", {'products':recs})
-
-
-
-
-            
-
-
-
-    
-
-    

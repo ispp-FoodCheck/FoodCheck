@@ -152,8 +152,19 @@
                   Recetas
                 </a>
               </li>
+              {% now "Y-m-d" as now %}
+              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/recommendations"
+                  aria-label="Brings you to the recommendations products"
+                >
+                  Discover
+                </a>
+              </li>
+              {%endif%}
               
-
               {% if user.is_authenticated %}
                 {% if user.is_staff %}
                 <li class="nav-item">
@@ -195,16 +206,16 @@
                   class="nav-link nav-link-colors"
                   href="  "
                   >
-                {{user.username}}
-                {% if user.is_staff %}
-                <i class="fa-solid fa-toolbox"></i> 
-                {%endif%}
-                {% now "Y-m-d" as now %}
-                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
-                <i class="fa-solid fa-star"></i>
-                {%endif%}
-                </a>
-              </li>
+                  {{user.username}}
+                  {% if user.is_staff %}
+                  <i class="fa-solid fa-toolbox"></i> 
+                  {%endif%}
+                  {% now "Y-m-d" as now %}
+                  {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+                  <i class="fa-solid fa-star"></i>
+                  {%endif%}
+                  </a>
+                </li>
 
               {% if user.is_authenticated %}
               <li class="nav-item">
