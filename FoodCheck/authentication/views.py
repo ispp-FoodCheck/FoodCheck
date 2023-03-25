@@ -51,5 +51,6 @@ def login_view(request):
 
 
 @user_not_authenticated
+@require_safe
 def terms_view(request):
     return render(request, 'terms.html')
