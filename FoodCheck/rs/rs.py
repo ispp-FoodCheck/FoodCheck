@@ -1,6 +1,5 @@
 from math import sqrt
 from Web.models import User, Valoracion
-from .generador import generar_puntuaciones
 
 
 def get_all_valorations_correct_format():
@@ -34,9 +33,9 @@ def sim_pearson(prefs, p1, p2):
 
 #FUNCION PRINCIPAL: Hace recomendaciones de items a un usuario usando un RS Colaborativo basado en Usuarios.
 #RS basado en memoria. 
-def getRecommendations(prefs,person,similarity=sim_pearson):
+def get_recommendations(prefs,person,similarity=sim_pearson):
   totals={}
-  simSums={}
+  sim_sums={}
   for other in prefs:
     if other==person: continue # don't compare me to myself
     sim=similarity(prefs,person,other)
@@ -50,10 +49,10 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
         totals.setdefault(item,0)
         totals[item]+=prefs[other][item]*sim
         # Sum of similarities #SimSums es un diccionario que contiene: clave: item. Valor: suma acumulativa del coeficiente de sim entre usuario y usuario objetivo.
-        simSums.setdefault(item,0)
-        simSums[item]+=sim
+        sim_sums.setdefault(item,0)
+        sim_sums[item]+=sim
   #Rankings es una lista de tuplas que contiene (Puntuacion pa recomendar el item, item).
-  rankings=[(total/simSums[item],item) for item,total in totals.items()]
+  rankings=[(total/sim_sums[item],item) for item,total in totals.items()]
 
   #Pone primero la puntuación porque por defecto se ordena en base la primer elemento de la tupla.
   #Se ordena de menor a mayor y por eso se hace el reverse.
