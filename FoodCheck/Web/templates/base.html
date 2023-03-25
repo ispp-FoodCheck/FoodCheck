@@ -38,7 +38,7 @@
     <style>
       /* inter-300 - latin */
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 300;
         font-display: swap;
@@ -52,7 +52,7 @@
       }
 
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 500;
         font-display: swap;
@@ -66,7 +66,7 @@
       }
 
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 700;
         font-display: swap;
@@ -83,11 +83,13 @@
     {% block head %}{% endblock %}
     <title>{% block title %}FoodCheck{% endblock %}</title>
 
+
     <header>
       <nav
         id="navScroll"
         class="navbar navbar-expand-lg navbar-light fixed-top navbar-colors scrolled shadow-sm scrolled-custom"
         tabindex="0"
+        aria-label="Barra de navegación principal"   
       >
         <div class="container">
           {% if user.is_authenticated %}
@@ -209,6 +211,7 @@
                 </a>
               </li>
 
+
               {% if user.is_authenticated %}
               <li class="nav-item">
                 <a
@@ -227,7 +230,9 @@
     </header>
   </head>
 
+
   <body class="pt-custom">
+
 
     <div class="ad">
       <a id="ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/">

@@ -14,13 +14,16 @@ from django.core import serializers
 import json
 
 
+# Create your views here.
+@require_safe
+
 def landing_page(request):
     context = {
 
     }
     return render(request, "landing.html", context)
 
-
+@require_safe
 def index(request):
     vegano_selected = False
     numero_pagina = request.POST.get('page') or 1
@@ -41,7 +44,6 @@ def index(request):
     if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
-
     if palabra_buscador != None:
         lista_producto = lista_producto.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(palabra_buscador.lower()))
