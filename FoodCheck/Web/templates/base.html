@@ -152,6 +152,60 @@
                   Recetas
                 </a>
               </li>
+              
+
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="/report/list"
+                    aria-label="Brings you to the recipes"
+                  >
+                    Reportes
+                  </a>
+                </li>
+                {% endif %}
+            </ul>
+            {% else %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 dropdown-menu-end">
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="{% url 'authentication:login' %}"
+                    aria-label="Brings you to the frontpage"
+                  >
+                    Iniciar sesión
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link nav-link-colors"
+                    href="{% url 'authentication:register' %}"
+                    aria-label="Brings you to the frontpage"
+                  >
+                    Registrarse
+                  </a>
+                </li>
+              </ul>
+            {% endif %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="  "
+                  >
+                {{user.username}}
+                {% if user.is_staff %}
+                <i class="fa-solid fa-toolbox"></i> 
+                {%endif%}
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+                <i class="fa-solid fa-star"></i>
+                {%endif%}
+                </a>
+              </li>
+
               {% if user.is_authenticated %}
               <li class="nav-item">
                 <a
@@ -162,26 +216,7 @@
                   Cerrar sesión
                 </a>
               </li>
-              {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="{% url 'authentication:login' %}"
-                  aria-label="Brings you to the frontpage"
-                >
-                  Iniciar sesión
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="{% url 'authentication:register' %}"
-                  aria-label="Brings you to the frontpage"
-                >
-                  Registrarse
-                </a>
-              </li>
-              {% endif %}
+              {%endif%}
             </ul>
           </div>
         </div>
@@ -211,7 +246,7 @@
     </div>
 
 
-    <main>{% block body %}{% endblock %}</main>
+    <main class='wrapper'>{% block body %}{% endblock %}</main>
 
     <div class="container my-5">
       <footer
@@ -292,5 +327,6 @@
       }
 
     </script>
+    
   </body>
 </html>
