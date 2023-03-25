@@ -2,15 +2,25 @@ nav.navbar {
   background-color: #07644A;
 }
 
+.dropdown-item{
+  background-color: #07644A;
+  color: #c4d0ce !important;
+}
+.dropdown-item:hover {
+  background-color: #097859 !important;}
+.dropdown-menu{
+  background-color: #07644A;
+}
 footer {
   padding-top: 1%;
+  
 }
 
 html, body {
-  height: 80%; 
+  height: 85%; 
 }
 .wrapper {
-  min-height: 80%; 
+  min-height: 85%; 
 }
 
 #enviar { 
