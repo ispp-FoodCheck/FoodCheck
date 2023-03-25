@@ -51,3 +51,6 @@
     align-items: center;
 
 }
+
+@media (min-width: 768px) { #comentarios { width: 50%; } }
+

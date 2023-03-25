@@ -3,3 +3,4 @@ stripe
 Unidecode
 Pillow
 django-resized
+spanlp

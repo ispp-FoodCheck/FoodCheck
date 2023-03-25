@@ -20,7 +20,7 @@
         <div class="row mt-2">
             <form method="POST" action="{% url 'recipes_list' %}" id="filter-form">
                 {% csrf_token %}
-                <input class="search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
+                <input class="form-control search" id="busqueda" name="busqueda" placeholder="Busca tu receta"
                     value="{{ busqueda }}" />
                 {% now "Y-m-d" as now %}
                 {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
@@ -28,13 +28,13 @@
                 <br>
                 <h4> ¡Busca recetas por productos! <h4>
                 <div class="mt-3">
-                    <input type="text" id="buscadorProductosReceta" onkeyup="buscarProductos()" placeholder="Añadir producto">
+                    <input type="text" class="form-control" id="buscadorProductosReceta" onkeyup="buscarProductos()" placeholder="Añadir producto">
                     <ul id="productoRecetas"></ul>
                     <br>
                     <h5>Lista actual de ingredientes:</h5>
     
                     <!-- Selector múltiple, similar al de Django admin (usando tecla Ctrl)-->
-                    <select class="form-select-lg" name="productos[]" id="productos" multiple></select>
+                    <select class="form-select-lg form-control" name="productos[]" id="productos" multiple></select>
                 </div>
                 {%endif%}
                 <div class="row-md-2">

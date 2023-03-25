@@ -1,43 +1,100 @@
-.row{
-    margin-top: 5%;
+.row {
+  margin-top: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
 h1.title {
-    color: black;
-    font-weight: bold;
-    letter-spacing: -2px;
+  color: black;
+  font-weight: bold;
+  letter-spacing: -2px;
 }
 
 .card {
-    margin-top: 5%;
-    padding: 5%;
+  margin-top: 5%;
+  padding: 5%;
 
-    border-radius: 5%;
-    border-width: 0px;
+  border-radius: 5%;
+  border-width: 0px;
 
-    color: black;
-    font-size: large;
-    text-align: left;
-    letter-spacing: -0.5px;
+  color: black;
+  font-size: large;
+  text-align: left;
+  letter-spacing: -0.5px;
+
+  padding: 5%;
+
+  border-radius: 15px;
+  border-style: solid;
+  border-color: black;
+  padding: 10px;
+  box-shadow: 5px 5px 10px gray;
 }
 
 .nombre {
-    font-size: 110%;
-    font-weight: bold;
+  font-size: 110%;
+  font-weight: bold;
 }
 
-.marca{
-    font-weight: bold;
-    text-transform: uppercase;
+.marca {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .supermercados {
-    color: #545454;
-    font-weight: normal;
+  color: #545454;
+  font-weight: normal;
 }
 
 #boton-paginacion {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
+#canal_de_texto {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+}
 
+#formulario-completo {
+  background-color: bisque;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: black;
+  padding: 10px;
+  box-shadow: 0px 0px 10px gray;
+}
+
+.card p {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: black;
+}
+
+.card p.nombre {
+  font-weight: bold;
+}
+
+.card p.supermercados {
+  color: gray;
+}
+
+.imagen-checkbox {
+  width: 100px; 
+  height: 100px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover; /* recorta la imagen de fondo para que llene el contenedor */
+  border: 2px solid transparent;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + .imagen-checkbox {
+  border-color: #07644a;
+  border-radius: 15px;
+}
