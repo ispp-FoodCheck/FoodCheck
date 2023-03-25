@@ -147,6 +147,12 @@ def shopping_list(request):
 
     return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado})
 
+@require_safe
+@login_required(login_url='authentication:login')
+def premium(request):
+
+    return render(request,"premium.html")
+
 ########### REPORTE DE ALERGENOS ###########
 def is_superuser(user):
     return user.is_superuser
