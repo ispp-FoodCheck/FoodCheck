@@ -5,13 +5,13 @@ from .models import Producto, Valoracion, Usuario, Alergeno
 from django.views.decorators.http import require_safe
 
 # Create your views here.
-
+@require_safe
 def landing_page(request):
     context = {
 
     }
     return render(request, "landing.html", context)
-
+@require_safe
 def index(request):
     alergenos_selected = request.GET.getlist('alergenos')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
@@ -32,7 +32,7 @@ def index(request):
     objetos_de_la_pagina= paginacion.get_page(numero_pagina)
     diccionario={'lista_producto':objetos_de_la_pagina,'alergenos_available':alergenos,'alergenos_selected':alergenos_selected,'vegano_selected':vegano_selected}
     return render(request,"products.html",diccionario)
-
+@require_safe
 def product_details(request, id_producto):
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]

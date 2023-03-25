@@ -38,7 +38,7 @@
     <style>
       /* inter-300 - latin */
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 300;
         font-display: swap;
@@ -51,8 +51,9 @@
         /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
       }
       
+      
 <body>
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg" aria-label="Main Navigation">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="{% static 'imgs/logo_final.png' %}" alt="Bootstrap" width="70" height="65">
@@ -65,7 +66,7 @@
   </nav>
 
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 500;
         font-display: swap;
@@ -80,7 +81,7 @@
 
 
       @font-face {
-        font-family: "Inter";
+        font-family: "Inter", sans-serif;
         font-style: normal;
         font-weight: 700;
         font-display: swap;
@@ -103,6 +104,7 @@
       id="navScroll"
       class="navbar navbar-expand-lg navbar-light sticky-top navbar-colors scrolled shadow-sm scrolled-custom"
       tabindex="0"
+      aria-label="Barra de navegación principal"
     >
       <div class="container">
         <a class="navbar-brand pe-4 fs-4" href="/home">
@@ -136,6 +138,7 @@
       id="navScroll"
       class="navbar navbar-expand-lg navbar-light fixed-top navbar-colors"
       tabindex="0"
+      aria-label="Barra de navegación principal"
     >
       <div class="container">
         <a class="navbar-brand pe-4 fs-4" href="/">
