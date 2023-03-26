@@ -2,53 +2,32 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/products.css' %}">
+<link rel="stylesheet" href="{% static 'css/premium.css' %}">
 {% endblock %}
 
 {% block body %}
 
-<style>
-    h1 {text-align: center;}
-    p {text-align: justify;}
-    .button {background-color: #07644A;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            width: 50%;
-            cursor: pointer;
-            border-radius: 10px;
-            position: relative;}
-</style>
+    <div class = "container">
+    <div class="col-md-6 center-block" style="align-items: center;">
+        <div class="card mb-4">
+            <h1 class=""><b>Plan premium</b></h1>
 
-<div class="row">
-    <div class="col-lg"></div>
-    <div class="col-lg">
-        <div class="card" style="align-items: center;">
-            <h1><b>Plan premium</b></h1>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p style="margin-left: 30px;"><img src="/static/imgs/check.ico" alt="error" style="width:3%; margin-right: 5px;"><b>
+            <p><img src="/static/imgs/check.ico" alt="error" style="width:3%;"><b>
                 <b>Modo Discover:</b> Sistema de recomendación que <b>predice qué puede gustarte</b> según los productos que ya haya marcado el usuario como usados por el.</b>
             </p>
-            <p style="margin-left: 30px;"><img src="/static/imgs/check.ico" alt="error" style="width:3%; margin-right: 5px;"><b>
+            <p><img src="/static/imgs/check.ico" alt="error" style="width:3%;"><b>
                 Poder visualizar <b>todas las recetas que estén públicas por tiempo indefinido</b>. Además tendrá la opción de <b>añadir todos los productos de la receta a su lista.</b>
             </b></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <button class="button" type="button" >Hacerse premium!</button>
+            
+            {% now "Y-m-d" as now %}
+            {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
+            <a href="/checkout" class="btn btn-primary" style="border-radius: 12px;">Hacerse premium!</a>
+            {% else %}
+            <h5>¡Ya eres premium!</h5>
+            {% endif %}
         </div>
     </div>
-    <div class="col-lg"></div>
-</div>
+
+    </div>
 
 {% endblock %}

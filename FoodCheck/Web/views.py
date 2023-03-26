@@ -17,6 +17,7 @@ import json
 from django.db.models import Avg
 
 from spanlp.palabrota import Palabrota
+from payments.utils import es_premium
 
 # Create your views here.
 @require_safe
@@ -27,7 +28,7 @@ def landing_page(request):
     }
     return render(request, "landing.html", context)
 
-@require_safe
+@require_http_methods(["GET", "POST"])
 def index(request):
     vegano_selected = False
     numero_pagina = request.POST.get('page') or 1
@@ -35,6 +36,9 @@ def index(request):
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
     palabra_buscador = request.POST.get('canal_de_texto') or ''
     print(alergenos_selected)
+
+    if request.user.is_authenticated:
+        es_premium(request.user)
 
     if request.user.is_authenticated and len(alergenos_selected) == 0 and request.method == 'GET':
         alergenos_selected = list(
@@ -63,6 +67,9 @@ def index(request):
 
 @login_required(login_url='authentication:login')
 def product_details(request, id_producto):
+    if request.user.is_authenticated:
+        es_premium(request.user)
+
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
     valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
@@ -117,13 +124,13 @@ def product_details(request, id_producto):
 
 @login_required(login_url='authentication:login')
 def allergen_report(request, id_producto):
-    
+   
     formulario = AllergenReportForm()
     producto = Producto.objects.filter(id=id_producto)[0]
-    alergenos = Alergeno.objects.all()
+    alergenos = Alergeno.objects.filter(imagen__isnull=False)
 
     if request.method == 'POST':
-        formulario =AllergenReportForm(request.POST)
+        formulario = AllergenReportForm(request.POST)
         if formulario.is_valid():
             usuario = request.user
             
@@ -140,6 +147,7 @@ def allergen_report(request, id_producto):
     context = {
         'formulario': formulario,
         'alergenos': alergenos,
+        'producto': producto
     }
 
     return render(request, 'allergen_report.html', context)
@@ -176,6 +184,8 @@ def shopping_list(request):
 @require_safe
 @login_required(login_url='authentication:login')
 def premium(request):
+    if request.user.is_authenticated:
+        es_premium(request.user)
 
     return render(request,"premium.html")
 
@@ -242,6 +252,9 @@ def my_recipes(request):
 @login_required(login_url='authentication:login')
 @require_safe
 def unlock_recipes(request):
+    if request.user.is_authenticated:
+        es_premium(request.user)
+
     numero_pagina = request.POST.get('page') or 1
     lista_recetas_desbloquedas = RecetasDesbloqueadasUsuario.objects.filter(usuario=request.user)
 
@@ -318,8 +331,13 @@ def recipes_list(request):
 @require_http_methods(["GET", "POST"])
 def recipe_details(request, id_receta):
 
+
     receta = Receta.objects.filter(id=id_receta)[0]
     usuario = request.user
+    
+    if request.user.is_authenticated:
+        es_premium(request.user)
+
     receta_ya_desbloqueada = RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta).exists()
 
     distinct_alergenos = set()

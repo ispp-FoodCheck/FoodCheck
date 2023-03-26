@@ -2,8 +2,7 @@
 
 {% block head %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -29,26 +28,20 @@ select {
 <br>
 <br>
 <div class="text-center container">
-    <form style="width: 100%;" id="alForm" method="post" action="">
-        <h1>Reporte de alergenos</h1>
-        {% csrf_token %}
-        <div>
-            <select class="mi-selector" multiple="multiple" name="allergens" id="allergens">
-            {% for alergeno in alergenos %}
-                <option value="{{alergeno.id}}">{{alergeno.nombre}}</option>
-            {% endfor %}
-            </select>
-        </div>
-        <button style="margin-top: 10px;" type="sumbit" id="regBtn">Enviar</button>
-    </form>
+    <div id="formulario-completo" class="mb-3">
+        <form style="width: 100%;" id="filter-form" method="POST" action="">
+            <h1>Reporte de alergenos</h1>
+            {% csrf_token %}
+            <div>
+                {% for alergeno in alergenos %}
+                    <input type="checkbox" name="allergens" value="{{ alergeno.id }}" id="alergeno_{{ alergeno.nombre }}">
+                    <label for="alergeno_{{ alergeno.nombre }}" class="imagen-checkbox" style="background-image: url('{{alergeno.imagen}}'); ">
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="submit" id="regBtn">Enviar</button>
+        </form>
+    </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('.mi-selector').select2({
-            placeholder: 'Escoge los elérgenos',
-            allowClear: false
-        });
-    });
-</script>
 {% endblock %}

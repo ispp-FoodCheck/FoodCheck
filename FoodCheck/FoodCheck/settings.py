@@ -17,6 +17,8 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -24,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5sa#mw4_)092h$zgg(jj-b!-*7$$j!%et=c*r^j527ka&oub&6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -133,5 +135,5 @@ STATIC_URL = 'static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Web', 'media')
 MEDIA_URL = 'media/'
 
-STRIPE_API_KEY = 'YOUR_STRIPE_API_KEY_HERE'
-STRIPE_PRICE_ID = 'YOUR_STRIPE_PRICE_ID_HERE'
+STRIPE_API_KEY = config('STRIPE_API_KEY')
+STRIPE_PRICE_ID = config('STRIPE_PRICE_ID')

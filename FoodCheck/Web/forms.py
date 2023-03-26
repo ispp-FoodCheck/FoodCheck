@@ -8,7 +8,7 @@ class RegistroForm(UserCreationForm):
     email = forms.EmailField()
     telefono = forms.CharField(max_length=20)
     alergenos = forms.ModelMultipleChoiceField(
-        queryset=Alergeno.objects.all(),
+        queryset=Alergeno.objects.filter(imagen__isnull=False),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )

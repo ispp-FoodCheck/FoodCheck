@@ -11,7 +11,7 @@ from .decorators import user_not_authenticated
 
 @user_not_authenticated
 def registro(request):
-    alergenos = Alergeno.objects.all()
+    alergenos = Alergeno.objects.filter(imagen__isnull=False)
     if request.method == 'POST':
         form = forms.RegistroForm(request.POST)
         if form.is_valid():

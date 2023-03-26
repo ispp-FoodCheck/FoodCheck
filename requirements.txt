@@ -5,3 +5,4 @@ Unidecode
 Pillow
 django-resized
 spanlp
+python-decouple

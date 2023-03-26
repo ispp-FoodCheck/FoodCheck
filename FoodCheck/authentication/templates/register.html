@@ -2,7 +2,7 @@
 
 {% block head %}
     {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 
@@ -88,7 +88,7 @@ input.invalid {
 </style>
 
 <div class="container text-center">
-  <form style="width: 100%;" method="post" id="regForm" action="">
+  <form style="width: 100%;" method="POST" id="regForm" action="{% url 'authentication:register' %}">
     {% include 'messaging.html' %}
     <h1>Registro</h1>
     {% csrf_token %}
@@ -102,21 +102,22 @@ input.invalid {
       <p><input type="password" id="password2" name="password2" placeholder="Repetir contraseña..." oninput="this.className = ''"></p>
     </div>
     <div class="tab">Información dietética:
-      <select name="es_vegano" id="es_vegano" oninput="this.className = ''">
+      <select style="margin-bottom: 1%;" name="es_vegano" id="es_vegano" oninput="this.className = ''">
         <option value="False">Dieta omnívora</option>
         <option value="True">Dieta vegana</option>
       </select>
     </div>
     <div class="tab">Información alergénica:
-      <select class="mi-selector" multiple="multiple" name="alergenos" id="alergenos" oninput="this.className = ''">
-        {% for alergeno in alergenos %}
-          <option value="{{alergeno.id}}">{{alergeno.nombre}}</option>
-        {% endfor %}
-      </select>
+      <br>
+      {% for alergeno in alergenos %}
+        <input type="checkbox" name="alergenos" value="{{ alergeno.id }}" id="alergeno_{{ alergeno.nombre }}">
+        <label for="alergeno_{{ alergeno.nombre }}" class="imagen-checkbox" style="background-image: url('{{alergeno.imagen}}'); ">
+        </label>
+      {% endfor %}
     </div>
     <div class="tab">
       <div class="terms">
-        <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+        <input style="display: inline;" class="form-check-input" type="checkbox" id="terms" name="terms" required>
         <label for="terms" style="margin-left: 15px;">Acepto los <a href="../terms" target="_blank">términos y condiciones de privacidad.</a></label>
       </div>
     </div>
@@ -124,7 +125,7 @@ input.invalid {
       <div style="float:right;">
         <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
         <button type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
-        <button type="sumbit" id="regBtn">Registrarse</button>
+        <button type="submit" id="regBtn">Registrarse</button>
       </div>
     </div>
 
@@ -138,14 +139,6 @@ input.invalid {
 </div>
 
 <script>
-  $(document).ready(function() {
-    $('.mi-selector').select2({
-      placeholder: 'Escoge tus elérgenos',
-      allowClear: true
-    });
-});
-</script>
-<script>
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
 
@@ -153,7 +146,6 @@ function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
-  console.log(n);
   // ... and fix the Previous/Next buttons:
   switch (n) {
     case 0:

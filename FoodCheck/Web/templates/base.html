@@ -132,6 +132,9 @@
                   Home
                 </a>
               </li>
+              {% if user.is_authenticated %}
+              {% now "Y-m-d" as now %}
+              {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -141,47 +144,17 @@
                   Plan premium
                 </a>
               </li>
-
+              {% endif %}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
-                  href="/my_recipes"
-                  aria-label="Brings you to your recipes"
-                >
-                  Mis recetas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="/unlock_recipes"
-                  aria-label="Brings you to your unlocked recipes"
-                >
-                  Recetas desbloqueadas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="/recipes"
-                  aria-label="Brings you to the recipes"
-                >
-                  Recetas
-                </a>
-              </li>
-              {% if user.is_authenticated %}
-
-
-              {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="{% url 'authentication:login' %}"
+                  href="/shopping_list"
                   aria-label="Brings you to the frontpage"
                 >
                   Mi lista
                 </a>
               </li>
+
               <li class="nav-item dropdown">
                 <a class="nav-link nav-link-colors dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Recetas
@@ -192,9 +165,30 @@
                   <li><a class="dropdown-item" href="/recipes" aria-label="Brings you to the recipes">Todas las recetas</a></li>
                 </ul>
               </li>
+
+              {% else %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/recipes"
+                  aria-label="Recetas"
+                >
+                  Recetas
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="{% url 'authentication:login' %}"
+                  aria-label="Brings you to the frontpage"
+                >
+                  Mi lista
+                </a>
+              </li>
               {% endif %}
               {% now "Y-m-d" as now %}
-              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now|date %}
+              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
               <li class="nav-item">
                 <a class="nav-link nav-link-colors" href="/recommendations"
                   aria-label="Brings you to the recommendations products">
@@ -203,7 +197,7 @@
               </li>
               {%endif%}
              
-  {% if user.is_staff %}
+            {% if user.is_staff %}
               <li class="nav-item">
                 <a class="nav-link nav-link-colors" href="/report/list" aria-label="Brings you to the recipes">
                   Reportes
@@ -282,34 +276,35 @@
 
   <body class="pt-custom">
 
-
-    <div class="ad">
-      <a
-        id="ad-href"
-        href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/"
-      >
-        <img
-          id="side-ad"
-          class="ad-img"
-          src="{% static 'imgs/publicidad/publi2.png' %}"
-          alt="anuncio lateral"
-        />
-      </a>
-    </div>
-
-  <div class="container-fluid" id="mobile-ad-container">
-    <div class="ad-mobile">
-      <div class="col-12">
-        <span class="cerrar"
-          onclick="document.getElementById('mobile-ad-container').style.display='none'">&times;</span>
-        <a id="wide-ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/">
-          <img id='wide-ad' class="ad-img-mobile img-fluid" src="{% static 'imgs/publicidad/publi2-wide.png' %}"
-            alt="barra de anuncio">
+    {% now "Y-m-d" as now %}
+    {% if user.premiumHasta == None or user.premiumHasta|date:"Y-m-d" < now|date %}
+      <div class="ad">
+        <a
+          id="ad-href"
+          href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/"
+        >
+          <img
+            id="side-ad"
+            class="ad-img"
+            src="{% static 'imgs/publicidad/publi2.png' %}"
+            alt="anuncio lateral"
+          />
         </a>
+      </div>    
+    
+      <div class="container-fluid" id="mobile-ad-container">
+        <div class="ad-mobile">
+          <div class="col-12">
+            <span class="cerrar"
+              onclick="document.getElementById('mobile-ad-container').style.display='none'">&times;</span>
+            <a id="wide-ad-href" href="https://store.steampowered.com/app/1179080/FAITH_The_Unholy_Trinity/">
+              <img id='wide-ad' class="ad-img-mobile img-fluid" src="{% static 'imgs/publicidad/publi2-wide.png' %}"
+                alt="barra de anuncio">
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
+    {% endif %}
 
   <main class='wrapper'>{% block body %}{% endblock %}</main>
 

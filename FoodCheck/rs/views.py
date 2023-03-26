@@ -12,7 +12,7 @@ def recommendations(request):
     user = request.user
     if not es_premium(user):
         return redirect("/checkout")
-    
+
     ratings = get_all_valorations_correct_format()
     recs = [recs_rating[1] for recs_rating in get_recommendations(ratings,user)]
     return render(request, "recommendations.html", {'products':recs})
