@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<style>
+    .text-center {
+  text-align: center;
+}
+
+.container {
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #333;
+  color: #000000;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+caption {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+<br>
+<br>
+<br>
+<br>
+<div class="text-center">
+    <h1>Lista de reportes</h1>
+</div>
+<div class="container">
+    <table id="myTable" style="border-radius: 10px;" class="table table-striped">
+        <caption>Lista de reportes</caption>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Producto</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reporte in reportes %}
+                <tr onclick="window.location='/report/{{reporte.id}}';">
+                    <td>{{ reporte.usuario }}</td>
+                    <td>{{ reporte.producto }}</td>
+                    <td>{{ reporte.fecha }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block head %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/recipes.css' %}" />
+{% endblock %} {% block body %}
+
+<div class="container text-center">
+    <div class="row text-center">
+        <h1 class="title">Mostrando sus recetas</h1>
+
+        <a href="/recipes/new"><button class="btn btn-primary mb-3" id="enviar" disabled="true"
+                style="border-radius: 12px;">Nueva receta</button></a>
+
+        {% if recetas.items|length != 0 %}
+        {% include 'recipe_template.html' %}
+        {% else %}
+        <h1>Aún no tiene ninguna receta</h1>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

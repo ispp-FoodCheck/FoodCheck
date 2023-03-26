@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<style>
+#alForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  padding: 40px;
+  width: 100%;
+  min-width: 300px;
+}
+
+select {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  border: 1px solid #aaaaaa;
+}
+</style>
+
+<br>
+<br>
+<br>
+<div class="text-center container">
+    <div id="formulario-completo" class="mb-3">
+        <form style="width: 100%;" id="filter-form" method="POST" action="">
+            <h1>Reporte de alergenos</h1>
+            {% csrf_token %}
+            <div>
+                {% for alergeno in alergenos %}
+                    <input type="checkbox" name="allergens" value="{{ alergeno.id }}" id="alergeno_{{ alergeno.nombre }}">
+                    <label for="alergeno_{{ alergeno.nombre }}" class="imagen-checkbox" style="background-image: url('{{alergeno.imagen}}'); ">
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="submit" id="regBtn">Enviar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

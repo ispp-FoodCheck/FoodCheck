@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/premium.css' %}">
+{% endblock %}
+
+{% block body %}
+
+    <div class = "container">
+    <div class="col-md-6 center-block" style="align-items: center;">
+        <div class="card mb-4">
+            <h1 class=""><b>Plan premium</b></h1>
+
+            <p><img src="/static/imgs/check.ico" alt="error" style="width:3%;"><b>
+                <b>Modo Discover:</b> Sistema de recomendación que <b>predice qué puede gustarte</b> según los productos que ya haya marcado el usuario como usados por el.</b>
+            </p>
+            <p><img src="/static/imgs/check.ico" alt="error" style="width:3%;"><b>
+                Poder visualizar <b>todas las recetas que estén públicas por tiempo indefinido</b>. Además tendrá la opción de <b>añadir todos los productos de la receta a su lista.</b>
+            </b></p>
+            
+            {% now "Y-m-d" as now %}
+            {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
+            <a href="/checkout" class="btn btn-primary" style="border-radius: 12px;">Hacerse premium!</a>
+            {% else %}
+            <h5>¡Ya eres premium!</h5>
+            {% endif %}
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}

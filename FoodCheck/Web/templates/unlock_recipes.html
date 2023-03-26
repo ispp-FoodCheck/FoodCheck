@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block head %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/recipes.css' %}" />
+{% endblock %} {% block body %}
+
+<div class="container">
+    <div class = "row text-center">
+        <h1 class="title">Mostrando sus recetas desbloqueadas</h1>
+
+        {% if recetas.items|length != 0%}
+        {% include 'recipe_template.html' %}
+        {% endif %}
+        
+        {% if recetas.items|length == 0%}
+            <a>Aún no tiene ninguna receta desbloqueada</h1>
+        {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+</div>

@@ -2,8 +2,25 @@ nav.navbar {
   background-color: #07644A;
 }
 
+.dropdown-item{
+  background-color: #07644A;
+  color: #c4d0ce !important;
+}
+.dropdown-item:hover {
+  background-color: #097859 !important;}
+.dropdown-menu{
+  background-color: #07644A;
+}
 footer {
   padding-top: 1%;
+  
+}
+
+html, body {
+  height: 85%; 
+}
+.wrapper {
+  min-height: 85%; 
 }
 
 #enviar { 
@@ -25,4 +42,72 @@ footer {
 .col-md-4 card mt-1, .col-md-4 card mt-2 {
   width: 50%;
   padding: 20px;
+}
+
+.pt-custom {
+  padding-top: 5em !important;
+}
+
+.ad {
+  display: flex;
+  position: fixed;
+  top: 15%;
+  right: 0.05%;
+  padding: 20px;
+}
+
+.ad-img {
+  display: flex;
+	width: 150px !important;
+	height: 500px !important;
+}
+
+.ad-mobile {
+  display: none;
+}
+
+.ad-img-mobile {
+  display: none;
+}
+
+@media (max-width: 1450px) {
+  .ad {
+    display: none;
+  }
+
+  .ad-img {
+    display: none;
+  }
+
+  .ad-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .cerrar {
+    position: relative;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .cerrar:hover {
+    cursor: pointer;
+  }
+
+  .ad-img-mobile {
+    display: flex;
+    width: 100%;
+    object-fit: cover;
+  }
+
+
+
+
+
 }

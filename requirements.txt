@@ -1,1 +1,8 @@
 mysqlclient
+Unicode
+stripe
+Unidecode
+Pillow
+django-resized
+spanlp
+python-decouple
