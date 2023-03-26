@@ -23,6 +23,7 @@
     
     <div class="row text-center">
         <h1 class="title">Tu lista de la compra</h1>
+        {% if productos_agrupados_por_supermercado.items|length != 0 %}
             {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
         <b class="supermercado">{{ supermercado }}</b>
         <div class="row">
@@ -54,6 +55,9 @@
             {% endfor %}
         </div>
         {% endfor %}
+        {% else %}
+        <p>Aun no hay productos</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

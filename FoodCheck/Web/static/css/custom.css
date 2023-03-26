@@ -3,15 +3,11 @@
 }
 
 .nav-link-colors {
-  color: #8c9f9c !important;
+  color: #dedede !important;
 }
 
 .nav-link-colors:hover {
   color: #ffffff !important;
-}
-
-.nav-link-colors:hover {
-  color: #ffffff;
 }
 
 body {

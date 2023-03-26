@@ -18,13 +18,16 @@ from django.db.models import Avg
 
 from spanlp.palabrota import Palabrota
 
+# Create your views here.
+@require_safe
+
 def landing_page(request):
     context = {
 
     }
     return render(request, "landing.html", context)
 
-
+@require_safe
 def index(request):
     vegano_selected = False
     numero_pagina = request.POST.get('page') or 1
@@ -45,7 +48,6 @@ def index(request):
     if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
-
     if palabra_buscador != None:
         lista_producto = lista_producto.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(palabra_buscador.lower()))
@@ -65,13 +67,14 @@ def product_details(request, id_producto):
     prod = Producto.objects.filter(id=id_producto)[0]
     valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
+    
     lista_recetas = Receta.objects.filter(productos__id=id_producto)
     diccionario_recetas_alergenos = dict()
 
     for receta in lista_recetas:
         distinct_alergenos = set()
-        for prod in receta.productos.all():
-            for alergeno in prod.alergenos.all():
+        for productoReceta in receta.productos.all():
+            for alergeno in productoReceta.alergenos.all():
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
@@ -117,6 +120,7 @@ def allergen_report(request, id_producto):
     
     formulario = AllergenReportForm()
     producto = Producto.objects.filter(id=id_producto)[0]
+    alergenos = Alergeno.objects.all()
 
     if request.method == 'POST':
         formulario =AllergenReportForm(request.POST)
@@ -135,6 +139,7 @@ def allergen_report(request, id_producto):
 
     context = {
         'formulario': formulario,
+        'alergenos': alergenos,
     }
 
     return render(request, 'allergen_report.html', context)
@@ -165,7 +170,15 @@ def shopping_list(request):
         num_productos = len(productos)
         num_productos_por_supermercado[supermercado] = num_productos
 
+
     return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado, "num_productos_por_supermercado":num_productos_por_supermercado})
+
+@require_safe
+@login_required(login_url='authentication:login')
+def premium(request):
+
+    return render(request,"premium.html")
+
 ########### REPORTE DE ALERGENOS ###########
 def is_superuser(user):
     return user.is_superuser
@@ -332,9 +345,14 @@ def recipe_details(request, id_receta):
             usuario.save()
             #Sacar la fecha de dentro de una semana
             fecha_desbloqueo = date.today() + timedelta(days=7)
-            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.get_or_create(usuario=usuario, receta=receta)
-            receta_desbloqueada[0].fechaBloqueo = fecha_desbloqueo
-            receta_desbloqueada[0].save()
+            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)
+            if(receta_desbloqueada.exists()==False):
+                receta_desbloqueada = RecetasDesbloqueadasUsuario(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+                receta_desbloqueada.save()
+            else:
+                relacion = receta_desbloqueada.get()
+                relacion.fechaBloqueo = fecha_desbloqueo
+                relacion.save()
             ingredientes_visibles = True
             context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
@@ -432,6 +450,7 @@ def get_products_endpoint(request):
         productos = []
     data = json.dumps(list(map(lambda x: (x.id, x.nombre, x.imagen), productos)))
     return HttpResponse(data, content_type='application/json')
+
 
 @login_required
 def delete_valoracion(request, valoracion_id):

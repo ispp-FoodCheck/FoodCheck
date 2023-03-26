@@ -1,4 +1,5 @@
 mysqlclient
+Unicode
 stripe
 Unidecode
 Pillow
