@@ -6,6 +6,7 @@ from django_resized import ResizedImageField
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django import forms
+from django.db.models import Avg
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,6 +37,10 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
+    
+    def actualizar_valoracion_media(self):
+        self.valoracionMedia = Valoracion.objects.filter(producto=self).aggregate(Avg('puntuacion'))['puntuacion__avg'] or 0.0
+        self.save()
     
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)

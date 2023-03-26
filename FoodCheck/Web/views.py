@@ -5,14 +5,18 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_safe, require_http_methods
 from django.db.models.functions import Lower
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto
 from django.http import JsonResponse
 from django.core import serializers
 import json
+from django.db.models import Avg
 
+from spanlp.palabrota import Palabrota
 
 # Create your views here.
 @require_safe
@@ -80,6 +84,15 @@ def product_details(request, id_producto):
         comentario = request.POST.get('cuerpo')
         if (comentario == ''):
             comentario = None
+
+        palabrota = Palabrota(censor_char="*")
+
+        print(comentario)
+
+        comentario = palabrota.censor(input_text=comentario)
+
+        print(comentario)
+        
         puntuacion = request.POST.get('valoracion')
 
         if (puntuacion != ''):
@@ -97,6 +110,10 @@ def product_details(request, id_producto):
             
     diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
     return render(request, "product_details.html", diccionario)
+
+
+
+
 
 @login_required(login_url='authentication:login')
 def allergen_report(request, id_producto):
@@ -146,8 +163,15 @@ def shopping_list(request):
                 productos_agrupados_por_supermercado[supermercado] = productos_supermercado
             else:
                 productos_agrupados_por_supermercado[supermercado] = set([producto])
+    
+    # Obtener el número de productos por supermercado
+    num_productos_por_supermercado = {}
+    for supermercado, productos in productos_agrupados_por_supermercado.items():
+        num_productos = len(productos)
+        num_productos_por_supermercado[supermercado] = num_productos
 
-    return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado})
+
+    return render(request,"shopping_list.html", {"productos_agrupados_por_supermercado":productos_agrupados_por_supermercado, "num_productos_por_supermercado":num_productos_por_supermercado})
 
 @require_safe
 @login_required(login_url='authentication:login')
@@ -426,3 +450,24 @@ def get_products_endpoint(request):
         productos = []
     data = json.dumps(list(map(lambda x: (x.id, x.nombre, x.imagen), productos)))
     return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def delete_valoracion(request, valoracion_id):
+    valoracion = get_object_or_404(Valoracion, id=valoracion_id)
+    post_id = ""
+    if request.method == 'POST':
+        if request.user == valoracion.usuario:
+            post_id = valoracion.producto.id
+            valoracion.delete()
+            producto = Producto.objects.get(pk=post_id)
+            producto.actualizar_valoracion_media()
+            messages.success(request, 'Valoracion deleted successfully.')
+            return redirect('product_details', id_producto=post_id)
+        else:
+            messages.error(request, 'You are not authorized to delete this valoracion.')
+            return redirect('product_details', id_producto=post_id)
+    else:
+        return redirect('product_details', id_producto=post_id)
+    
+

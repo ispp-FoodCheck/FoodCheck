@@ -6,13 +6,26 @@
 {% endblock %}
 
 {% block body %}
+  
+<div class="row">
+    <div class="col-md-3">
+        <div class="tarjeta-usuario">
+            <ul style="list-style-type: none;">
+                {% for supermercado, numero in num_productos_por_supermercado.items %}
+                <li><b>Numero de Productos del {{supermercado}}: {{numero}}</b></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>  
+</div>
 
 <div class="container text-center">
+    
     <div class="row text-center">
         <h1 class="title">Tu lista de la compra</h1>
         {% if productos_agrupados_por_supermercado.items|length != 0 %}
             {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
-        <p class="supermercado">{{ supermercado }}</p>
+        <b class="supermercado">{{ supermercado }}</b>
         <div class="row">
             {% for producto in productos %}
             <div class="col-md-4">
