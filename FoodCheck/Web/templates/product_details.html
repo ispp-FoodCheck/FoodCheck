@@ -18,7 +18,7 @@
             <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
             <p class="ingredientes">{{producto.ingredientes}}</p>
             <p>{{producto.supermercados.all|join:"/"}}</p>
-            <a class="btn btn-primary mb-3" href="/product/{{producto.id}}/add">Añadir a lista de la compra</a>
+            <a class="btn btn-primary mb-3" href="/product/{{producto.id}}/add" style="border-radius: 12px;">Añadir a lista de la compra</a>
             <div class="row">
                 <div class="col">
                     {% for alergeno in producto.alergenos.all%}
@@ -27,12 +27,13 @@
                     {% endif %}
                 {% endfor %}
                 {% if producto.vegano == 1 %}
-                        <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:20%">
+                        <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:35%">
                 {% endif %}
                 </div>
             </div>
             {% if not ha_reportado %}
-                <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button">Reportar alérgenos</a>
+                </br>
+                <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button" style="border-radius: 12px;">Reportar alérgenos</a>
             {% else%}
                 <p>Su reporte está siendo revisado</p>
             {% endif %}

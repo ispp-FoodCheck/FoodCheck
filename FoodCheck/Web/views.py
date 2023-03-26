@@ -321,9 +321,14 @@ def recipe_details(request, id_receta):
             usuario.save()
             #Sacar la fecha de dentro de una semana
             fecha_desbloqueo = date.today() + timedelta(days=7)
-            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.get_or_create(usuario=usuario, receta=receta)
-            receta_desbloqueada[0].fechaBloqueo = fecha_desbloqueo
-            receta_desbloqueada[0].save()
+            receta_desbloqueada = RecetasDesbloqueadasUsuario.objects.filter(usuario=usuario, receta=receta)
+            if(receta_desbloqueada.exists()==False):
+                receta_desbloqueada = RecetasDesbloqueadasUsuario(usuario=usuario, receta=receta, fechaBloqueo=fecha_desbloqueo)
+                receta_desbloqueada.save()
+            else:
+                relacion = receta_desbloqueada.get()
+                relacion.fechaBloqueo = fecha_desbloqueo
+                relacion.save()
             ingredientes_visibles = True
             context = {'receta': receta, 'alergenos': distinct_alergenos, 'visible': ingredientes_visibles, 'desbloqueado_disponible': puede_desbloquear, 'puede_publicar': receta.propietario==usuario and receta.publica==False}
 
