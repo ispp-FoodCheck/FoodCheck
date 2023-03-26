@@ -76,6 +76,15 @@ input.invalid {
 .closebtn:hover {
   color: black;
 }
+
+
+.terms{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
 
 <div class="container text-center">
@@ -106,7 +115,10 @@ input.invalid {
       </select>
     </div>
     <div class="tab">
-      <h2>Bienvenido!</h2>
+      <div class="terms">
+        <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+        <label for="terms" style="margin-left: 15px;">Acepto los <a href="../terms" target="_blank">términos y condiciones de privacidad.</a></label>
+      </div>
     </div>
     <div style="overflow:auto;">
       <div style="float:right;">
@@ -141,18 +153,28 @@ function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
+  console.log(n);
   // ... and fix the Previous/Next buttons:
-  if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
-    document.getElementById("regBtn").style.display = "none";
-  } else {
+  switch (n) {
+    case 0:
+      document.getElementById("prevBtn").style.display = "none";
+      document.getElementById("regBtn").style.display = "none";
+      break;
+    case 1:
+      document.getElementById("prevBtn").style.display = "inline";
+      document.getElementById("nextBtn").style.display = "inline";
+      document.getElementById("regBtn").style.display = "none";
+      break;
+    case 2:
+      document.getElementById("prevBtn").style.display = "inline";
+      document.getElementById("nextBtn").style.display = "inline";
+      document.getElementById("regBtn").style.display = "none";
+      break;
+    case 3:
     document.getElementById("prevBtn").style.display = "inline";
-  }
-  if (n == (x.length - 1)) {
     document.getElementById("nextBtn").style.display = "none";
     document.getElementById("regBtn").style.display = "inline";
-  } else {
-    document.getElementById("nextBtn").innerHTML = "Siguiente";
+    break;
   }
   // ... and run a function that displays the correct step indicator:
   fixStepIndicator(n)
