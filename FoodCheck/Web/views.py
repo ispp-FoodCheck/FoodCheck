@@ -436,6 +436,7 @@ def get_products_endpoint(request):
 @login_required
 def delete_valoracion(request, valoracion_id):
     valoracion = get_object_or_404(Valoracion, id=valoracion_id)
+    post_id = ""
     if request.method == 'POST':
         if request.user == valoracion.usuario:
             post_id = valoracion.producto.id
