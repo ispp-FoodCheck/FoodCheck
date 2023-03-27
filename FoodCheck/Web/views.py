@@ -92,13 +92,14 @@ def product_details(request, id_producto):
         if (comentario == ''):
             comentario = None
 
-        palabrota = Palabrota(censor_char="*")
+        else:
+            palabrota = Palabrota(censor_char="*")
 
-        print(comentario)
+            print(comentario)
 
-        comentario = palabrota.censor(input_text=comentario)
+            comentario = palabrota.censor(input_text=comentario)
 
-        print(comentario)
+            print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
