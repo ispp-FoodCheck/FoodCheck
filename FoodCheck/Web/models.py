@@ -37,6 +37,9 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre + ' - ' + self.marca
+
+    def __gt__(self, other):
+        return self.nombre > other.nombre
     
     def actualizar_valoracion_media(self):
         self.valoracionMedia = Valoracion.objects.filter(producto=self).aggregate(Avg('puntuacion'))['puntuacion__avg'] or 0.0

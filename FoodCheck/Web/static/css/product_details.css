@@ -29,6 +29,8 @@
 
 .nombre {
     font-size: 125%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .marca{
