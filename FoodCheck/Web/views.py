@@ -95,11 +95,8 @@ def product_details(request, id_producto):
 
         palabrota = Palabrota(censor_char="*")
 
-        print(comentario)
-
         comentario = palabrota.censor(input_text=comentario)
 
-        print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
