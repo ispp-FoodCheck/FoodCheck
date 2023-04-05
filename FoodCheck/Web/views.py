@@ -65,7 +65,7 @@ def index(request):
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
     diccionario = {'lista_producto': objetos_de_la_pagina, 'alergenos_available': alergenos, 'alergenos_selected': alergenos_selected,
-                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador, 'supermercados':supermercados}
+                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador, 'supermercados':supermercados, 'supermercados_selected':supermercados_selected}
     return render(request, "products.html", diccionario)
 
 
