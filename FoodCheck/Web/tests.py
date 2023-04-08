@@ -14,9 +14,10 @@ class RecipeSearchTest(TestCase):
             c.execute(f.read())
 
     def setUp(self):
+        self.URL_RECIPES = '/recipes'
         self.client = Client()
-        fechaPremium = date.today() + timedelta(days=1)
-        self.user = User.objects.create_user(username='user1', password='123', telefono='123456789', premiumHasta=fechaPremium)
+        fecha_premium = date.today() + timedelta(days=1)
+        self.user = User.objects.create_user(username='user1', password='123', telefono='123456789', premiumHasta=fecha_premium)
 
         with open(os.path.join('Web','static','imgs','lechuga.png'),'rb') as f:
             imagen = SimpleUploadedFile(name='lechuga.png', content=f.read(), content_type='image/png')
@@ -42,24 +43,24 @@ class RecipeSearchTest(TestCase):
 
     def test_search_all_recipes(self):
         self.login()
-        response = self.client.post('/recipes/', {})
+        response = self.client.post(self.URL_RECIPES, {})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Receta1')
         self.assertContains(response, 'Receta2')
 
-        response = self.client.get('/recipes/')
+        response = self.client.get(self.URL_RECIPES)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Receta1')
         self.assertContains(response, 'Receta2')
 
     def test_search_recipe(self):
         self.login()
-        response = self.client.post('/recipes/', {'busqueda':'Receta1'})
+        response = self.client.post(self.URL_RECIPES, {'busqueda':'Receta1'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Receta1')
         self.assertNotContains(response, 'Receta2')
        
-        response = self.client.post('/recipes/', {'busqueda':'1111111'})
+        response = self.client.post(self.URL_RECIPES, {'busqueda':'1111111'})
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Receta1')
         self.assertNotContains(response, 'Receta2')
@@ -68,18 +69,18 @@ class RecipeSearchTest(TestCase):
         self.login()
 
         producto1 = Producto.objects.all()[11]
-        response = self.client.post('/recipes/', {'productos[]':[producto1.id]})
+        response = self.client.post(self.URL_RECIPES, {'productos[]':[producto1.id]})
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Receta1')
         self.assertContains(response, 'Receta2')
 
         producto2 = Producto.objects.all()[5]
-        response = self.client.post('/recipes/', {'productos[]':[producto2.id]})
+        response = self.client.post(self.URL_RECIPES, {'productos[]':[producto2.id]})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Receta1')
         self.assertNotContains(response, 'Receta2')
 
-        response = self.client.post('/recipes/', {'productos[]':[producto1.id, producto2.id]})
+        response = self.client.post(self.URL_RECIPES, {'productos[]':[producto1.id, producto2.id]})
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Receta1')
         self.assertNotContains(response, 'Receta2')
