@@ -1,0 +1,833 @@
+1680973815258	geckodriver	INFO	Listening on 127.0.0.1:56019
+1680973818350	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56020" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilerQ16TR"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680973818561	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680973818566	Marionette	INFO	Listening on port 56034
+Read port: 56034
+WebDriver BiDi listening on ws://127.0.0.1:56020
+1680973818673	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilerQ16TR\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56020/devtools/browser/d8d496e4-2746-43b9-940d-dafb3d71cd20
+1680973819859	Marionette	INFO	Stopped listening on port 56034
+Dynamically enable window occlusion 1
+console.error: (new NetworkError("Network error: TypeError: NetworkError: Network request failed", "resource://services-settings/RemoteSettingsClient.jsm", 116))
+1680973836414	geckodriver	INFO	Listening on 127.0.0.1:56055
+1680973839465	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56056" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileyZ483P"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680973839659	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680973839662	Marionette	INFO	Listening on port 56063
+Read port: 56063
+WebDriver BiDi listening on ws://127.0.0.1:56056
+1680973839762	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileyZ483P\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56056/devtools/browser/34094830-010a-4003-ac8c-370f3950a6e3
+1680973840836	Marionette	INFO	Stopped listening on port 56063
+Dynamically enable window occlusion 1
+console.error: (new NetworkError("Network error: TypeError: NetworkError: Network request failed", "resource://services-settings/RemoteSettingsClient.jsm", 116))
+1680974096715	geckodriver	INFO	Listening on 127.0.0.1:56106
+1680974099759	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56107" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileOxrSh9"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974099952	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974099955	Marionette	INFO	Listening on port 56114
+Read port: 56114
+WebDriver BiDi listening on ws://127.0.0.1:56107
+1680974100055	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileOxrSh9\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56107/devtools/browser/f677328c-e9e6-4113-8c8f-841c6cbfde23
+1680974105502	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'uninitialized'.
+1680974105584	Marionette	INFO	Stopped listening on port 56114
+Dynamically enable window occlusion 1
+1680974125830	geckodriver	INFO	Listening on 127.0.0.1:56153
+1680974128891	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56154" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileRMEK9k"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974129086	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974129089	Marionette	INFO	Listening on port 56161
+Read port: 56161
+WebDriver BiDi listening on ws://127.0.0.1:56154
+1680974129189	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileRMEK9k\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56154/devtools/browser/8a802285-2679-48e0-9f2b-9d37e968acc6
+1680974134603	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'uninitialized'.
+1680974134677	Marionette	INFO	Stopped listening on port 56161
+Dynamically enable window occlusion 1
+1680974250418	geckodriver	INFO	Listening on 127.0.0.1:56206
+1680974253465	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56207" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileACn9FR"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974253656	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974253659	Marionette	INFO	Listening on port 56214
+Read port: 56214
+WebDriver BiDi listening on ws://127.0.0.1:56207
+1680974253758	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileACn9FR\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56207/devtools/browser/6c2679bc-b90e-4a4c-96c8-f4b9b4c86066
+1680974259241	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'uninitialized'.
+1680974259315	Marionette	INFO	Stopped listening on port 56214
+Dynamically enable window occlusion 1
+1680974290788	geckodriver	INFO	Listening on 127.0.0.1:56255
+1680974293803	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56256" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile3GoPvc"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974293994	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974293997	Marionette	INFO	Listening on port 56263
+Read port: 56263
+WebDriver BiDi listening on ws://127.0.0.1:56256
+1680974294099	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile3GoPvc\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56256/devtools/browser/7d8ce1e6-b073-4ab7-b9b5-37456735c469
+1680974299390	Marionette	WARN	Ignoring event 'pageshow' because document has an invalid readyState of 'uninitialized'.
+1680974299465	Marionette	INFO	Stopped listening on port 56263
+Dynamically enable window occlusion 1
+1680974450375	geckodriver	INFO	Listening on 127.0.0.1:56315
+1680974453449	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56316" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileqN1qpe"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974453641	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974453645	Marionette	INFO	Listening on port 56323
+Read port: 56323
+WebDriver BiDi listening on ws://127.0.0.1:56316
+1680974453745	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileqN1qpe\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56316/devtools/browser/3a8c6887-e21d-4aff-b58d-66535e19483b
+1680974454910	Marionette	INFO	Stopped listening on port 56323
+Dynamically enable window occlusion 1
+console.error: services.settings: 
+  main/query-stripping Signature failed  TypeError: NetworkError: Network request failed
+console.error: (new NetworkError("Network error: TypeError: NetworkError: Network request failed", "resource://services-settings/RemoteSettingsClient.jsm", 116))
+1680974491449	geckodriver	INFO	Listening on 127.0.0.1:56347
+1680974494510	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56348" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile08HqHT"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974494702	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974494706	Marionette	INFO	Listening on port 56356
+Read port: 56356
+WebDriver BiDi listening on ws://127.0.0.1:56348
+1680974494804	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile08HqHT\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56348/devtools/browser/dcf06f49-fc52-4eae-bd8a-ace7614a4a1e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56346."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56346."
+1680974507007	Marionette	INFO	Stopped listening on port 56356
+Dynamically enable window occlusion 1
+1680974581823	geckodriver	INFO	Listening on 127.0.0.1:56412
+1680974584885	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56413" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileHnl6qK"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974585079	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974585082	Marionette	INFO	Listening on port 56420
+Read port: 56420
+WebDriver BiDi listening on ws://127.0.0.1:56413
+1680974585180	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileHnl6qK\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56413/devtools/browser/02f55fd4-b3e2-4b00-85f0-83ce8bbbb0e4
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56411."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56411."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680974587907	Marionette	INFO	Stopped listening on port 56420
+Dynamically enable window occlusion 1
+1680974850415	geckodriver	INFO	Listening on 127.0.0.1:56529
+1680974853449	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56530" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileYwPX2J"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974853644	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974853647	Marionette	INFO	Listening on port 56537
+Read port: 56537
+WebDriver BiDi listening on ws://127.0.0.1:56530
+1680974853749	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileYwPX2J\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56530/devtools/browser/e6eeb2f9-b414-4008-8d85-755cb04ebb64
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56528."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56528."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680974861431	Marionette	INFO	Stopped listening on port 56537
+Dynamically enable window occlusion 1
+1680974892527	geckodriver	INFO	Listening on 127.0.0.1:56591
+1680974895580	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56592" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileiAgk1L"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680974895775	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680974895778	Marionette	INFO	Listening on port 56599
+Read port: 56599
+WebDriver BiDi listening on ws://127.0.0.1:56592
+1680974895877	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileiAgk1L\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56592/devtools/browser/d4d7aab5-2bbc-4e43-a875-fa6d9f23e5e1
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56590."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56590."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680974913735	Marionette	INFO	Stopped listening on port 56599
+Dynamically enable window occlusion 1
+1680975156921	geckodriver	INFO	Listening on 127.0.0.1:56686
+1680975159987	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56687" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilewswCdX"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680975160180	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680975160183	Marionette	INFO	Listening on port 56695
+Read port: 56695
+WebDriver BiDi listening on ws://127.0.0.1:56687
+1680975160281	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilewswCdX\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56687/devtools/browser/8293abc8-56f0-4df3-9aaf-7af342c0f502
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56685."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56685."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680975168292	Marionette	INFO	Stopped listening on port 56695
+Dynamically enable window occlusion 1
+1680975298681	geckodriver	INFO	Listening on 127.0.0.1:56783
+1680975301731	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56784" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileQLOmcj"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680975301923	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680975301927	Marionette	INFO	Listening on port 56793
+Read port: 56793
+WebDriver BiDi listening on ws://127.0.0.1:56784
+1680975302027	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileQLOmcj\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:56784/devtools/browser/d22fd290-6886-4a9c-893d-82bbf47edb2c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56782."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:56782."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680975309858	Marionette	INFO	Stopped listening on port 56793
+Dynamically enable window occlusion 1
+1680975495026	geckodriver	INFO	Listening on 127.0.0.1:57065
+1680975498078	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57066" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilegZR1aW"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680975498270	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680975498273	Marionette	INFO	Listening on port 57075
+Read port: 57075
+WebDriver BiDi listening on ws://127.0.0.1:57066
+1680975498371	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilegZR1aW\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57066/devtools/browser/0c9dbc7e-e4c4-41c6-b191-47be8f615d6b
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57064."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57064."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680975506194	Marionette	INFO	Stopped listening on port 57075
+Dynamically enable window occlusion 1
+1680975776810	geckodriver	INFO	Listening on 127.0.0.1:57311
+1680975779879	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57312" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilecglePi"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680975780071	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680975780074	Marionette	INFO	Listening on port 57321
+Read port: 57321
+WebDriver BiDi listening on ws://127.0.0.1:57312
+1680975780174	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilecglePi\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57312/devtools/browser/b3157525-5a92-4257-ab10-a24df6737d1c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57310."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57310."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680975798219	Marionette	INFO	Stopped listening on port 57321
+Dynamically enable window occlusion 1
+1680975877686	geckodriver	INFO	Listening on 127.0.0.1:57431
+1680975880742	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57432" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile45Whz6"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680975880941	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680975880944	Marionette	INFO	Listening on port 57441
+Read port: 57441
+WebDriver BiDi listening on ws://127.0.0.1:57432
+1680975881046	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile45Whz6\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57432/devtools/browser/c931ebc7-877f-4055-a55d-37031853f761
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57430."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57430."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680975898923	Marionette	INFO	Stopped listening on port 57441
+Dynamically enable window occlusion 1
+1680976109410	geckodriver	INFO	Listening on 127.0.0.1:57617
+1680976112479	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57618" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile7pFPa5"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976112669	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976112672	Marionette	INFO	Listening on port 57626
+Read port: 57626
+WebDriver BiDi listening on ws://127.0.0.1:57618
+1680976112769	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile7pFPa5\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57618/devtools/browser/ba7c64cb-a62d-4408-a147-fa989600b1b3
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57616."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57616."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+Marionette threw an error: TypeError: browsingContext.currentWindowGlobal is null
+getMarionetteCommandsActorProxy/get/<@chrome://remote/content/marionette/actors/MarionetteCommandsParent.sys.mjs:297:29
+observe@resource://gre/modules/AsyncShutdown.sys.mjs:576:16
+
+console.error: "Marionette threw an error: TypeError: browsingContext.currentWindowGlobal is null\ngetMarionetteCommandsActorProxy/get/<@chrome://remote/content/marionette/actors/MarionetteCommandsParent.sys.mjs:297:29\nobserve@resource://gre/modules/AsyncShutdown.sys.mjs:576:16\n"
+1680976128384	Marionette	INFO	Stopped listening on port 57626
+Dynamically enable window occlusion 1
+1680976197998	geckodriver	INFO	Listening on 127.0.0.1:57724
+1680976201073	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57725" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile994qBR"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976201264	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976201267	Marionette	INFO	Listening on port 57736
+Read port: 57736
+WebDriver BiDi listening on ws://127.0.0.1:57725
+1680976201365	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile994qBR\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57725/devtools/browser/32ed135c-66c2-4ba4-a2d0-70d0cab8202c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57723."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57723."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+Marionette threw an error: TypeError: browsingContext.currentWindowGlobal is null
+getMarionetteCommandsActorProxy/get/<@chrome://remote/content/marionette/actors/MarionetteCommandsParent.sys.mjs:297:29
+observe@resource://gre/modules/AsyncShutdown.sys.mjs:576:16
+
+console.error: "Marionette threw an error: TypeError: browsingContext.currentWindowGlobal is null\ngetMarionetteCommandsActorProxy/get/<@chrome://remote/content/marionette/actors/MarionetteCommandsParent.sys.mjs:297:29\nobserve@resource://gre/modules/AsyncShutdown.sys.mjs:576:16\n"
+1680976214553	Marionette	INFO	Stopped listening on port 57736
+Dynamically enable window occlusion 1
+1680976229225	geckodriver	INFO	Listening on 127.0.0.1:57803
+1680976232272	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57804" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilesTrRY1"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976232463	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976232466	Marionette	INFO	Listening on port 57812
+Read port: 57812
+WebDriver BiDi listening on ws://127.0.0.1:57804
+1680976232566	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilesTrRY1\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57804/devtools/browser/26733eed-08ce-4c4e-b662-f6da855cce7e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57802."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57802."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976250569	Marionette	INFO	Stopped listening on port 57812
+Dynamically enable window occlusion 1
+1680976388898	geckodriver	INFO	Listening on 127.0.0.1:57962
+1680976391963	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57963" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofiledUb1dn"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976392157	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976392160	Marionette	INFO	Listening on port 57971
+Read port: 57971
+WebDriver BiDi listening on ws://127.0.0.1:57963
+1680976392258	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofiledUb1dn\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:57963/devtools/browser/29d0b322-a04b-42c9-b929-735d2c12be27
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57961."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:57961."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976400174	Marionette	INFO	Stopped listening on port 57971
+Dynamically enable window occlusion 1
+1680976415840	geckodriver	INFO	Listening on 127.0.0.1:58038
+1680976418886	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58039" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileWG0VTc"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976419078	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976419081	Marionette	INFO	Listening on port 58048
+Read port: 58048
+WebDriver BiDi listening on ws://127.0.0.1:58039
+1680976419179	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileWG0VTc\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58039/devtools/browser/51157bdd-d304-4e6c-900d-3a8da2d0a01d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58037."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58037."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976427010	Marionette	INFO	Stopped listening on port 58048
+Dynamically enable window occlusion 1
+1680976534241	geckodriver	INFO	Listening on 127.0.0.1:58167
+1680976537302	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58168" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile4ukKLQ"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976537498	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976537501	Marionette	INFO	Listening on port 58176
+Read port: 58176
+WebDriver BiDi listening on ws://127.0.0.1:58168
+1680976537600	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile4ukKLQ\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58168/devtools/browser/72d62792-bdbf-4f98-b7e7-40b38b9200f8
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58166."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58166."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976543617	Marionette	INFO	Stopped listening on port 58176
+Dynamically enable window occlusion 1
+1680976632697	geckodriver	INFO	Listening on 127.0.0.1:58296
+1680976635757	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58297" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilePLfzr3"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976635947	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976635950	Marionette	INFO	Listening on port 58308
+Read port: 58308
+WebDriver BiDi listening on ws://127.0.0.1:58297
+1680976636049	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilePLfzr3\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58297/devtools/browser/5a8ed611-27a0-4860-9bcc-a277b4e50297
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58295."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58295."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976638726	Marionette	INFO	Stopped listening on port 58308
+Dynamically enable window occlusion 1
+1680976701224	geckodriver	INFO	Listening on 127.0.0.1:58401
+1680976704295	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58402" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileDcAwFp"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976704488	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976704491	Marionette	INFO	Listening on port 58410
+Read port: 58410
+WebDriver BiDi listening on ws://127.0.0.1:58402
+1680976704589	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileDcAwFp\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58402/devtools/browser/f6291e18-15c0-4b91-a545-b0933deddfa5
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58400."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58400."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976713458	Marionette	INFO	Stopped listening on port 58410
+Dynamically enable window occlusion 1
+1680976748821	geckodriver	INFO	Listening on 127.0.0.1:58488
+1680976751898	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58489" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilec0UyQ0"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976752090	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976752093	Marionette	INFO	Listening on port 58498
+Read port: 58498
+WebDriver BiDi listening on ws://127.0.0.1:58489
+1680976752191	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilec0UyQ0\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58489/devtools/browser/16498eae-248b-47d0-b45f-c5cc59ae62d6
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58487."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58487."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976757454	Marionette	INFO	Stopped listening on port 58498
+Dynamically enable window occlusion 1
+1680976845331	geckodriver	INFO	Listening on 127.0.0.1:58610
+1680976848407	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58611" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileMzdhDO"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680976848612	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680976848616	Marionette	INFO	Listening on port 58619
+Read port: 58619
+WebDriver BiDi listening on ws://127.0.0.1:58611
+1680976848715	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileMzdhDO\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58611/devtools/browser/0384f773-7ecf-4754-a864-0972e1511d44
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58609."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58609."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680976868959	Marionette	INFO	Stopped listening on port 58619
+Dynamically enable window occlusion 1
+1680977096771	geckodriver	INFO	Listening on 127.0.0.1:58826
+1680977099851	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58827" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile5ERLKY"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977100044	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977100048	Marionette	INFO	Listening on port 58837
+Read port: 58837
+WebDriver BiDi listening on ws://127.0.0.1:58827
+1680977100146	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile5ERLKY\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58827/devtools/browser/107cb641-0a92-4b7b-99fe-ef1b1b45ec8d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58825."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58825."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977112233	Marionette	INFO	Stopped listening on port 58837
+Dynamically enable window occlusion 1
+1680977151600	geckodriver	INFO	Listening on 127.0.0.1:58917
+1680977154661	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "58918" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilekTGLjp"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977154854	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977154858	Marionette	INFO	Listening on port 58928
+Read port: 58928
+WebDriver BiDi listening on ws://127.0.0.1:58918
+1680977154958	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilekTGLjp\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:58918/devtools/browser/7bdd0da0-120a-4d1c-8442-01a924463b39
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58916."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:58916."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977166886	Marionette	INFO	Stopped listening on port 58928
+Dynamically enable window occlusion 1
+1680977207754	geckodriver	INFO	Listening on 127.0.0.1:59014
+1680977210802	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59015" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilez4cCFo"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977210997	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977211000	Marionette	INFO	Listening on port 59025
+Read port: 59025
+WebDriver BiDi listening on ws://127.0.0.1:59015
+1680977211100	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilez4cCFo\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59015/devtools/browser/eb107c55-9dbe-4faa-9630-f10e73a2f1dd
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59013."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59013."
+1680977213398	Marionette	INFO	Stopped listening on port 59025
+Dynamically enable window occlusion 1
+1680977230653	geckodriver	INFO	Listening on 127.0.0.1:59077
+1680977233712	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59078" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileS5BIu2"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977233903	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977233906	Marionette	INFO	Listening on port 59086
+Read port: 59086
+WebDriver BiDi listening on ws://127.0.0.1:59078
+1680977234003	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileS5BIu2\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59078/devtools/browser/250d27b4-9470-49cd-a975-75cdde87881f
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59076."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59076."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977247216	Marionette	INFO	Stopped listening on port 59086
+Dynamically enable window occlusion 1
+1680977281492	geckodriver	INFO	Listening on 127.0.0.1:59171
+1680977284566	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59172" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileL0TNik"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977284757	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977284760	Marionette	INFO	Listening on port 59181
+Read port: 59181
+WebDriver BiDi listening on ws://127.0.0.1:59172
+1680977284859	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileL0TNik\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59172/devtools/browser/92d10301-e29d-4b3c-8a43-e1afbca78396
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59170."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59170."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977297926	Marionette	INFO	Stopped listening on port 59181
+Dynamically enable window occlusion 1
+1680977327519	geckodriver	INFO	Listening on 127.0.0.1:59255
+1680977330580	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59256" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile1OGv28"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977330772	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977330775	Marionette	INFO	Listening on port 59265
+Read port: 59265
+WebDriver BiDi listening on ws://127.0.0.1:59256
+1680977330872	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofile1OGv28\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59256/devtools/browser/0e17e758-5fb9-42ca-9046-47c3ff7fadb8
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59254."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59254."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977343757	Marionette	INFO	Stopped listening on port 59265
+Dynamically enable window occlusion 1
+1680977374574	geckodriver	INFO	Listening on 127.0.0.1:59348
+1680977377618	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59349" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVyQk8P"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977377809	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977377812	Marionette	INFO	Listening on port 59357
+Read port: 59357
+WebDriver BiDi listening on ws://127.0.0.1:59349
+1680977377912	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVyQk8P\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59349/devtools/browser/fb8b6979-4db5-404f-9014-14a3dbea5660
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59347."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59347."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977392203	Marionette	INFO	Stopped listening on port 59357
+Dynamically enable window occlusion 1
+1680977423699	geckodriver	INFO	Listening on 127.0.0.1:59438
+1680977426745	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59439" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileXnpRlp"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977426938	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977426942	Marionette	INFO	Listening on port 59448
+Read port: 59448
+WebDriver BiDi listening on ws://127.0.0.1:59439
+1680977427039	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileXnpRlp\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59439/devtools/browser/2cdb5524-6933-44c6-96fd-0b73b084310e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59437."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59437."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977441072	Marionette	INFO	Stopped listening on port 59448
+Dynamically enable window occlusion 1
+1680977495334	geckodriver	INFO	Listening on 127.0.0.1:59543
+1680977498396	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59544" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVtVs9G"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977498588	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977498592	Marionette	INFO	Listening on port 59552
+Read port: 59552
+WebDriver BiDi listening on ws://127.0.0.1:59544
+1680977498690	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVtVs9G\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59544/devtools/browser/7ccf134a-a1d7-40e0-a344-fedba1101461
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59542."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59542."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977512152	Marionette	INFO	Stopped listening on port 59552
+Dynamically enable window occlusion 1
+1680977543267	geckodriver	INFO	Listening on 127.0.0.1:59633
+1680977546329	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59634" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileAqI818"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977546530	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977546533	Marionette	INFO	Listening on port 59643
+Read port: 59643
+WebDriver BiDi listening on ws://127.0.0.1:59634
+1680977546632	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileAqI818\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59634/devtools/browser/7ff5a59a-70ef-481b-9f36-11c5b8081dac
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59632."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59632."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977562264	Marionette	INFO	Stopped listening on port 59643
+Dynamically enable window occlusion 1
+1680977603275	geckodriver	INFO	Listening on 127.0.0.1:59730
+1680977606339	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59731" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilez1ffJL"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977606530	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977606533	Marionette	INFO	Listening on port 59739
+Read port: 59739
+WebDriver BiDi listening on ws://127.0.0.1:59731
+1680977606631	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilez1ffJL\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59731/devtools/browser/3cc10c2e-1a22-494e-9273-478063839470
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59729."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59729."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977625560	Marionette	INFO	Stopped listening on port 59739
+Dynamically enable window occlusion 1
+1680977673102	geckodriver	INFO	Listening on 127.0.0.1:59834
+1680977676155	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59835" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilep6JKsc"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977676347	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977676350	Marionette	INFO	Listening on port 59846
+Read port: 59846
+WebDriver BiDi listening on ws://127.0.0.1:59835
+1680977676448	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilep6JKsc\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59835/devtools/browser/cd65f4d9-f43f-44f2-9a93-f061c2d0bd7d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59833."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59833."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977691273	Marionette	INFO	Stopped listening on port 59846
+Dynamically enable window occlusion 1
+1680977734404	geckodriver	INFO	Listening on 127.0.0.1:59941
+1680977737480	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59942" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileCJhiwI"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977737671	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977737674	Marionette	INFO	Listening on port 59951
+Read port: 59951
+WebDriver BiDi listening on ws://127.0.0.1:59942
+1680977737772	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileCJhiwI\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:59942/devtools/browser/bd71e2f5-2341-47ad-999b-bfbf8ea6cc28
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59940."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:59940."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977748074	Marionette	INFO	Stopped listening on port 59951
+Dynamically enable window occlusion 1
+1680977817140	geckodriver	INFO	Listening on 127.0.0.1:60041
+1680977820187	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60042" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileOorxAp"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977820378	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977820381	Marionette	INFO	Listening on port 60050
+Read port: 60050
+WebDriver BiDi listening on ws://127.0.0.1:60042
+1680977820480	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileOorxAp\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60042/devtools/browser/8384e505-68fd-44d4-829f-48940fdbdf01
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60040."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60040."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977830758	Marionette	INFO	Stopped listening on port 60050
+Dynamically enable window occlusion 1
+1680977882990	geckodriver	INFO	Listening on 127.0.0.1:60134
+1680977886050	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60135" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilejEfg4g"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977886241	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977886244	Marionette	INFO	Listening on port 60143
+Read port: 60143
+WebDriver BiDi listening on ws://127.0.0.1:60135
+1680977886344	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilejEfg4g\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60135/devtools/browser/d3e4a03e-fc5f-4166-84b9-fa04534f3867
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60133."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60133."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977901119	Marionette	INFO	Stopped listening on port 60143
+Dynamically enable window occlusion 1
+1680977917045	geckodriver	INFO	Listening on 127.0.0.1:60211
+1680977920106	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60212" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileE0osyP"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977920298	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977920301	Marionette	INFO	Listening on port 60220
+Read port: 60220
+WebDriver BiDi listening on ws://127.0.0.1:60212
+1680977920399	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileE0osyP\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60212/devtools/browser/8f8e1414-6643-4fd7-8119-61f98a5d6b0d
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60210."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60210."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680977935425	Marionette	INFO	Stopped listening on port 60220
+Dynamically enable window occlusion 1
+1680977995382	geckodriver	INFO	Listening on 127.0.0.1:60318
+1680977998449	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60319" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileEfoJiT"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680977998640	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680977998643	Marionette	INFO	Listening on port 60327
+Read port: 60327
+WebDriver BiDi listening on ws://127.0.0.1:60319
+1680977998742	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileEfoJiT\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60319/devtools/browser/ba9f0332-6303-4bce-a174-16d6740f99a8
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60317."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60317."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680978013599	Marionette	INFO	Stopped listening on port 60327
+Dynamically enable window occlusion 1
+1680978068193	geckodriver	INFO	Listening on 127.0.0.1:60415
+1680978071250	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60416" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileHPDhFH"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680978071440	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680978071443	Marionette	INFO	Listening on port 60425
+Read port: 60425
+WebDriver BiDi listening on ws://127.0.0.1:60416
+1680978071542	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileHPDhFH\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60416/devtools/browser/300ac56a-7641-49ce-a333-db07e6e38a2e
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60414."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60414."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680978086467	Marionette	INFO	Stopped listening on port 60425
+Dynamically enable window occlusion 1
+1680978152484	geckodriver	INFO	Listening on 127.0.0.1:60517
+1680978155544	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60518" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVtobNG"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680978155736	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680978155739	Marionette	INFO	Listening on port 60527
+Read port: 60527
+WebDriver BiDi listening on ws://127.0.0.1:60518
+1680978155839	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileVtobNG\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60518/devtools/browser/03b08e10-3508-44a3-829a-d316272f5f03
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60516."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60516."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680978172666	Marionette	INFO	Stopped listening on port 60527
+Dynamically enable window occlusion 1
+1680978193845	geckodriver	INFO	Listening on 127.0.0.1:60605
+1680978196909	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60606" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileAgUVl6"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680978197100	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680978197103	Marionette	INFO	Listening on port 60615
+Read port: 60615
+WebDriver BiDi listening on ws://127.0.0.1:60606
+1680978197201	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofileAgUVl6\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60606/devtools/browser/1dba149e-889a-44a5-9699-81705eff5699
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60604."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60604."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680978215290	Marionette	INFO	Stopped listening on port 60615
+Dynamically enable window occlusion 1
+1680978256944	geckodriver	INFO	Listening on 127.0.0.1:60704
+1680978259988	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "60705" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilezAxFFx"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1680978260180	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1680978260183	Marionette	INFO	Listening on port 60714
+Read port: 60714
+WebDriver BiDi listening on ws://127.0.0.1:60705
+1680978260281	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\Usuario\\AppData\\Local\\Temp\\rust_mozprofilezAxFFx\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60705/devtools/browser/4b72d53a-193d-4380-ac0f-e40815c338b3
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60703."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://localhost:60703."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+1680978281464	Marionette	INFO	Stopped listening on port 60714
+Dynamically enable window occlusion 1

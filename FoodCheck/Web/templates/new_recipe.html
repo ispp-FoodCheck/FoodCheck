@@ -5,7 +5,7 @@
 <div class="container text-center">
     <div class="row">
         <h1 class="title">Crear una receta</h1>
-        <form method="POST" id="filter-form" enctype="multipart/form-data">
+        <form method="POST" name="mi-formulario" id="filter-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div>
                 <input class="form-control" id="nombre" name="nombre" placeholder="Nombre de la receta"
@@ -26,7 +26,7 @@
                 <h5>Lista actual de ingredientes:</h5>
 
                 <!-- Selector múltiple, similar al de Django admin (usando tecla Ctrl)-->
-                <select class="form-select-lg" name="productos[]" id="productos" multiple></select>
+                <select class="form-select-lg" name="productos[]" id="productos" multiple required></select>
             </div>
 
             <div class="mt-3">
