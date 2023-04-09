@@ -85,7 +85,8 @@ def product_details(request, id_producto):
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
-
+    valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
+    
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
@@ -94,15 +95,13 @@ def product_details(request, id_producto):
 
         palabrota = Palabrota(censor_char="*")
 
-        print(comentario)
-
         comentario = palabrota.censor(input_text=comentario)
 
-        print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
-        if (puntuacion != ''):
+
+        if (puntuacion != '' and len(valoraciones_user)<1):
             usuario = request.user
             valoracion = Valoracion.objects.create(
                 comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
@@ -114,8 +113,10 @@ def product_details(request, id_producto):
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
+
+            valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user)}
     return render(request, "product_details.html", diccionario)
 
 
@@ -410,6 +411,10 @@ def new_recipes(request):
             publica=True
         else:
             publica=False
+
+        if len(productos_escogidos) < 2:
+            messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
+            return redirect('new_recipes')
 
         propietario = request.user
 

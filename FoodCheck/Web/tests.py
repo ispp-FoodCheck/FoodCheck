@@ -121,8 +121,7 @@ class RecipeNegativeSeleniumTest(StaticLiveServerTestCase):
         time.sleep(1)
         self.driver.find_element(By.XPATH, "//form/button").click()
         self.assertEqual(self.driver.current_url,self.live_server_url+'/recipes/new')
-
-
+        
 class RecipeSearchTest(TestCase):
 
     @classmethod
