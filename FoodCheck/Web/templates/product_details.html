@@ -68,24 +68,25 @@
             
           
           
-
-            <form method="POST">
-                {% csrf_token %}
-                <div id="rating-container" class="mb-2">
-                    <!-- Aquí se mostrarán las estrellas de valoración -->
-                </div>
-                <input type="hidden" name="valoracion" id="valoracion" value="0">
-                <div>
-                    <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200"
-                        placeholder="¿Qué opinas del producto?"></textarea>
-                    <div class="d-flex justify-content-end">
-                        <span id="caracteres-actuales">0</span>
-                        <span id="limite-caracteres">/ 200</span>
+            {% if n_valoraciones < 1 %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div id="rating-container" class="mb-2">
+                        <!-- Aquí se mostrarán las estrellas de valoración -->
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true"
-                    style="border-radius: 12px;">Añadir Valoración</button>
-            </form>
+                    <input type="hidden" name="valoracion" id="valoracion" value="0">
+                    <div>
+                        <textarea class="form-control" id="cuerpo" name="cuerpo" maxlength="200"
+                            placeholder="¿Qué opinas del producto?"></textarea>
+                        <div class="d-flex justify-content-end">
+                            <span id="caracteres-actuales">0</span>
+                            <span id="limite-caracteres">/ 200</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" id="enviar" disabled="true"
+                        style="border-radius: 12px;">Añadir Valoración</button>
+                </form>
+            {% endif %}
         </div>
         
     </div>

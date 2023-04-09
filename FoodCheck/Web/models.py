@@ -40,6 +40,14 @@ class Producto(models.Model):
 
     def __gt__(self, other):
         return self.nombre > other.nombre
+
+    def get_popularity(self):
+        usuarios_totales = User.objects.count()
+        usuarios_que_han_valorado = len(Valoracion.objects.filter(producto = self))
+        if usuarios_totales > 0 and usuarios_que_han_valorado > 0:
+            return self.valoracionMedia * (usuarios_totales/usuarios_que_han_valorado)
+        else:
+            return -1
     
     def actualizar_valoracion_media(self):
         self.valoracionMedia = Valoracion.objects.filter(producto=self).aggregate(Avg('puntuacion'))['puntuacion__avg'] or 0.0
@@ -86,6 +94,9 @@ class Valoracion(models.Model):
     comentario = models.CharField(max_length=200, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('usuario', 'producto')
 
     def __str__(self):
         return self.usuario.username + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)

@@ -177,6 +177,15 @@
                   Mi lista
                 </a>
               </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/trending"
+                  aria-label="Shows you the best ranked products in the app"
+                >
+                  Tendencias
+                </a>
+              </li>
               {% endif %}
               {% now "Y-m-d" as now %}
               {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}

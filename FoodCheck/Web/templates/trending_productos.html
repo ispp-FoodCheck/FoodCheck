@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Productos trending</h1>
+<div class="container">
+    <div class="row">
+        {% for producto, porcentaje in products %}
+        <div class="col-md-4">
+            <div class="card">
+                <a href="/product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error"
+                        style="width:100%"></a>
+                <a href="/product/{{producto.id}}/details"><p class="nombre">{{producto.nombre}}</p></a>
+                <p>Valorado con {{producto.valoracionMedia|floatformat:2}}✰ por el {{porcentaje|floatformat:2}}% de los usuarios</p>
+                <p class="marca">Marca: {{producto.marca}}</p>
+                <p class="supermercados">Supermercados: {{producto.supermercados.all|join:"/"}}</p>
+                <div class="row">
+                    <div class="col">
+                        {% for alergeno in producto.alergenos.all%}
+                        {% if alergeno.imagen != None %}
+                        <img src="{{alergeno.imagen}}" alt="error" style="width:20%">
+                        {% endif %}
+                        {% endfor %}
+                        {% if producto.vegano == 1 %}
+                            <img src="/static/imgs/intolerancias/vegano.png" alt="error" style="width:30%">
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
