@@ -10,7 +10,7 @@ from django.contrib import messages
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto, Supermercado
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -34,8 +34,10 @@ def index(request):
     numero_pagina = request.POST.get('page') or 1
     alergenos_selected = request.POST.getlist('alergenos_selected')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
+    supermercados = Supermercado.objects.all()
+    supermercados_selected = request.POST.getlist('supermercados_selected')
     palabra_buscador = request.POST.get('canal_de_texto') or ''
-    print(alergenos_selected)
+    
 
     if request.user.is_authenticated:
         es_premium(request.user)
@@ -45,10 +47,12 @@ def index(request):
             request.user.alergenos.all().values_list('nombre', flat=True))
         if request.user.es_vegano:
             vegano_selected = True
-
-    lista_producto = Producto.objects.exclude(
-        alergenos__nombre__in=alergenos_selected)
-
+            
+    lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)        
+    
+    if len(supermercados_selected) != 0:
+        lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected).filter(supermercados__nombre__in=supermercados_selected)     
+            
     if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
@@ -61,7 +65,7 @@ def index(request):
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
     diccionario = {'lista_producto': objetos_de_la_pagina, 'alergenos_available': alergenos, 'alergenos_selected': alergenos_selected,
-                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador}
+                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador, 'supermercados':supermercados, 'supermercados_selected':supermercados_selected}
     return render(request, "products.html", diccionario)
 
 
