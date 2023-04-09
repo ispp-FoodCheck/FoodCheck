@@ -87,6 +87,9 @@ class Valoracion(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('usuario', 'producto')
+
     def __str__(self):
         return self.usuario.username + ' - ' + self.producto.nombre + ' - ' + str(self.puntuacion)
     
