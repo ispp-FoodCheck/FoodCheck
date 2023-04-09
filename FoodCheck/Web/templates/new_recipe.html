@@ -4,6 +4,7 @@
 
 <div class="container text-center">
     <div class="row">
+        {% include 'messaging.html' %}
         <h1 class="title">Crear una receta</h1>
         <form method="POST" id="filter-form" enctype="multipart/form-data">
             {% csrf_token %}
@@ -22,18 +23,19 @@
 
             <div class="mt-3">
                 <input type="text" id="buscadorProductosReceta" onkeyup="buscarProductos()" placeholder="Añadir producto">
+                <p>(Recuerde añadir un mínimo de 2 productos)</p>
                 <ul id="productoRecetas"></ul>
                 <h5>Lista actual de ingredientes:</h5>
 
                 <!-- Selector múltiple, similar al de Django admin (usando tecla Ctrl)-->
-                <select class="form-select-lg" name="productos[]" id="productos" multiple></select>
+                <select class="form-select-lg" name="productos[]" id="productos" multiple required min="2"></select>
             </div>
 
             <div class="mt-3">
                 <input class="form-control" type="file" accept="image/png, image/gif, image/jpeg" id="receta_imagen" name="receta_imagen" onchange="preview()" required>
                 <p onclick="clearImage()" class="btn btn-primary mt-3" style="border-radius: 12px;">Eliminar imagen</p>
                 <p>Vista previa de la imagen:</p>                
-                <img id="frame" src="" class="img-fluid" style="width: 50%;" alt="error"/>
+                <img id="frame" src="" class="img-fluid" style="width: 50%; display: none;" alt="error"/>
                 <!-- Deberíamos poner un alert o handlear la excepcion si el archivo qeu se sube no es una imagen -->
             </div>
 
@@ -79,10 +81,16 @@
 
 <script>
     function preview() {
-        frame.src = URL.createObjectURL(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file && file.type.match('image.*')) {
+            frame.style.display = 'inline';
+            frame.src = URL.createObjectURL(file);
+        }
     }
+
     function clearImage() {
         document.getElementById('receta_imagen').value = null;
+        frame.style.display = 'none';
         frame.src = "";
     }
 </script>
