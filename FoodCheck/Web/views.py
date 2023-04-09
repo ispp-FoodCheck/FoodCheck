@@ -412,6 +412,10 @@ def new_recipes(request):
         else:
             publica=False
 
+        if len(productos_escogidos) < 2:
+            messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
+            return redirect('new_recipes')
+
         propietario = request.user
 
         # El tiempo de preparación se guarda como campo de texto (solo se usa para visualizar)
