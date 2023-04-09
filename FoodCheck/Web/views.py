@@ -496,5 +496,11 @@ def delete_valoracion(request, valoracion_id):
             return redirect('product_details', id_producto=post_id)
     else:
         return redirect('product_details', id_producto=post_id)
+
+@require_safe
+def trending_productos(request):
+    productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:5]
+    productos = [(p, 100*p.valoracionMedia/p.get_popularity()) for p in productos]
+    return render(request, "trending_productos.html", {'products':productos})
     
 

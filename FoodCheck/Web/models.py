@@ -40,6 +40,14 @@ class Producto(models.Model):
 
     def __gt__(self, other):
         return self.nombre > other.nombre
+
+    def get_popularity(self):
+        usuarios_totales = User.objects.count()
+        usuarios_que_han_valorado = len(Valoracion.objects.filter(producto = self))
+        if usuarios_totales > 0 and usuarios_que_han_valorado > 0:
+            return self.valoracionMedia * (usuarios_totales/usuarios_que_han_valorado)
+        else:
+            return -1
     
     def actualizar_valoracion_media(self):
         self.valoracionMedia = Valoracion.objects.filter(producto=self).aggregate(Avg('puntuacion'))['puntuacion__avg'] or 0.0
