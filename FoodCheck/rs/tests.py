@@ -19,7 +19,7 @@ class RecommendationTestCase(TestCase):
         self.userNoPremium = User.objects.create_user(username='recommendation_no_premium_user', password='123', telefono='123456789')
         self.userPremium = User.objects.create_user(username='recommendation_premium_user', password='123', telefono='123456789', premiumHasta=datetime.date.today() + datetime.timedelta(days=1))
         self.crear_valoraciones_aleatorias()
-        
+
     def tearDown(self):
         pass
     
@@ -45,9 +45,6 @@ class RecommendationTestCase(TestCase):
 
 
     def crear_valoracion(self, usuario, producto, puntuacion, comentario):
-        
-        print("Puntuacion del objeto " + str(producto.nombre) + "antes de ser puntuado: ", producto.valoracionMedia)
-        print("Puntuacion: ", puntuacion)
 
         valoracion = Valoracion.objects.create(comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=producto)
         valoracion.save()
@@ -56,8 +53,6 @@ class RecommendationTestCase(TestCase):
         media = sum(puntuaciones) / len(puntuaciones)
         producto.valoracionMedia = media
         producto.save()
-
-        print("Puntuacion del objeto " + str(producto.nombre) + "despues de ser puntuado: ", producto.valoracionMedia)
 
     def crear_valoraciones_aleatorias(self):
         for user_index in range(0,5):
