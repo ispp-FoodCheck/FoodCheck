@@ -28,7 +28,7 @@
     <div class="row">
         {% include 'messaging.html' %}
         <h1 class="title">Crear una receta</h1>
-        <form method="POST" id="filter-form" enctype="multipart/form-data">
+        <form method="POST" name="mi-formulario" id="filter-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div>
                 <input class="form-control" id="nombre" name="nombre" placeholder="Nombre de la receta"

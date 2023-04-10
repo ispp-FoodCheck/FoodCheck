@@ -72,10 +72,10 @@ class ListaCompra(models.Model):
     
 class Receta(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.TextField(max_length=50)
-    descripcion = models.CharField(max_length=4000)
-    tiempoPreparacion = models.TextField(max_length=70)
-    publica = models.BooleanField()
+    nombre = models.TextField(max_length=50, null=False, blank=False)
+    descripcion = models.CharField(max_length=4000, null=False, blank=False)
+    tiempoPreparacion = models.TextField(max_length=70, null=False, blank=False)
+    publica = models.BooleanField(null=False, blank=False)
     propietario = models.ForeignKey(User, on_delete=models.CASCADE)
     imagen = ResizedImageField(size=[300, 300], upload_to='recetas', null=True)
     productos = models.ManyToManyField(Producto)
