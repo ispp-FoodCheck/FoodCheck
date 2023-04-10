@@ -45,7 +45,7 @@ class Producto(models.Model):
         usuarios_totales = User.objects.count()
         usuarios_que_han_valorado = len(Valoracion.objects.filter(producto = self))
         if usuarios_totales > 0 and usuarios_que_han_valorado > 0:
-            return self.valoracionMedia * (usuarios_totales/usuarios_que_han_valorado)
+            return self.valoracionMedia * (usuarios_que_han_valorado/usuarios_totales)  
         else:
             return -1
     

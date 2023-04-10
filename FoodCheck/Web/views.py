@@ -490,8 +490,12 @@ def delete_valoracion(request, valoracion_id):
 
 @require_safe
 def trending_productos(request):
-    productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:5]
-    productos = [(p, 100*p.valoracionMedia/p.get_popularity()) for p in productos]
-    return render(request, "trending_productos.html", {'products':productos})
+    res = []
+    numero_de_productos_trending = 5 if Producto.objects.count() >= 5 else Producto.objects.count()
+    productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:numero_de_productos_trending]
+    for p in productos:
+        if p.valoracionMedia > 0:
+            res.append((p, 100*p.get_popularity()/p.valoracionMedia))
+    return render(request, "trending_productos.html", {'products':res})
     
 
