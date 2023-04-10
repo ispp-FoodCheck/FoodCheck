@@ -65,6 +65,15 @@ class Test_premium(StaticLiveServerTestCase):
         receta.productos.set(Producto.objects.order_by('?')[4:7])
         receta.save()
 
+        receta = Receta.objects.create(nombre='Receta para desbloqueo > 1',
+                                      descripcion='Probando',
+                                      propietario=usuario,
+                                      publica=True,
+                                      imagen=imagen,
+                                      tiempoPreparacion='2 horas')
+        receta.productos.set(Producto.objects.order_by('?')[4:7])
+        receta.save()
+
       def tearDown(self):
         Receta.objects.all().delete()
         User.objects.all().delete()
@@ -192,7 +201,7 @@ class Test_premium(StaticLiveServerTestCase):
 
             self.selenium.find_element(By.ID, "navbarDropdown").click()
             self.selenium.find_element(By.LINK_TEXT, "Todas las recetas").click()
-            self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div/div/a/img').click() # Hay una única receta
+            self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div/div/a/img').click() #receta 1
 
             compruebaRecetaBloqueada = self.selenium.find_element(By.ID, "boton-desbloqueo")
             self.assertIsNotNone(compruebaRecetaBloqueada)
@@ -208,6 +217,18 @@ class Test_premium(StaticLiveServerTestCase):
 
             redireccionOK = self.selenium.find_element(By.XPATH, "/html/body/main/div[2]/div/h1")
             self.assertIsNotNone(redireccionOK)
+
+            # comprobamos que el user premium puede desbloquear más de una receta:
+
+            self.selenium.find_element(By.ID, "navbarDropdown").click()
+            self.selenium.find_element(By.LINK_TEXT, "Todas las recetas").click()
+            self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div[2]/div/a/img').click() # receta 2
+            self.selenium.find_element(By.ID, "boton-desbloqueo").click()
+            compruebaRecetaDesbloqueada2 = self.selenium.find_element(By.ID, "boton-productos-lista")
+            self.assertIsNotNone(compruebaRecetaDesbloqueada2)
+
+
+            
           
 
 
