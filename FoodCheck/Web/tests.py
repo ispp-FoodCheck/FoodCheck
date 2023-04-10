@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.db import connection
-from Web.models import User
+from Web.models import User, Alergeno
 
 
 ####TESTS LISTADO PRODUCTO####
@@ -40,7 +40,6 @@ class ShoppingListTest(TestCase):
         self.assertEquals(response.context['lista_producto'].number, num_paginas, "La página a la que se ha navegado no es la última página")
 
         # Intentamos navegar a una página que no exista, esto debería llevarnos a la última página
-
         response = self.client.post('/home', {'page': num_paginas + 20})
         self.assertEqual(response.status_code, 200)
         self.assertEquals(response.context['lista_producto'].number, num_paginas, "La página a la que se ha navegado no es la última página")
@@ -71,8 +70,35 @@ class ShoppingListTest(TestCase):
         self.assertEqual(response.status_code, 200)
         num_paginas_sin_filtrar = response.context['total_de_paginas']
 
-        response2 = self.client.post('/home', {'alergenos_selected': ('lacteos')})
-        num_paginas_filtradas = response2.context['total_de_paginas']
+        # Marcamos la casilla de 'lácteos' para filtrarlos de la lista de productos
+        response = self.client.post('/home', {'alergenos_selected': ('lacteos')})
+        num_paginas_filtradas = response.context['total_de_paginas']
 
+        # Comprobamos que la longitud ha variado al filtrar los lácteos
         self.assertNotEqual(num_paginas_sin_filtrar, num_paginas_filtradas)
 
+    def test_busqueda_filtros(self):
+        self.login()
+
+        response = self.client.get('/home')
+        self.assertEqual(response.status_code, 200)
+        
+        # Primero buscaremos 'queso' y comprobamos que encuentra productos
+        response = self.client.post('/home', {'canal_de_texto': 'queso'})
+        self.assertTrue(len(response.context['lista_producto']) != 0, "No se ha encontrado ningún producto")
+
+        # Comprobamos que todos los productos que contienen 'queso' lleven lácteos
+        response = self.client.post('/home', {'canal_de_texto': 'queso'})
+
+        for item in response.context['lista_producto'].object_list:
+            self.assertTrue(item.alergenos.filter(nombre='lacteos').exists())
+
+        # También debería seguir pasando si navegamos a la siguiente página
+        response = self.client.post('/home', {'canal_de_texto': 'queso', 'page': 2})
+
+        for item in response.context['lista_producto'].object_list:
+            self.assertTrue(item.alergenos.filter(nombre='lacteos').exists())
+
+        # Ahora filtraremos la búsqueda de 'queso' por lácteos y comprobamos que la búsqueda no encuentra productos
+        response = self.client.post('/home', {'canal_de_texto': 'queso', 'alergenos_selected':('lacteos')})
+        self.assertTrue(len(response.context['lista_producto']) == 0, "Se ha encontrado un queso")
