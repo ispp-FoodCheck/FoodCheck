@@ -110,7 +110,6 @@ def product_details(request, id_producto):
 
             valoraciones = Valoracion.objects.filter(producto=prod).all()
             puntuaciones = [v.puntuacion for v in valoraciones]
-            puntuaciones.append(int(puntuacion))
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
@@ -495,7 +494,7 @@ def trending_productos(request):
     productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:numero_de_productos_trending]
     for p in productos:
         if p.valoracionMedia > 0:
-            res.append((p, 100*p.get_popularity()/p.valoracionMedia))
+            res.append((p, p.get_popularity()))
     return render(request, "trending_productos.html", {'products':res})
     
 

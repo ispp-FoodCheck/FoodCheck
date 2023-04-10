@@ -23,10 +23,10 @@ class TrendingTest(unittest.TestCase):
         users = []
         for i in range(5):
             #Habría que borrar los users
-            users.append(User.objects.create_user(username='trend15g_t3sti'+str(i), password='123', telefono='12345678'+str(i)))
+            users.append(User.objects.create_user(username='trend1ng_tust'+str(i), password='123', telefono='12345678'+str(i)))
         self.user = users[0]
-        productos_a_valorar = Producto.objects.order_by('?')[:5]
-        self.productos = productos_a_valorar
+        productos_a_valorar = []
+        productos_a_valorar.extend(Producto.objects.order_by('?')[:5])
         # Las valoraciones que voy a aplicar en cada producto
         valoraciones = [
             [1, 3, 4, 1, 3], # Para el primer producto (indice 0) 12
@@ -39,19 +39,24 @@ class TrendingTest(unittest.TestCase):
         
         for indice_producto,valoraciones_producto in enumerate(valoraciones):
             print(indice_producto,valoraciones_producto)
+            product = productos_a_valorar[indice_producto]
             for indice_usuario,valoracion in enumerate(valoraciones_producto):
-                print(indice_usuario)
-                print(valoracion)
+                #print(indice_usuario)
+               # print(valoracion)
+                #print(indice_producto)
                 user = users[indice_usuario]
-                product = productos_a_valorar[indice_producto]
+               # print(product)
                 Valoracion.objects.create(puntuacion = valoracion, usuario = user, producto = product)
-                
-                product.valoracionMedia = sum(valoraciones_producto)/len(valoraciones_producto)
-                product.save()
+               # print(product.valoracionMedia)
+            print(sum(valoraciones_producto)/len(valoraciones_producto))
+            product.valoracionMedia = sum(valoraciones_producto)/len(valoraciones_producto)
+            product.save()
+            print(product.valoracionMedia)
                 
                 
         self.valoraciones = valoraciones
-        sorted(productos_a_valorar, key=lambda p: p.get_popularity(), reverse=True)
+        productos_ordenados = sorted(productos_a_valorar, key=lambda p: p.get_popularity(), reverse=True)
+        self.productos = productos_ordenados
         
     def login(self):
         self.client.force_login(self.user)
@@ -61,8 +66,12 @@ class TrendingTest(unittest.TestCase):
         response = self.client.get('/trending/')
         self.assertIs(response.status_code, 200)
         products_trending = response.context["products"]
+        print(products_trending)
         productos = []
-        #for indice_p,v in enumerate(self.valoraciones):
-        #    productos.append((self.productos[indice_p],100*self.productos[indice_p].get_popularity()/self.productos[indice_p].valoracionMedia))
-        productos = [(self.productos[indice_p],100*self.productos[indice_p].get_popularity()/self.productos[indice_p].valoracionMedia) for indice_p,v in enumerate(self.valoraciones)] 
+        print("DODNE ESTAN LOS 0")
+        for indice_p,v in enumerate(self.valoraciones):
+            print(self.productos[indice_p].valoracionMedia)
+            productos.append((self.productos[indice_p],self.productos[indice_p].get_popularity()))
+        print(productos)
+        #productos = [(self.productos[indice_p],100*self.productos[indice_p].get_popularity()/self.productos[indice_p].valoracionMedia) for indice_p,v in enumerate(self.valoraciones)] 
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
