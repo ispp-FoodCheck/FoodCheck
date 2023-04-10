@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from django.db.models import Avg
+from PIL import Image
 
 from spanlp.palabrota import Palabrota
 from payments.utils import es_premium
@@ -414,6 +415,14 @@ def new_recipes(request):
         if len(productos_escogidos) < 2:
             messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
             return redirect('new_recipes')
+    
+        if img:
+            try:
+                with Image.open(img) as im:
+                    pass
+            except:
+                messages.error(request,'El archivo cargado no es una imagen válida.')
+                return redirect('new_recipes')
 
         propietario = request.user
 
