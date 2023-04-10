@@ -54,3 +54,8 @@ def login_view(request):
 @require_safe
 def terms_view(request):
     return render(request, 'terms.html')
+
+@user_not_authenticated
+@require_safe
+def gdpr_view(request):
+    return render(request, 'gdpr.html')
