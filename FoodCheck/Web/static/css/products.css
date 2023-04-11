@@ -86,11 +86,26 @@ h1.title {
   border: 2px solid transparent;
 }
 
+.supermercado-checkbox {
+  width: 100px; 
+  height: 100px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain; 
+  border: 2px solid transparent;
+  background-position: center;
+}
+
 input[type="checkbox"] {
   display: none;
 }
 
 input[type="checkbox"]:checked + .imagen-checkbox {
+  border-color: #07644a;
+  border-radius: 15px;
+}
+
+input[type="checkbox"]:checked + .supermercado-checkbox {
   border-color: #07644a;
   border-radius: 15px;
 }
