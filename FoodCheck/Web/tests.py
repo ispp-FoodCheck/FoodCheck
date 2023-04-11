@@ -1,3 +1,4 @@
+import time
 from django.test import Client, TestCase
 
 from django.test import TestCase
@@ -38,7 +39,6 @@ class TrendingTest(unittest.TestCase):
        
         
         for indice_producto,valoraciones_producto in enumerate(valoraciones):
-            print(indice_producto,valoraciones_producto)
             product = productos_a_valorar[indice_producto]
             for indice_usuario,valoracion in enumerate(valoraciones_producto):
                 #print(indice_usuario)
@@ -48,15 +48,16 @@ class TrendingTest(unittest.TestCase):
                # print(product)
                 Valoracion.objects.create(puntuacion = valoracion, usuario = user, producto = product)
                # print(product.valoracionMedia)
-            print(sum(valoraciones_producto)/len(valoraciones_producto))
             product.valoracionMedia = sum(valoraciones_producto)/len(valoraciones_producto)
             product.save()
-            print(product.valoracionMedia)
+            
                 
                 
         self.valoraciones = valoraciones
         productos_ordenados = sorted(productos_a_valorar, key=lambda p: p.get_popularity(), reverse=True)
         self.productos = productos_ordenados
+        time.sleep(3)
+        self.login()
         
     def login(self):
         self.client.force_login(self.user)
@@ -66,12 +67,9 @@ class TrendingTest(unittest.TestCase):
         response = self.client.get('/trending/')
         self.assertIs(response.status_code, 200)
         products_trending = response.context["products"]
-        print(products_trending)
+        time.sleep(3)
         productos = []
-        print("DODNE ESTAN LOS 0")
         for indice_p,v in enumerate(self.valoraciones):
             print(self.productos[indice_p].valoracionMedia)
             productos.append((self.productos[indice_p],self.productos[indice_p].get_popularity()))
-        print(productos)
-        #productos = [(self.productos[indice_p],100*self.productos[indice_p].get_popularity()/self.productos[indice_p].valoracionMedia) for indice_p,v in enumerate(self.valoraciones)] 
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
