@@ -151,7 +151,7 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.LINK_TEXT, "Queso tierno mezcla Entrepinares lonchas").click()
             self.selenium.find_element(By.ID, "receta_imagen").send_keys(rutaAbsoluta)
             ActionChains(self.selenium).scroll_by_amount(0,2000).perform()
-            time.sleep(5)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "horas").click()
             self.selenium.find_element(By.ID, "horas").send_keys("05")
             self.selenium.find_element(By.ID, "minutos").click()
@@ -164,8 +164,11 @@ class Test_premium(StaticLiveServerTestCase):
 
             #Comprobamos la redirección a my_recipes
 
-            url_esperada = "http://localhost:8000/my_recipes/"
-            self.assertTrue(self.selenium.current_url, url_esperada)
+            redireccionOK = self.selenium.find_element(By.LINK_TEXT, "Nueva receta")
+            self.assertIsNotNone(redireccionOK)
+
+            receta = Receta.objects.latest("id")
+            self.assertFalse(receta.publica)
 
       def test_recetaPrivadaNoPremium(self):
 
@@ -197,12 +200,13 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.ID, "cuerpo").send_keys("test")
             self.selenium.find_element(By.ID, "buscadorProductosReceta").click()
             self.selenium.find_element(By.ID, "buscadorProductosReceta").send_keys("Queso")
+            ActionChains(self.selenium).scroll_by_amount(0,100).perform()
             time.sleep(0.5)
             self.selenium.find_element(By.LINK_TEXT, "Queso semicurado mezcla Entrepinares lonchas").click()
             self.selenium.find_element(By.LINK_TEXT, "Queso tierno mezcla Entrepinares lonchas").click()
             self.selenium.find_element(By.ID, "receta_imagen").send_keys(rutaAbsoluta)
             ActionChains(self.selenium).scroll_by_amount(0,2000).perform()
-            time.sleep(5)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "horas").click()
             self.selenium.find_element(By.ID, "horas").send_keys("01")
             self.selenium.find_element(By.ID, "minutos").click()
@@ -214,12 +218,11 @@ class Test_premium(StaticLiveServerTestCase):
 
             #Comprobamos la redirección a my_recipes
 
-            url_esperada = "http://localhost:8000/my_recipes/"
-            self.assertTrue(self.selenium.current_url, url_esperada)
+            redireccionOK = self.selenium.find_element(By.LINK_TEXT, "Nueva receta")
+            self.assertIsNotNone(redireccionOK)
 
             receta = Receta.objects.latest("id")
             self.assertFalse(receta.publica)
-            
 
       def test_accesoDiscoverPremium(self):
 
@@ -280,7 +283,7 @@ class Test_premium(StaticLiveServerTestCase):
 
             # Desbloqueamos
             ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-            time.sleep(3)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "boton-desbloqueo").click()
 
             compruebaRecetaDesbloqueada = self.selenium.find_element(By.ID, "boton-productos-lista")
@@ -288,7 +291,7 @@ class Test_premium(StaticLiveServerTestCase):
 
             # Añadimos sus productos a la lista de compra
             ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-            time.sleep(3)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "boton-productos-lista").click()
 
             redireccionOK = self.selenium.find_element(By.XPATH, "/html/body/main/div[2]/div/h1")
@@ -300,7 +303,7 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.LINK_TEXT, "Todas las recetas").click()
             self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div[2]/div/a/img').click() # receta 2
             ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-            time.sleep(3)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "boton-desbloqueo").click()
             compruebaRecetaDesbloqueada2 = self.selenium.find_element(By.ID, "boton-productos-lista")
             self.assertIsNotNone(compruebaRecetaDesbloqueada2)
@@ -330,7 +333,7 @@ class Test_premium(StaticLiveServerTestCase):
             # Desbloqueamos
 
             ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-            time.sleep(3)
+            time.sleep(1)
             self.selenium.find_element(By.ID, "boton-desbloqueo").click()
 
             compruebaRecetaDesbloqueada = self.selenium.find_element(By.ID, "boton-productos-lista")
