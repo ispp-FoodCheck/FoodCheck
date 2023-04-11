@@ -165,6 +165,60 @@ class Test_premium(StaticLiveServerTestCase):
             url_esperada = "http://localhost:8000/my_recipes/"
             self.assertTrue(self.selenium.current_url, url_esperada)
 
+      def test_recetaPrivadaNoPremium(self):
+
+            url='%s%s' % (self.live_server_url, '/login/')
+            self.selenium.get(url)
+            self.selenium.set_window_size(1936, 1096)
+            username_input = self.selenium.find_element(By.NAME, "username_or_email")
+            username_input.send_keys('usuarioNOpremium')
+            password_input = self.selenium.find_element(By.NAME, "password")
+            password_input.send_keys('callatebobo')
+            butom_input = self.selenium.find_element(By.XPATH, '//*[@id="logBtn"]')
+            ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+            self.selenium.implicitly_wait(5)
+            butom_input.click()
+
+            #Creando una receta privada 
+
+            # ruta necesaria para añadir imagen a receta
+            rutaRelativa = "Web\\static\\imgs\\lechuga.png"
+            rutaAbsoluta = os.path.abspath(rutaRelativa)
+            print(rutaAbsoluta)
+
+            self.selenium.find_element(By.ID, "navbarDropdown").click()
+            self.selenium.find_element(By.LINK_TEXT, "Mis recetas").click()
+            self.selenium.find_element(By.LINK_TEXT, "Nueva receta").click()
+            self.selenium.find_element(By.ID, "nombre").click()
+            self.selenium.find_element(By.ID, "nombre").send_keys("test")
+            self.selenium.find_element(By.ID, "cuerpo").click()
+            self.selenium.find_element(By.ID, "cuerpo").send_keys("test")
+            self.selenium.find_element(By.ID, "buscadorProductosReceta").click()
+            self.selenium.find_element(By.ID, "buscadorProductosReceta").send_keys("Queso")
+            time.sleep(0.5)
+            self.selenium.find_element(By.LINK_TEXT, "Queso semicurado mezcla Entrepinares lonchas").click()
+            self.selenium.find_element(By.LINK_TEXT, "Queso tierno mezcla Entrepinares lonchas").click()
+            self.selenium.find_element(By.ID, "receta_imagen").send_keys(rutaAbsoluta)
+            ActionChains(self.selenium).scroll_by_amount(0,2000).perform()
+            time.sleep(5)
+            self.selenium.find_element(By.ID, "horas").click()
+            self.selenium.find_element(By.ID, "horas").send_keys("01")
+            self.selenium.find_element(By.ID, "minutos").click()
+            self.selenium.find_element(By.ID, "minutos").send_keys("01")
+            self.selenium.find_element(By.ID, "segundos").click()
+            self.selenium.find_element(By.ID, "segundos").send_keys("01")
+            self.selenium.find_element(By.ID, "filter-form").click()
+            self.selenium.find_element(By.ID, "boton-busqueda").click()
+
+            #Comprobamos la redirección a my_recipes
+
+            url_esperada = "http://localhost:8000/my_recipes/"
+            self.assertTrue(self.selenium.current_url, url_esperada)
+
+            receta = Receta.objects.latest("id")
+            self.assertFalse(receta.publica)
+            
+
       def test_accesoDiscoverPremium(self):
 
             url='%s%s' % (self.live_server_url, '/login/')
@@ -184,6 +238,22 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.LINK_TEXT, "Discover").click()
             titulo_visible = self.selenium.find_element(By.CLASS_NAME, "title")
             self.assertIsNotNone(titulo_visible)
+
+      def test_accesoDiscoverNoPremium(self):
+
+            url='%s%s' % (self.live_server_url, '/login/')
+            self.selenium.get(url)
+            self.selenium.set_window_size(1936, 1096)
+            username_input = self.selenium.find_element(By.NAME, "username_or_email")
+            username_input.send_keys('usuarioYApremium')
+            password_input = self.selenium.find_element(By.NAME, "password")
+            password_input.send_keys('callatebobo')
+            butom_input = self.selenium.find_element(By.XPATH, '//*[@id="logBtn"]')
+            ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+            self.selenium.implicitly_wait(30)
+            butom_input.click()
+            discover = self.selenium.find_element(By.LINK_TEXT, "Discover")
+            self.assertIsNotNone(discover)
 
       def test_desbloquearReceta_anadirProductos(self):
 
@@ -226,6 +296,43 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.ID, "boton-desbloqueo").click()
             compruebaRecetaDesbloqueada2 = self.selenium.find_element(By.ID, "boton-productos-lista")
             self.assertIsNotNone(compruebaRecetaDesbloqueada2)
+
+
+      def test_desbloquearReceta_anadirProductosNoPremium(self):
+
+            url='%s%s' % (self.live_server_url, '/login/')
+            self.selenium.get(url)
+            self.selenium.set_window_size(1936, 1096)
+            username_input = self.selenium.find_element(By.NAME, "username_or_email")
+            username_input.send_keys('usuarioYApremium')
+            password_input = self.selenium.find_element(By.NAME, "password")
+            password_input.send_keys('callatebobo')
+            butom_input = self.selenium.find_element(By.XPATH, '//*[@id="logBtn"]')
+            ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+            self.selenium.implicitly_wait(5)
+            butom_input.click()
+
+            self.selenium.find_element(By.ID, "navbarDropdown").click()
+            self.selenium.find_element(By.LINK_TEXT, "Todas las recetas").click()
+            self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div/div/a/img').click() #receta 1
+
+            compruebaRecetaBloqueada = self.selenium.find_element(By.ID, "boton-desbloqueo")
+            self.assertIsNotNone(compruebaRecetaBloqueada)
+
+            # Desbloqueamos
+
+            ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+            time.sleep(3)
+            self.selenium.find_element(By.ID, "boton-desbloqueo").click()
+
+            # compruebaRecetaDesbloqueada = self.selenium.find_element(By.ID, "boton-productos-lista")
+            # self.assertIsNotNone(compruebaRecetaDesbloqueada)
+
+            self.selenium.find_element(By.ID, "navbarDropdown").click()
+            self.selenium.find_element(By.LINK_TEXT, "Todas las recetas").click()
+            self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div[2]/div/a/img').click() # receta 2
+            usuario = User.objects.latest("id")
+            self.assertTrue(usuario.recetaDiaria)
 
 
             

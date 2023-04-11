@@ -26,6 +26,8 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None or user.premiumHasta|date:"Y-m-d" > now %}
                 {% if puede_publicar %}
                 <form method="POST" id="publicar-form">
                     {% csrf_token %}
@@ -37,6 +39,7 @@
                 </form>
                 </br>
                 <a> Si conviertes la receta en pública no podrás cambiarla a privada más adelante </a>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
