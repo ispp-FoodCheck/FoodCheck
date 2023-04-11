@@ -161,20 +161,19 @@
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
-                  href="/recipes"
-                  aria-label="Recetas"
-                >
-                  Recetas
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
                   href="{% url 'authentication:login' %}"
                   aria-label="Brings you to the frontpage"
                 >
                   Mi lista
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/recipes"
+                  aria-label="Recetas"
+                >
+                  Recetas
                 </a>
               </li>
               <li class="nav-item">
@@ -195,6 +194,13 @@
                   Discover
                 </a>
               </li>
+              <a
+              class="nav-link nav-link-colors"
+              href="/trending"
+              aria-label="Shows you the best ranked products in the app"
+            >
+              Tendencias
+            </a>
               {%endif%}
              
             {% if user.is_staff %}
