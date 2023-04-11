@@ -16,7 +16,11 @@
                 <p class="nombre">{{receta.nombre}}</p>
                 <p class="propietario">Receta realizada por: {{receta.propietario}}</p>
                 <p class="tiempoPreparacion">Tiempo estimado: {{receta.tiempoPreparacion}}</p>
-                <p class="descripcion">{{receta.descripcion}}</p>
+                {% if visible %}
+                    <p class="descripcion">{{receta.descripcion}}</p>
+                {% else %}
+                    <p class="descripcion"><b>Desbloquea esta receta para ver su elaboración</b></p>
+                {% endif %}
                 <div class="row">
                     <div class="col">
                         {% for alergeno in alergenos %}

@@ -2,12 +2,12 @@
     {% for message in messages %}
         {% if message.tags == 'success' %}
             <div class="alert alert-success alert-dismissible">
-                {{message|safe|escape}}
+                <div class="text"> {{ message|safe }} </div>
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             </div>
         {% elif message.tags == 'error' %}
             <div class="alert alert-danger alert-dismissible">
-                {{message|safe}}
+                <div class="text"> {{ message|safe }} </div>
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             </div>
         {% elif message.tags == 'info' %}

@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
+from django_resized import ResizedImageField
 
-from Web.models import User, Alergeno, ListaCompra
+from Web.models import User, Alergeno, ListaCompra, Producto, Receta
 
 class RegistroForm(UserCreationForm):
     email = forms.EmailField()
