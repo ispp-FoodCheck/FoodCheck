@@ -10,11 +10,12 @@ from django.contrib import messages
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto, Supermercado
 from django.http import JsonResponse
 from django.core import serializers
 import json
 from django.db.models import Avg
+from PIL import Image
 
 from spanlp.palabrota import Palabrota
 from payments.utils import es_premium
@@ -34,8 +35,10 @@ def index(request):
     numero_pagina = request.POST.get('page') or 1
     alergenos_selected = request.POST.getlist('alergenos_selected')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
+    supermercados = Supermercado.objects.all()
+    supermercados_selected = request.POST.getlist('supermercados_selected')
     palabra_buscador = request.POST.get('canal_de_texto') or ''
-    print(alergenos_selected)
+    
 
     if request.user.is_authenticated:
         es_premium(request.user)
@@ -45,10 +48,12 @@ def index(request):
             request.user.alergenos.all().values_list('nombre', flat=True))
         if request.user.es_vegano:
             vegano_selected = True
-
-    lista_producto = Producto.objects.exclude(
-        alergenos__nombre__in=alergenos_selected)
-
+            
+    lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)        
+    
+    if len(supermercados_selected) != 0:
+        lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected).filter(supermercados__nombre__in=supermercados_selected)     
+            
     if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
@@ -61,7 +66,7 @@ def index(request):
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
     diccionario = {'lista_producto': objetos_de_la_pagina, 'alergenos_available': alergenos, 'alergenos_selected': alergenos_selected,
-                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador}
+                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador, 'supermercados':supermercados, 'supermercados_selected':supermercados_selected}
     return render(request, "products.html", diccionario)
 
 
@@ -85,7 +90,8 @@ def product_details(request, id_producto):
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
-
+    valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
+    
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
@@ -94,15 +100,13 @@ def product_details(request, id_producto):
 
         palabrota = Palabrota(censor_char="*")
 
-        print(comentario)
-
         comentario = palabrota.censor(input_text=comentario)
 
-        print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
-        if (puntuacion != ''):
+
+        if (puntuacion != '' and len(valoraciones_user)<1):
             usuario = request.user
             valoracion = Valoracion.objects.create(
                 comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
@@ -113,8 +117,10 @@ def product_details(request, id_producto):
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
+
+            valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user)}
     return render(request, "product_details.html", diccionario)
 
 
@@ -159,7 +165,6 @@ def shopping_list(request):
                 ListaCompra.objects.create(usuario=request.user)
                 lista_compra = ListaCompra.objects.filter(usuario=request.user)
     productos = lista_compra.get().productos.all()
-    print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
 
     for producto in productos:
@@ -409,6 +414,18 @@ def new_recipes(request):
             publica=True
         else:
             publica=False
+
+        if len(productos_escogidos) < 2:
+            messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
+            return redirect('new_recipes')
+    
+        if img:
+            try:
+                with Image.open(img) as im:
+                    pass
+            except:
+                messages.error(request,'El archivo cargado no es una imagen válida.')
+                return redirect('new_recipes')
 
         propietario = request.user
 
