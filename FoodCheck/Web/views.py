@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json
 from django.db.models import Avg
+from PIL import Image
 
 from spanlp.palabrota import Palabrota
 from payments.utils import es_premium
@@ -89,7 +90,8 @@ def product_details(request, id_producto):
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
-
+    valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
+    
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
@@ -98,15 +100,13 @@ def product_details(request, id_producto):
 
         palabrota = Palabrota(censor_char="*")
 
-        print(comentario)
-
         comentario = palabrota.censor(input_text=comentario)
 
-        print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
-        if (puntuacion != ''):
+
+        if (puntuacion != '' and len(valoraciones_user)<1):
             usuario = request.user
             valoracion = Valoracion.objects.create(
                 comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
@@ -118,8 +118,10 @@ def product_details(request, id_producto):
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
+
+            valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user)}
     return render(request, "product_details.html", diccionario)
 
 
@@ -164,7 +166,6 @@ def shopping_list(request):
                 ListaCompra.objects.create(usuario=request.user)
                 lista_compra = ListaCompra.objects.filter(usuario=request.user)
     productos = lista_compra.get().productos.all()
-    print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
 
     for producto in productos:
@@ -415,6 +416,18 @@ def new_recipes(request):
         else:
             publica=False
 
+        if len(productos_escogidos) < 2:
+            messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
+            return redirect('new_recipes')
+    
+        if img:
+            try:
+                with Image.open(img) as im:
+                    pass
+            except:
+                messages.error(request,'El archivo cargado no es una imagen válida.')
+                return redirect('new_recipes')
+
         propietario = request.user
 
         # El tiempo de preparación se guarda como campo de texto (solo se usa para visualizar)
@@ -491,5 +504,11 @@ def delete_valoracion(request, valoracion_id):
             return redirect('product_details', id_producto=post_id)
     else:
         return redirect('product_details', id_producto=post_id)
+
+@require_safe
+def trending_productos(request):
+    productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:5]
+    productos = [(p, 100*p.valoracionMedia/p.get_popularity()) for p in productos]
+    return render(request, "trending_productos.html", {'products':productos})
     
 
