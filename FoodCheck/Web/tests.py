@@ -3,7 +3,7 @@ from django.test import Client, TestCase
 
 from django.test import TestCase
 from django.db import connection
-from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion
+from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion, Alergeno
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
@@ -18,6 +18,15 @@ class TrendingTest(unittest.TestCase):
         super().setUpClass()
         with connection.cursor() as c, open('../datos_iniciales.sql', 'r', encoding='utf-8') as f:
             c.execute(f.read())
+
+    @classmethod
+    def tearDownClass(self) -> None:
+        Producto.objects.all().delete()
+        Supermercado.objects.all().delete()
+        Alergeno.objects.all().delete()
+        Valoracion.objects.all().delete()
+        User.objects.all().delete()
+        return super().tearDownClass()
 
     def setUp(self):
         self.client = Client()
@@ -41,13 +50,8 @@ class TrendingTest(unittest.TestCase):
         for indice_producto,valoraciones_producto in enumerate(valoraciones):
             product = productos_a_valorar[indice_producto]
             for indice_usuario,valoracion in enumerate(valoraciones_producto):
-                #print(indice_usuario)
-               # print(valoracion)
-                #print(indice_producto)
                 user = users[indice_usuario]
-               # print(product)
                 Valoracion.objects.create(puntuacion = valoracion, usuario = user, producto = product)
-               # print(product.valoracionMedia)
             product.valoracionMedia = sum(valoraciones_producto)/len(valoraciones_producto)
             product.save()
             
@@ -58,6 +62,9 @@ class TrendingTest(unittest.TestCase):
         self.productos = productos_ordenados
         time.sleep(3)
         self.login()
+
+    def tearDown(self) -> None:
+        return super().tearDown()
         
     def login(self):
         self.client.force_login(self.user)
@@ -70,6 +77,5 @@ class TrendingTest(unittest.TestCase):
         time.sleep(3)
         productos = []
         for indice_p,v in enumerate(self.valoraciones):
-            print(self.productos[indice_p].valoracionMedia)
             productos.append((self.productos[indice_p],self.productos[indice_p].get_popularity()))
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
