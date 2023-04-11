@@ -8,7 +8,8 @@ from django.db import connection
 from Web.models import User, Receta, Producto
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.chrome.webdriver import WebDriver as ChromeDriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,7 +21,7 @@ class Test_premium(StaticLiveServerTestCase):
       @classmethod
       def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = WebDriver()
+        cls.selenium = ChromeDriver()
         cls.selenium.implicitly_wait(10)
         with connection.cursor() as c, open('../datos_iniciales.sql', 'r', encoding='utf-8') as f:
             c.execute(f.read())
