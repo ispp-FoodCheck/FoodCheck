@@ -1,11 +1,11 @@
 from django.test import TestCase, Client
 from django.db import connection
-from Web.models import User, Alergeno
+from Web.models import User
 
 
 ####TESTS LISTADO PRODUCTO####
 
-class ShoppingListTest(TestCase):
+class ProductListTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
