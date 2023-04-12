@@ -157,7 +157,7 @@ def allergen_report(request, id_producto):
 
     return render(request, 'allergen_report.html', context)
 
-@require_safe
+@require_http_methods(['GET','POST'])
 @login_required(login_url='authentication:login')
 def shopping_list(request):
     lista_compra = ListaCompra.objects.filter(usuario=request.user)
@@ -166,6 +166,13 @@ def shopping_list(request):
                 lista_compra = ListaCompra.objects.filter(usuario=request.user)
     productos = lista_compra.get().productos.all()
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
+
+    #botón vaciar lista
+    if request.method == 'POST':
+        lista_compra_get = lista_compra.get()
+        lista_compra_get.productos.set([])
+        lista_compra_get.save()
+        return redirect('/shopping_list')
 
     for producto in productos:
         for supermercado in producto.supermercados.all():

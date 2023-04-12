@@ -22,7 +22,7 @@
 }
 
 .supermercados {
-    color: #545454;
+    color: black;
     font-weight: normal;
 }
 
@@ -40,6 +40,30 @@
     width:90%;
 }
 
+button.vaciar {
+  background-color: rgb(68, 0, 0);
+  color: white;
+  width: 20%;
+
+  border-radius: 33px;
+
+  font-size: 120%;
+  margin: 0 auto;
+}
+
+button.supermercado {
+  background-color: #07644A;
+  color: white;
+  width: 60%;
+
+  border-radius: 33px;
+  
+  padding-bottom: 0.3%;
+  margin: 0 auto;
+  font-size: 250%;
+  font-weight: bold;
+}
+
 #button-row{
     justify-content: center;
 }
@@ -47,35 +71,38 @@
 h1.title {
     color: black;
     font-weight: bold;
+    font-size: 300%;
     letter-spacing: -2px;
+    margin-bottom: 2%;
   }
 
-  .row {
-    margin-top: 5%;
-  }
+.row {
+  margin-top: 5%;
+}
 
-  .tarjeta-usuario {
-    background-color: bisque;
-    border-radius: 15px;
-    border-style: solid;
-    border-color: black;
-    padding: 10px;
-    box-shadow: 0px 0px 10px gray;
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-  }
+div.contador-productos {
+  width: 33%;
+  margin: 0 auto;
+  margin-bottom: 2%;
+}
+
+.tarjeta-usuario {
+  background-color: bisque;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px gray;
+  align-items: center;
+}
   
-  .tarjeta-usuario img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .tarjeta-usuario h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
+.tarjeta-usuario img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.tarjeta-usuario h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}

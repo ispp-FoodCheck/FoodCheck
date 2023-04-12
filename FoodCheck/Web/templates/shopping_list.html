@@ -6,27 +6,38 @@
 {% endblock %}
 
 {% block body %}
+
+<div class="row">
+    <h1 class="title text-center">Tu lista de la compra</h1>
+</div>
   
 {% if productos_agrupados_por_supermercado.items|length != 0 %}
-<div class="row">
-    <div class="col-md-4">
-        <div class="tarjeta-usuario">
-            <ul style="list-style-type: none;">
-                {% for supermercado, numero in num_productos_por_supermercado.items %}
-                <li><b>Numero de Productos del {{supermercado}}: {{numero}}</b></li>
-                {% endfor %}
-            </ul>
+<div class="row text-center">
+    <div class="contador-productos col-md-6">
+        <div class="card tarjeta-usuario">
+            {% for supermercado, numero in num_productos_por_supermercado.items %}
+            <p><b>Numero de Productos del {{supermercado}}: {{numero}}</b></p>
+            {% endfor %}
         </div>
-    </div>  
+    </div>
+
+    <div class="boton-vaciado">
+        <form method="POST" action="/shopping_list/">
+            {% csrf_token %}
+            <button class="vaciar btn btn-primary mb-3" type="submit">Vaciar lista de la compra</button>
+        </form>
+    </div>
 </div>
 {% endif %}
 <div class="container text-center">
     
     <div class="row text-center">
-        <h1 class="title">Tu lista de la compra</h1>
         {% if productos_agrupados_por_supermercado.items|length != 0 %}
             {% for supermercado, productos in productos_agrupados_por_supermercado.items %}
-        <b class="supermercado">{{ supermercado }}</b>
+
+        <button class="supermercado" disabled="true">
+            Productos de {{ supermercado }}
+        </button>
         <div class="row">
             {% for producto in productos %}
             <div class="col-md-4">
