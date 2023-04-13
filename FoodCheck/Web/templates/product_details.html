@@ -15,7 +15,8 @@
             <img src="{{producto.imagen}}" alt="error" style="width:100%;" onclick="mostrarImagen(this);">
             <p class="nombre">{{producto.nombre}}</p>
             <p class="marca">Marca: {{producto.marca}}</p>
-            <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
+            <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}}</p>
+            <p class="estrellas">{{estrellas}}</p>
 
             <b class="ingredientes">Ingredientes </b>
             <p>{{producto.ingredientes}}</p>
