@@ -123,10 +123,6 @@ def product_details(request, id_producto):
     diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user)}
     return render(request, "product_details.html", diccionario)
 
-
-
-
-
 @login_required(login_url='authentication:login')
 def allergen_report(request, id_producto):
    
