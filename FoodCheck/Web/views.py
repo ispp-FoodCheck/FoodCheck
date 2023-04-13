@@ -61,7 +61,7 @@ def index(request):
         lista_producto = lista_producto.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(palabra_buscador.lower()))
 
-    paginacion = Paginator(lista_producto, 12)
+    paginacion = Paginator(lista_producto, 16)
     total_de_paginas = paginacion.num_pages
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
