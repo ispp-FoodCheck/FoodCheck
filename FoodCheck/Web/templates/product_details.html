@@ -15,7 +15,8 @@
             <img src="{{producto.imagen}}" alt="error" style="width:100%;" onclick="mostrarImagen(this);">
             <p class="nombre">{{producto.nombre}}</p>
             <p class="marca">Marca: {{producto.marca}}</p>
-            <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}} ★</p>
+            <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}}</p>
+            <p class="estrellas">{{estrellas}}</p>
 
             <b class="ingredientes">Ingredientes </b>
             <p>{{producto.ingredientes}}</p>
@@ -37,13 +38,13 @@
             {% if not ha_reportado %}
                 </br>
                 <a class="btn btn-primary" href="/allergen_report/product/{{producto.id}}" role="button" style="border-radius: 12px;">Reportar alérgenos</a>
-            {% else%}
+            {% else %}
                 <p>Su reporte está siendo revisado</p>
             {% endif %}
         </div>
 
         <div class="card col-md-4 mt-2 text-center" id="comentarios">
-            <h2>Opiniones</h2>
+            <h2>Opiniones ({{ valoraciones|length }})</h2>
             <br>
             <br>
             <ul class="list-group list-group-flush" style="height: 200px;  overflow-y: scroll;">
