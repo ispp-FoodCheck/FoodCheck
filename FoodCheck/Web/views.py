@@ -77,7 +77,7 @@ def product_details(request, id_producto):
 
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
-    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
+    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).order_by('created').all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
     
     lista_recetas = Receta.objects.filter(productos__id=id_producto)
