@@ -161,20 +161,19 @@
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
-                  href="/recipes"
-                  aria-label="Recetas"
-                >
-                  Recetas
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
                   href="{% url 'authentication:login' %}"
                   aria-label="Brings you to the frontpage"
                 >
                   Mi lista
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/recipes"
+                  aria-label="Recetas"
+                >
+                  Recetas
                 </a>
               </li>
               <li class="nav-item">
@@ -222,7 +221,7 @@
               {% if user.is_staff %}
               <i class="fa-solid fa-toolbox"></i>
               {%endif%}
-                <span>{{ user.username }}</span>
+                <span class="username">{{ user.username }}</span>
               </button>
               <div
                 class="dropdown-menu dropdown--menu-end"
