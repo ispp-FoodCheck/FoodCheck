@@ -156,7 +156,15 @@
                   <li><a class="dropdown-item" href="/recipes" aria-label="Brings you to the recipes">Todas las recetas</a></li>
                 </ul>
               </li>
-
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/trending"
+                  aria-label="Shows you the best ranked products in the app"
+                >
+                  Tendencias
+                </a>
+              </li>
               {% else %}
               <li class="nav-item">
                 <a
@@ -176,17 +184,8 @@
                   Recetas
                 </a>
               </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="/trending"
-                  aria-label="Shows you the best ranked products in the app"
-                >
-                  Tendencias
-                </a>
-              </li>
               {% endif %}
-              <!--{% now "Y-m-d" as now %}
+              {% now "Y-m-d" as now %}
               {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
               <li class="nav-item">
                 <a class="nav-link nav-link-colors" href="/recommendations"
@@ -194,7 +193,7 @@
                   Discover
                 </a>
               </li>
-              {%endif%}-->
+              {%endif%}
              
             {% if user.is_staff %}
               <li class="nav-item">
@@ -239,6 +238,12 @@
                 {% endif %} {% if user.last_name %}
                 <p class="dropdown-item">Apellidos: {{ user.last_name }}</p>
                 {% endif %}
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now and user.subscription != None%}
+                  <a class="nav-link nav-link-colors" href="/payment_portal">
+                    <p class="dropdown-item"><i class="fa-solid fa-star"></i> Administrar Subscripción</p>
+                  </a>
+                {%endif%}
                   <li class="dropdown-item">
                     <a
                       class="nav-link"
