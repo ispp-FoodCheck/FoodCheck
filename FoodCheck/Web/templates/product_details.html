@@ -14,7 +14,9 @@
         <div class="card col-md-4 mt-1 text-center">
             <img src="{{producto.imagen}}" alt="error" style="width:100%;" onclick="mostrarImagen(this);">
             <p class="nombre">{{producto.nombre}}</p>
+            {% if producto.marca != "Desconocida" %}
             <p class="marca">Marca: {{producto.marca}}</p>
+            {% endif %}
             <p class="valoracion">{{producto.valoracionMedia|floatformat:"2"}}</p>
             <p class="estrellas">{{estrellas}}</p>
 
