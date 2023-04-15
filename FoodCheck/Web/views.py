@@ -98,10 +98,9 @@ def product_details(request, id_producto):
         comentario = request.POST.get('cuerpo')
         if (comentario == ''):
             comentario = None
-
-        palabrota = Palabrota(censor_char="*")
-
-        comentario = palabrota.censor(input_text=comentario)
+        else:
+            palabrota = Palabrota(censor_char="*")
+            comentario = palabrota.censor(input_text=comentario)
 
         
         puntuacion = request.POST.get('valoracion')
