@@ -1,10 +1,11 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, tag
 from django.db import connection
 from Web.models import User
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
+@tag("fast")
 class LoginRegisterTest(TestCase):
 
     @classmethod
@@ -91,6 +92,7 @@ class LoginRegisterTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base.html')
 
+@tag("selenium")
 class LoginRegisterTestSelenium(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(self):
