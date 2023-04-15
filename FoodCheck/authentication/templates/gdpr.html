@@ -90,19 +90,61 @@
     datos.
   </p>
 
-  <h3 class="mt-4">3. Plan de contingencia</h3>
-  <p>Una vez ocurrida una brecha de información, desde FoodCheck realizaremos los siguientes pasos:</p>
+  <h3 class="mt-4">3. Garantía de privacidad</h3>
+
+  <p>
+    Nuestra aplicación usa en el despliegue los estándares web más modernos, los
+    cuales garantizan que toda la información transmitida entre el cliente y el
+    servidor es totalmente inaccesible por terceras partes. Al hacer uso de la
+    versión de TLS más reciente, junto con otras buenas prácticas, logramos tal
+    compromiso.
+  </p>
+
+  <p>
+    Ademas, se han realizado tests de seguridad web con herramientas muy populares, como
+    por ejemplo, Qualys con su SSL Lab. Puede ver todos los detalles del reporte
+    en:
+    <a
+      href="https://www.ssllabs.com/ssltest/analyze.html?d=foodcheck2.pythonanywhere.com"
+      >Reporte</a
+    >
+  </p>
+
+  <h3 class="mt-4">4. Plan de contingencia</h3>
+  <p>
+    Una vez ocurrida una brecha de información, desde FoodCheck realizaremos los
+    siguientes pasos:
+  </p>
   <ol>
-    <li><b>Análisis de la brecha de seguridad: </b>Se estudiará el mecanismo utilizado para la obtención ilícita de la información y se intentará paliar en la medida de lo posible.</li>
-    <li><b>Estudio del alcance y del impacto: </b>Se harán usos de herramientas de análisis para poder obtener una visión completa de la cantidad de la información comprometida, así como el impacto para nuestros usuarios.</li>
-    <li><b>Aviso a todos los afectados: </b>Se notificará lo antes posible a los afectados de la filtración, explicando detalladamente todo lo estudiado anteriormente, junto con pasos detallados que pueden seguir para protegerse.</li>
+    <li>
+      <b>Análisis de la brecha de seguridad: </b>Se estudiará el mecanismo
+      utilizado para la obtención ilícita de la información y se intentará
+      paliar en la medida de lo posible.
+    </li>
+    <li>
+      <b>Estudio del alcance y del impacto: </b>Se harán usos de herramientas de
+      análisis para poder obtener una visión completa de la cantidad de la
+      información comprometida, así como el impacto para nuestros usuarios.
+    </li>
+    <li>
+      <b>Aviso a todos los afectados: </b>Se notificará lo antes posible a los
+      afectados de la filtración, explicando detalladamente todo lo estudiado
+      anteriormente, junto con pasos detallados que pueden seguir para
+      protegerse.
+    </li>
     <ul>
-      <li>Se usará para este fin tanto el correo electrónico del cliente como su número de teléfono asociado mediante sms.</li>
+      <li>
+        Se usará para este fin tanto el correo electrónico del cliente como su
+        número de teléfono asociado mediante sms.
+      </li>
     </ul>
-    <li><b>Mejoras futuras: </b>Se valorarán cambios a raíz de la investigación en el <b>punto 1</b>. Estos cambios se pondrán a prueba utilizando las mismas estrategias utilizadas originalmente por la brecha y se aceptarán solo si son capaces de detenerlas y evitarlas completamente.</li>
+    <li>
+      <b>Mejoras futuras: </b>Se valorarán cambios a raíz de la investigación en
+      el <b>punto 1</b>. Estos cambios se pondrán a prueba utilizando las mismas
+      estrategias utilizadas originalmente por la brecha y se aceptarán solo si
+      son capaces de detenerlas y evitarlas completamente.
+    </li>
   </ol>
-
-
 </div>
 
 {% endblock %}
