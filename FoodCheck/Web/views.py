@@ -61,7 +61,7 @@ def index(request):
         lista_producto = lista_producto.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(palabra_buscador.lower()))
 
-    paginacion = Paginator(lista_producto, 12)
+    paginacion = Paginator(lista_producto, 16)
     total_de_paginas = paginacion.num_pages
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
@@ -77,7 +77,7 @@ def product_details(request, id_producto):
 
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
-    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
+    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).order_by('created').all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
     
     lista_recetas = Receta.objects.filter(productos__id=id_producto)
@@ -92,6 +92,7 @@ def product_details(request, id_producto):
 
     valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
     
+
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
@@ -120,7 +121,10 @@ def product_details(request, id_producto):
 
             valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user)}
+    
+    estrellas = '★' * int((round(prod.valoracionMedia))) + '☆' * int(5 - (round(prod.valoracionMedia)))
+        
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user), 'estrellas':estrellas}
     return render(request, "product_details.html", diccionario)
 
 
@@ -157,7 +161,7 @@ def allergen_report(request, id_producto):
 
     return render(request, 'allergen_report.html', context)
 
-@require_safe
+@require_http_methods(['GET','POST'])
 @login_required(login_url='authentication:login')
 def shopping_list(request):
     lista_compra = ListaCompra.objects.filter(usuario=request.user)
@@ -166,6 +170,13 @@ def shopping_list(request):
                 lista_compra = ListaCompra.objects.filter(usuario=request.user)
     productos = lista_compra.get().productos.all()
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
+
+    #botón vaciar lista
+    if request.method == 'POST':
+        lista_compra_get = lista_compra.get()
+        lista_compra_get.productos.set([])
+        lista_compra_get.save()
+        return redirect('/shopping_list')
 
     for producto in productos:
         for supermercado in producto.supermercados.all():

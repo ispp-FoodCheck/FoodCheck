@@ -137,8 +137,11 @@
 
         <div class="row">
             {% for producto in lista_producto.object_list %}
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
+                    {% if user.is_authenticated %}
+                    <a class="mb-3" style="text-align: right" href="/product/{{producto.id}}/add"><i class="bi bi-bag-plus"></i></a>
+                    {% endif %}
                     <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error"
                             style="width:100%"></a>
                     <a href="product/{{producto.id}}/details"><p class="nombre">{{producto.nombre}}</p></a>
