@@ -34,7 +34,9 @@
                     <a href="/product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error"
                             style="width:100%"></a>
                     <p class="nombre">{{producto.nombre}}</p>
+                    {% if producto.marca != "Desconocida" %}
                     <p class="marca">{{producto.marca}}</p>
+                    {% endif %}
                     <p class="supermercados">{{producto.supermercados.all|join:"/"}}</p>
                     <div class="row">
                         <div class="col">
