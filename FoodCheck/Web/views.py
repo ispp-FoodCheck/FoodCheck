@@ -98,7 +98,8 @@ def product_details(request, id_producto):
         if (comentario == ''):
             comentario = None
 
-        palabrota = Palabrota(censor_char="*")
+        else:
+            palabrota = Palabrota(censor_char="*")
 
         comentario = palabrota.censor(input_text=comentario)
 

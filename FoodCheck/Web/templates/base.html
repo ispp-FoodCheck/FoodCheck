@@ -186,7 +186,7 @@
                 </a>
               </li>
               {% endif %}
-              {% now "Y-m-d" as now %}
+              <!--{% now "Y-m-d" as now %}
               {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
               <li class="nav-item">
                 <a class="nav-link nav-link-colors" href="/recommendations"
@@ -194,14 +194,7 @@
                   Discover
                 </a>
               </li>
-              <a
-              class="nav-link nav-link-colors"
-              href="/trending"
-              aria-label="Shows you the best ranked products in the app"
-            >
-              Tendencias
-            </a>
-              {%endif%}
+              {%endif%}-->
              
             {% if user.is_staff %}
               <li class="nav-item">
