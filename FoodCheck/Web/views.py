@@ -414,11 +414,13 @@ def new_recipes(request):
         img = request.FILES.get('receta_imagen')
 
         productos_escogidos = request.POST.getlist('productos[]') #recoge las id en formato lista
-
-        if publica == "si": 
-            publica=True
+        if es_premium(request.user)==False:
+            publica = True
         else:
-            publica=False
+            if publica == "si": 
+                publica=True
+            else:
+                publica=False
 
         if len(productos_escogidos) < 2:
             messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
