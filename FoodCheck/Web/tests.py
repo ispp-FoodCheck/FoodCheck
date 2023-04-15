@@ -5,8 +5,9 @@ import os
 import requests
 from django.test import Client, TestCase
 from django.test import TestCase
+from django.urls import reverse
 from django.db import connection
-from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion, Alergeno
+from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion, Alergeno, ReporteAlergenos
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -16,6 +17,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from django.core.files.uploadedfile import SimpleUploadedFile
 from datetime import date, timedelta
+from payments.utils import es_premium
 
 
 class TrendingTest(unittest.TestCase):
@@ -856,3 +858,46 @@ class Test_premium(StaticLiveServerTestCase):
             self.selenium.find_element(By.XPATH, '//*[@id="row-details"]/div[2]/div/a/img').click() # receta 2
             usuario = User.objects.latest("id")
             self.assertTrue(usuario.recetaDiaria)
+
+class AllergenReportTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.producto = Producto.objects.create(id=1, nombre='producto de prueba')
+        self.alergeno1 = Alergeno.objects.create(nombre='alergeno1', imagen='imagen1.png')
+        self.alergeno2 = Alergeno.objects.create(nombre='alergeno2', imagen='imagen2.png')
+
+    def test_allergen_report(self):
+        self.client.login(username='testuser', password='testpass')
+        url = reverse('allergen_report', args=[self.producto.id])
+        form_data = {'allergens': [self.alergeno1.id, self.alergeno2.id]}
+        response = self.client.post(url, form_data)
+        report = ReporteAlergenos.objects.filter(usuario=self.user, producto=self.producto).first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(report.usuario, self.user)
+        self.assertEqual(report.producto, self.producto)
+        self.assertEqual(list(report.alergenos.all()), [self.alergeno1, self.alergeno2])
+
+class ReportDetailsTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass', is_staff=True)
+        self.user1 = User.objects.create_user(username='testuser1', password='testpass1')
+        self.user1.premiumHasta = date.today()
+        self.user1.save()
+        self.producto = Producto.objects.create(id=1, nombre='Test Product')
+        self.alergeno1 = Alergeno.objects.create(nombre='alergeno1', imagen='imagen1.png')
+        self.reporte = ReporteAlergenos.objects.create(usuario=self.user1, producto=self.producto)
+
+    def test_accept_report(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('report_details', args=[self.reporte.id]), {'action': 'aceptar'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.reporte.alergenos.count(), self.producto.alergenos.count())
+
+    def test_premium_user_after_accepting_report(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('report_details', args=[self.reporte.id]), {'action': 'aceptar'})
+        self.user1.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(es_premium(self.user1))
