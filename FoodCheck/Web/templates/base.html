@@ -125,7 +125,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% if user.is_authenticated %}
               {% now "Y-m-d" as now %}
-              {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
+                {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -135,7 +135,7 @@
                   Plan premium
                 </a>
               </li>
-              {% endif %}
+                {% endif %}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -156,15 +156,7 @@
                   <li><a class="dropdown-item" href="/recipes" aria-label="Brings you to the recipes">Todas las recetas</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="/trending"
-                  aria-label="Shows you the best ranked products in the app"
-                >
-                  Tendencias
-                </a>
-              </li>
+              
               {% else %}
               <li class="nav-item">
                 <a
@@ -185,6 +177,15 @@
                 </a>
               </li>
               {% endif %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
+                  href="/trending"
+                  aria-label="Shows you the best ranked products in the app"
+                >
+                  Tendencias
+                </a>
+              </li>
               {% now "Y-m-d" as now %}
               {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
               <li class="nav-item">

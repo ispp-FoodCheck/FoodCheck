@@ -82,7 +82,7 @@ class TrendingTest(TestCase):
         time.sleep(3)
         productos = []
         for indice_p,v in enumerate(self.valoraciones):
-            productos.append((self.productos[indice_p],self.productos[indice_p].get_popularity()))
+            productos.append((self.productos[indice_p],Valoracion.objects.filter(producto = self.productos[indice_p]).count()))
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
 
 
