@@ -2,7 +2,9 @@ import time
 import os
 from django.test import Client, TestCase, tag
 from django.db import connection
-from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion, Alergeno
+from django.urls import reverse
+from Web.models import User, Producto, ListaCompra, Receta, Supermercado, Valoracion, Alergeno, ReporteAlergenos
+from payments.utils import es_premium
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -473,7 +475,7 @@ class RecipeSearchTest(TestCase):
             c.execute(f.read())
 
     def setUp(self):
-        self.URL_RECIPES = '/recipes'
+        self.URL_RECIPES = '/recipes/'
         self.client = Client()
         fecha_premium = date.today() + timedelta(days=1)
         self.user = User.objects.create_user(username='user1', password='123', telefono='123456789', premiumHasta=fecha_premium)
@@ -606,6 +608,7 @@ class Test_premium(StaticLiveServerTestCase):
         self.receta2.save()
 
     def tearDown(self):
+        super().tearDown()
         self.receta1.delete()
         self.receta2.delete()
         self.usuario1.delete()
