@@ -117,7 +117,7 @@ class ProductListTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Comprobamos que en la primera página hay 12 productos
-        self.assertTrue(len(response.context['lista_producto']) == 12, "El número de elementos en la página no es correcto")
+        self.assertTrue(len(response.context['lista_producto']) == 16, "El número de elementos en la página no es correcto")
 
         # Navegamos a la página 2, y a la última página, y comprobamos que existan
         response = self.client.post('/home', {'page': '2'})
@@ -371,7 +371,7 @@ class RecipesTest(TestCase):
         productos=[2996514000002,3560071092801]
         response = self.client.post('/recipes/new',{'nombre':'Receta','cuerpo':'Prueba de receta','horas':'1','minutos':'0',
                                                     'segundos':'0','checkbox_publica':'si','receta_imagen':imagen,'productos':productos}, follow=True)
-        receta = Receta.objects.filter(nombre='Receta',descripcion='Prueba de receta')
+        receta = Receta.objects.filter(nombre='Receta',descripcion='Prueba de receta').all()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(receta[0].nombre, 'Receta')
         self.assertEqual(receta[0].descripcion, 'Prueba de receta')

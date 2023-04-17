@@ -92,7 +92,7 @@ class LoginRegisterTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base.html')
 
-@tag("selenium", "sut")
+@tag("selenium")
 class LoginRegisterTestSelenium(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(self):

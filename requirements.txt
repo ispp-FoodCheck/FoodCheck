@@ -7,3 +7,5 @@ django-resized
 spanlp
 python-decouple
 selenium
+django
+django-pwa
