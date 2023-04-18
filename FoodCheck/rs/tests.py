@@ -1,10 +1,11 @@
 from django.db import connection
-from django.test import Client, TestCase
+from django.test import Client, TestCase, tag
 from Web.models import User, Valoracion, Producto
 import datetime
 from random import randint
 from rs.rs import get_all_valorations_correct_format, get_recommendations
 
+@tag("fast")
 class RecommendationTestCase(TestCase):
 
     
@@ -21,7 +22,8 @@ class RecommendationTestCase(TestCase):
         self.crear_valoraciones_aleatorias()
 
     def tearDown(self):
-        pass
+        self.userNoPremium.delete()
+        self.userPremium.delete()
     
     def login(self, premium = True):
         if premium:
