@@ -40,7 +40,6 @@ def login_view(request):
             user = authenticate(request, username=username_or_email, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, "Bienvenido!")
                 return redirect('index')
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos')
@@ -54,3 +53,8 @@ def login_view(request):
 @require_safe
 def terms_view(request):
     return render(request, 'terms.html')
+
+
+@require_safe
+def gdpr_view(request):
+    return render(request, 'gdpr.html')

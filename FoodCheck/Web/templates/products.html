@@ -11,6 +11,7 @@
     <div >
         <div class="row" id="formulario-completo">
             <form method="POST" action="{% url 'index' %}" id="filter-form" >
+                {% csrf_token %}
                 <input class="form-control search" id="canal_de_texto" name="canal_de_texto" placeholder="Busca tu producto"
                     value="{{ palabra_buscador }}">
                 <div class="row-md-2">
@@ -19,8 +20,17 @@
                         Buscar producto
                     </button>
                 </div>
+                <div class="row-md-2">
+                    <h1 class="title">Supermercados</h1>
+                    
+                {% for supermercado in supermercados %}
+                    <input type="checkbox" name="supermercados_selected" value="{{supermercado.nombre}}"  {% if supermercado.nombre in supermercados_selected %} checked {% endif %} id="supermercado_{{ supermercado.nombre }}">
+                    <label for="supermercado_{{ supermercado.nombre }}" class="supermercado-checkbox" style="background-image: url('{{supermercado.foto}}'); ">
+                    </label>
+                {% endfor %}
+                </div>
                 <h1 class="title">Filtros</h1>
-                {% csrf_token %}
+                
                 {% for alergeno in alergenos_available %}
                 <input type="checkbox" name="alergenos_selected" value="{{ alergeno.nombre }}" {% if alergeno.nombre in alergenos_selected %} checked {% endif %} id="alergeno_{{ alergeno.nombre }}">
                 <label for="alergeno_{{ alergeno.nombre }}" class="imagen-checkbox" style="background-image: url('{{alergeno.imagen}}'); ">
@@ -36,6 +46,7 @@
                     </button>
                     <a class="btn btn-primary mb-3" href="home" style="border-radius: 12px;">Mis filtros</a>
                 </div>
+
             </form>
         </div>
 
@@ -126,12 +137,17 @@
 
         <div class="row">
             {% for producto in lista_producto.object_list %}
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
+                    {% if user.is_authenticated %}
+                    <a class="mb-3" style="text-align: right" href="/product/{{producto.id}}/add"><i class="bi bi-bag-plus"></i></a>
+                    {% endif %}
                     <a href="product/{{producto.id}}/details"><img src="{{producto.imagen}}" alt="error"
                             style="width:100%"></a>
                     <a href="product/{{producto.id}}/details"><p class="nombre">{{producto.nombre}}</p></a>
+                    {% if producto.marca != "Desconocida" %}
                     <p class="marca">Marca: {{producto.marca}}</p>
+                    {% endif %}
                     <p class="supermercados">Supermercados: {{producto.supermercados.all|join:"/"}}</p>
                     <div class="row">
                         <div class="col">

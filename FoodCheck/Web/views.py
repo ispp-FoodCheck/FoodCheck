@@ -10,11 +10,12 @@ from django.contrib import messages
 from unidecode import unidecode
 from .forms import AllergenReportForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto
+from .models import Alergeno, Producto, Valoracion, ListaCompra, ReporteAlergenos, Receta, RecetasDesbloqueadasUsuario, ListaCompra, Producto, Supermercado
 from django.http import JsonResponse
 from django.core import serializers
 import json
 from django.db.models import Avg
+from PIL import Image
 
 from spanlp.palabrota import Palabrota
 from payments.utils import es_premium
@@ -34,8 +35,10 @@ def index(request):
     numero_pagina = request.POST.get('page') or 1
     alergenos_selected = request.POST.getlist('alergenos_selected')
     alergenos = Alergeno.objects.exclude(imagen__isnull=True)
+    supermercados = Supermercado.objects.all()
+    supermercados_selected = request.POST.getlist('supermercados_selected')
     palabra_buscador = request.POST.get('canal_de_texto') or ''
-    print(alergenos_selected)
+    
 
     if request.user.is_authenticated:
         es_premium(request.user)
@@ -45,10 +48,12 @@ def index(request):
             request.user.alergenos.all().values_list('nombre', flat=True))
         if request.user.es_vegano:
             vegano_selected = True
-
-    lista_producto = Producto.objects.exclude(
-        alergenos__nombre__in=alergenos_selected)
-
+            
+    lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected)        
+    
+    if len(supermercados_selected) != 0:
+        lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected).filter(supermercados__nombre__in=supermercados_selected)     
+            
     if request.POST.get('vegano') == '1':
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
@@ -56,12 +61,12 @@ def index(request):
         lista_producto = lista_producto.annotate(nombre_m=Lower('nombre')).filter(
             nombre_m__icontains=unidecode(palabra_buscador.lower()))
 
-    paginacion = Paginator(lista_producto, 12)
+    paginacion = Paginator(lista_producto, 16)
     total_de_paginas = paginacion.num_pages
 
     objetos_de_la_pagina = paginacion.get_page(numero_pagina)
     diccionario = {'lista_producto': objetos_de_la_pagina, 'alergenos_available': alergenos, 'alergenos_selected': alergenos_selected,
-                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador}
+                   'vegano_selected': vegano_selected, 'total_de_paginas': total_de_paginas, 'palabra_buscador': palabra_buscador, 'supermercados':supermercados, 'supermercados_selected':supermercados_selected}
     return render(request, "products.html", diccionario)
 
 
@@ -72,7 +77,7 @@ def product_details(request, id_producto):
 
     diccionario = {}
     prod = Producto.objects.filter(id=id_producto)[0]
-    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).all()
+    valoraciones_con_comentario = Valoracion.objects.filter(producto=prod).exclude(comentario__isnull=True).order_by('created').all()
     ha_reportado = ReporteAlergenos.objects.filter(usuario=request.user, producto=prod).count() >= 1
     
     lista_recetas = Receta.objects.filter(productos__id=id_producto)
@@ -85,25 +90,22 @@ def product_details(request, id_producto):
                 distinct_alergenos.add(alergeno)
         diccionario_recetas_alergenos[receta] = distinct_alergenos
 
+    valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
+    
 
     # form valoracion
     if request.method == 'POST':
         comentario = request.POST.get('cuerpo')
         if (comentario == ''):
             comentario = None
-
         else:
             palabrota = Palabrota(censor_char="*")
-
-            print(comentario)
-
             comentario = palabrota.censor(input_text=comentario)
-
-            print(comentario)
         
         puntuacion = request.POST.get('valoracion')
 
-        if (puntuacion != ''):
+
+        if (puntuacion != '' and len(valoraciones_user)<1):
             usuario = request.user
             valoracion = Valoracion.objects.create(
                 comentario=comentario, puntuacion=puntuacion, usuario=usuario, producto=prod)
@@ -111,17 +113,17 @@ def product_details(request, id_producto):
 
             valoraciones = Valoracion.objects.filter(producto=prod).all()
             puntuaciones = [v.puntuacion for v in valoraciones]
-            puntuaciones.append(int(puntuacion))
             media = sum(puntuaciones) / len(puntuaciones)
             prod.valoracionMedia = media
             prod.save()
+
+            valoraciones_user = Valoracion.objects.filter(producto=prod,usuario=request.user).all()
             
-    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos}
+    
+    estrellas = '★' * int((round(prod.valoracionMedia))) + '☆' * int(5 - (round(prod.valoracionMedia)))
+        
+    diccionario = {'producto':prod, 'valoraciones':valoraciones_con_comentario, 'ha_reportado': ha_reportado, 'recetas':diccionario_recetas_alergenos, 'n_valoraciones':len(valoraciones_user), 'estrellas':estrellas}
     return render(request, "product_details.html", diccionario)
-
-
-
-
 
 @login_required(login_url='authentication:login')
 def allergen_report(request, id_producto):
@@ -153,7 +155,7 @@ def allergen_report(request, id_producto):
 
     return render(request, 'allergen_report.html', context)
 
-@require_safe
+@require_http_methods(['GET','POST'])
 @login_required(login_url='authentication:login')
 def shopping_list(request):
     lista_compra = ListaCompra.objects.filter(usuario=request.user)
@@ -161,8 +163,14 @@ def shopping_list(request):
                 ListaCompra.objects.create(usuario=request.user)
                 lista_compra = ListaCompra.objects.filter(usuario=request.user)
     productos = lista_compra.get().productos.all()
-    print(len(productos))
     productos_agrupados_por_supermercado = {} #Diccionario que tiene como clave los supermercados y como valor un conjunto de productos que se vendan en ese supermercado
+
+    #botón vaciar lista
+    if request.method == 'POST':
+        lista_compra_get = lista_compra.get()
+        lista_compra_get.productos.set([])
+        lista_compra_get.save()
+        return redirect('/shopping_list')
 
     for producto in productos:
         for supermercado in producto.supermercados.all():
@@ -406,11 +414,25 @@ def new_recipes(request):
         img = request.FILES.get('receta_imagen')
 
         productos_escogidos = request.POST.getlist('productos[]') #recoge las id en formato lista
-
-        if publica == "si": 
-            publica=True
+        if es_premium(request.user)==False:
+            publica = True
         else:
-            publica=False
+            if publica == "si": 
+                publica=True
+            else:
+                publica=False
+
+        if len(productos_escogidos) < 2:
+            messages.error(request,"Para crear una nueva receta debe añadir al menos dos ingredientes.")
+            return redirect('new_recipes')
+    
+        if img:
+            try:
+                with Image.open(img) as im:
+                    pass
+            except:
+                messages.error(request,'El archivo cargado no es una imagen válida.')
+                return redirect('new_recipes')
 
         propietario = request.user
 
@@ -488,5 +510,15 @@ def delete_valoracion(request, valoracion_id):
             return redirect('product_details', id_producto=post_id)
     else:
         return redirect('product_details', id_producto=post_id)
+
+@require_safe
+def trending_productos(request):
+    res = []
+    numero_de_productos_trending = 5 if Producto.objects.count() >= 5 else Producto.objects.count()
+    productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:numero_de_productos_trending]
+    for p in productos:
+        if p.valoracionMedia > 0:
+            res.append((p, Valoracion.objects.filter(producto = p).count()))
+    return render(request, "trending_productos.html", {'products':res})
     
 
