@@ -88,7 +88,7 @@ class TrendingTest(TestCase):
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
 
 
-####TESTS LISTADO PRODUCTO####
+# ####TESTS LISTADO PRODUCTO####
 
 @tag("fast")
 class ProductListTest(TestCase):
@@ -341,15 +341,24 @@ class ListaDeLaCompraSeleniumTest(StaticLiveServerTestCase):
         password_input = self.selenium.find_element(By.NAME, "password")
         password_input.send_keys('root')
         butom_input = self.selenium.find_element(By.XPATH, '//*[@id="logBtn"]')
-        ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-        self.selenium.implicitly_wait(30)
+        ActionChains(self.selenium).scroll_by_amount(0,2000).perform()
+        self.selenium.implicitly_wait(40)
         butom_input.click()
-        producto_gamba = self.selenium.find_element(By.XPATH, "/html/body/header/nav/div/div/ul/li[2]/a")
+        print(" ")
+        ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+        producto_gamba = self.selenium.find_element(By.XPATH, "/html/body/main/div/div/div[4]/div/div/a[3]")
+        print(" ")
         producto_gamba.click()
-        producto_lista_garbanzos= self.selenium.find_element(By.XPATH,"/html/body/main/div[2]/div/div/div/div/p[1]")
+        ActionChains(self.selenium).scroll_by_amount(0,500).perform()
+        print(" ")
+        anadir_producto_gamba = self.selenium.find_element(By.XPATH, '/html/body/main/div[1]/div/div[1]/a[1]')
+        self.selenium.implicitly_wait(40)
+        anadir_producto_gamba.click()
+        ActionChains(self.selenium).scroll_by_amount(0,500).perform()
+        self.selenium.implicitly_wait(15)
+        producto_lista_garbanzos= self.selenium.find_element(By.XPATH,"/html/body/main/div[3]/div/div/div/div/p[1]")
         Garbanzos=producto_lista_garbanzos.text
-        self.assertEqual(Garbanzos,"Garbanzos")
-        self.selenium.quit()
+        self.assertEqual(Garbanzos,'Garbanzos')
 
 @tag("fast")
 class RecipesTest(TestCase):
