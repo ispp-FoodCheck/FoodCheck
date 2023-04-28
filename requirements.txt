@@ -9,3 +9,4 @@ python-decouple
 selenium
 django
 django-pwa
+locust
