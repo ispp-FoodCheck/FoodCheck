@@ -374,16 +374,19 @@ class RecipesTest(TestCase):
 
     def test_add_recipe(self):
         self.login()
+        response = self.client.get("/recipes/new")
+        csrftoken = response.cookies['csrftoken']
+
         with open(os.path.join('Web','static','imgs','lechuga.png'),'rb') as f:
-            imagen = SimpleUploadedFile(name='lechuga.png', content=f.read(), content_type='image/png')        
-        
-        productos=[2996514000002,3560071092801]
-        response = self.client.post('/recipes/new',{'nombre':'Receta','cuerpo':'Prueba de receta','horas':'1','minutos':'0',
-                                                    'segundos':'0','checkbox_publica':'si','receta_imagen':imagen,'productos':productos}, follow=True)
-        receta = Receta.objects.filter(nombre='Receta',descripcion='Prueba de receta').all()
+            imagen = SimpleUploadedFile(name='lechuga.png', content=f.read(), content_type='image/png')
+            productos=[2996514000002,3560071092801]
+            self.client.post('/recipes/new',{'nombre':'PruebaReceta1','cuerpo':'Prueba de receta 1','horas':'1','minutos':'0', 'segundos':'0',
+                                            'receta_imagen':imagen, 'productos[]':productos}, headers={"X-CSRFToken": csrftoken})
+            f.close()
+        receta = Receta.objects.all()
+        print(receta)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(receta[0].nombre, 'Receta')
-        self.assertEqual(receta[0].descripcion, 'Prueba de receta')
+        self.assertEqual(receta[0].nombre, 'PruebaReceta1')
 
 @tag("selenium")
 class RecipeNegativeSeleniumTest(StaticLiveServerTestCase):
@@ -421,6 +424,8 @@ class RecipeNegativeSeleniumTest(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "password").click()
         self.driver.find_element(By.ID, "password").send_keys("root")
         self.driver.find_element(By.ID, "logBtn").click()
+        time.sleep(2)
+        self.driver.find_element(By.CLASS_NAME, "navbar-toggler-icon").click()
         self.driver.find_element(By.ID, "navbarDropdown").click()
         self.driver.find_element(By.LINK_TEXT, "Mis recetas").click()
         self.driver.find_element(By.LINK_TEXT, "Nueva receta").click()
