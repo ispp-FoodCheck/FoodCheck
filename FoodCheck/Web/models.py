@@ -7,7 +7,6 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django import forms
 from django.db.models import Avg
-from django.utils import timezone
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -95,7 +94,7 @@ class Valoracion(models.Model):
     comentario = models.CharField(max_length=200, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(default=datetime.now)
 
     class Meta:
         unique_together = ('usuario', 'producto')
@@ -117,7 +116,7 @@ class ReporteAlergenos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     alergenos = models.ManyToManyField(Alergeno)
-    fecha = models.DateTimeField(default=datetime.now())
+    fecha = models.DateTimeField(default=datetime.now)
 
     class Meta:
         constraints = [
