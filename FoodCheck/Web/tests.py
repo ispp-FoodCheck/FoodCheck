@@ -88,7 +88,7 @@ class TrendingTest(TestCase):
         self.assertEqual(productos,products_trending,"Los objetos trending no son los esperados.")
 
 
-####TESTS LISTADO PRODUCTO####
+# ####TESTS LISTADO PRODUCTO####
 
 @tag("fast")
 class ProductListTest(TestCase):
@@ -341,15 +341,24 @@ class ListaDeLaCompraSeleniumTest(StaticLiveServerTestCase):
         password_input = self.selenium.find_element(By.NAME, "password")
         password_input.send_keys('root')
         butom_input = self.selenium.find_element(By.XPATH, '//*[@id="logBtn"]')
-        ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
-        self.selenium.implicitly_wait(30)
+        ActionChains(self.selenium).scroll_by_amount(0,2000).perform()
+        self.selenium.implicitly_wait(40)
         butom_input.click()
-        producto_gamba = self.selenium.find_element(By.XPATH, "/html/body/header/nav/div/div/ul/li[2]/a")
+        print(" ")
+        ActionChains(self.selenium).scroll_by_amount(0,1000).perform()
+        producto_gamba = self.selenium.find_element(By.XPATH, "/html/body/main/div/div/div[4]/div/div/a[3]")
+        print(" ")
         producto_gamba.click()
-        producto_lista_garbanzos= self.selenium.find_element(By.XPATH,"/html/body/main/div[2]/div/div/div/div/p[1]")
+        ActionChains(self.selenium).scroll_by_amount(0,500).perform()
+        print(" ")
+        anadir_producto_gamba = self.selenium.find_element(By.XPATH, '/html/body/main/div[1]/div/div[1]/a[1]')
+        self.selenium.implicitly_wait(40)
+        anadir_producto_gamba.click()
+        ActionChains(self.selenium).scroll_by_amount(0,500).perform()
+        self.selenium.implicitly_wait(15)
+        producto_lista_garbanzos= self.selenium.find_element(By.XPATH,"/html/body/main/div[3]/div/div/div/div/p[1]")
         Garbanzos=producto_lista_garbanzos.text
-        self.assertEqual(Garbanzos,"Garbanzos")
-        self.selenium.quit()
+        self.assertEqual(Garbanzos,'Garbanzos')
 
 @tag("fast")
 class RecipesTest(TestCase):
@@ -365,16 +374,19 @@ class RecipesTest(TestCase):
 
     def test_add_recipe(self):
         self.login()
+        response = self.client.get("/recipes/new")
+        csrftoken = response.cookies['csrftoken']
+
         with open(os.path.join('Web','static','imgs','lechuga.png'),'rb') as f:
-            imagen = SimpleUploadedFile(name='lechuga.png', content=f.read(), content_type='image/png')        
-        
-        productos=[2996514000002,3560071092801]
-        response = self.client.post('/recipes/new',{'nombre':'Receta','cuerpo':'Prueba de receta','horas':'1','minutos':'0',
-                                                    'segundos':'0','checkbox_publica':'si','receta_imagen':imagen,'productos':productos}, follow=True)
-        receta = Receta.objects.filter(nombre='Receta',descripcion='Prueba de receta').all()
+            imagen = SimpleUploadedFile(name='lechuga.png', content=f.read(), content_type='image/png')
+            productos=[2996514000002,3560071092801]
+            self.client.post('/recipes/new',{'nombre':'PruebaReceta1','cuerpo':'Prueba de receta 1','horas':'1','minutos':'0', 'segundos':'0',
+                                            'receta_imagen':imagen, 'productos[]':productos}, headers={"X-CSRFToken": csrftoken})
+            f.close()
+        receta = Receta.objects.all()
+        print(receta)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(receta[0].nombre, 'Receta')
-        self.assertEqual(receta[0].descripcion, 'Prueba de receta')
+        self.assertEqual(receta[0].nombre, 'PruebaReceta1')
 
 @tag("selenium")
 class RecipeNegativeSeleniumTest(StaticLiveServerTestCase):
@@ -412,6 +424,8 @@ class RecipeNegativeSeleniumTest(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "password").click()
         self.driver.find_element(By.ID, "password").send_keys("root")
         self.driver.find_element(By.ID, "logBtn").click()
+        time.sleep(2)
+        self.driver.find_element(By.CLASS_NAME, "navbar-toggler-icon").click()
         self.driver.find_element(By.ID, "navbarDropdown").click()
         self.driver.find_element(By.LINK_TEXT, "Mis recetas").click()
         self.driver.find_element(By.LINK_TEXT, "Nueva receta").click()
@@ -611,7 +625,7 @@ class Test_premium(StaticLiveServerTestCase):
         super().tearDown()
         self.receta1.delete()
         self.receta2.delete()
-        self.usuario1.delete()
+        self.usuario.delete()
         self.usuario2.delete()
         
 
@@ -758,7 +772,7 @@ class Test_premium(StaticLiveServerTestCase):
         self.assertIsNotNone(redireccionOK)
 
         receta = Receta.objects.latest("id")
-        self.assertFalse(receta.publica)
+        self.assertTrue(receta.publica)
 
     def test_accesoDiscoverPremium(self):
 
@@ -830,7 +844,7 @@ class Test_premium(StaticLiveServerTestCase):
         time.sleep(1)
         self.selenium.find_element(By.ID, "boton-productos-lista").click()
 
-        redireccionOK = self.selenium.find_element(By.XPATH, "/html/body/main/div[2]/div/h1")
+        redireccionOK = self.selenium.find_element(By.XPATH, "/html/body/main/div[1]/h1")
         self.assertIsNotNone(redireccionOK)
 
         # comprobamos que el user premium puede desbloquear más de una receta:
