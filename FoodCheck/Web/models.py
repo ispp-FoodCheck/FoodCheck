@@ -7,6 +7,8 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django import forms
 from django.db.models import Avg
+import time
+from math import log10
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -42,10 +44,9 @@ class Producto(models.Model):
         return self.nombre > other.nombre
 
     def get_popularity(self):
-        usuarios_totales = User.objects.count()
-        usuarios_que_han_valorado = len(Valoracion.objects.filter(producto = self))
-        if usuarios_totales > 0 and usuarios_que_han_valorado > 0:
-            return self.valoracionMedia * (usuarios_que_han_valorado/usuarios_totales)  
+        usuarios_que_han_valorado = Valoracion.objects.filter(producto = self).count()
+        if usuarios_que_han_valorado > 0:
+            return self.valoracionMedia * log10(usuarios_que_han_valorado)   
         else:
             return -1
     
