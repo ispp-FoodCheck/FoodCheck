@@ -3,6 +3,7 @@
 
   <head>
     {% load static %}
+    {% include 'pwa_headers.html' %}
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="“icon”" href="{% static 'imgs/favicon.ico' %}" />
@@ -125,7 +126,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% if user.is_authenticated %}
               {% now "Y-m-d" as now %}
-              {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
+                {% if user.premiumHasta == None or now > user.premiumHasta|date:"Y-m-d"%}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -135,7 +136,7 @@
                   Plan premium
                 </a>
               </li>
-              {% endif %}
+                {% endif %}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -156,18 +157,8 @@
                   <li><a class="dropdown-item" href="/recipes" aria-label="Brings you to the recipes">Todas las recetas</a></li>
                 </ul>
               </li>
-
-              {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-link-colors"
-                  href="/recipes"
-                  aria-label="Recetas"
-                >
-                  Recetas
-                </a>
-              </li>
               
+              {% else %}
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
@@ -180,13 +171,22 @@
               <li class="nav-item">
                 <a
                   class="nav-link nav-link-colors"
+                  href="/recipes"
+                  aria-label="Recetas"
+                >
+                  Recetas
+                </a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a
+                  class="nav-link nav-link-colors"
                   href="/trending"
                   aria-label="Shows you the best ranked products in the app"
                 >
                   Tendencias
                 </a>
               </li>
-              {% endif %}
               {% now "Y-m-d" as now %}
               {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
               <li class="nav-item">
@@ -222,7 +222,7 @@
               {% if user.is_staff %}
               <i class="fa-solid fa-toolbox"></i>
               {%endif%}
-                <span>{{ user.username }}</span>
+                <span class="username">{{ user.username }}</span>
               </button>
               <div
                 class="dropdown-menu dropdown--menu-end"
@@ -240,6 +240,12 @@
                 {% endif %} {% if user.last_name %}
                 <p class="dropdown-item">Apellidos: {{ user.last_name }}</p>
                 {% endif %}
+                {% now "Y-m-d" as now %}
+                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now and user.subscription != None%}
+                  <a class="nav-link nav-link-colors" href="/payment_portal">
+                    <p class="dropdown-item"><i class="fa-solid fa-star"></i> Administrar Subscripción</p>
+                  </a>
+                {%endif%}
                   <li class="dropdown-item">
                     <a
                       class="nav-link"
@@ -326,6 +332,9 @@
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
             <p>
               <a href="/" class="text-white">Landing Page</a>
+            </p>
+            <p>
+              <a href="/gdpr" class="text-white">Tratamiento de datos</a>
             </p>
           </div>
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">

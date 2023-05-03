@@ -1,8 +1,9 @@
 from django.db import connection
-from django.test import Client, TestCase
+from django.test import Client, TestCase, tag
 from Web.models import Producto, User
 
 
+@tag("fast")
 class RatingsTest(TestCase):
 
     @classmethod
@@ -14,6 +15,9 @@ class RatingsTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='rating_test', password='123', telefono='123456789')
+    
+    def tearDown(self):
+        self.user.delete()
 
     def login(self):
         self.client.force_login(self.user)

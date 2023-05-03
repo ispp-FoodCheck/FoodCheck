@@ -28,7 +28,7 @@
     <div class="row">
         {% include 'messaging.html' %}
         <h1 class="title">Crear una receta</h1>
-        <form method="POST" id="filter-form" enctype="multipart/form-data">
+        <form method="POST" name="mi-formulario" id="filter-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div>
                 <input class="form-control" id="nombre" name="nombre" placeholder="Nombre de la receta"
@@ -78,10 +78,13 @@
                 </div>
             </div>
 
+            {% now "Y-m-d" as now %}
+            {% if user.premiumHasta != None or user.premiumHasta|date:"Y-m-d" > now %}
             <div class="mt-3">
                 <p>¿Quieres que sea pública? <input type="checkbox" id="checkbox_publica" name="checkbox_publica"
-                        value="si" checked="true" ></p>
+                        value="si" checked="false" ></p>
             </div>
+            {% endif  %}
 
             <button class="btn btn-primary mt-3 mb-3" type="submit" id="boton-busqueda" style="border-radius: 12px;">
                 Crear receta
