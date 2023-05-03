@@ -54,7 +54,7 @@ def index(request):
     if len(supermercados_selected) != 0:
         lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected).filter(supermercados__nombre__in=supermercados_selected)     
             
-    if request.POST.get('vegano') == '1':
+    if request.POST.get('vegano') == '1' or vegano_selected == True:
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
     if palabra_buscador != None:

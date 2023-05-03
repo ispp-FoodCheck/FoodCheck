@@ -119,10 +119,7 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div
-            class="collapse navbar-collapse navbar-colors"
-            id="navbarSupportedContent"
-          >
+          <div class="collapse navbar-collapse navbar-colors" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% if user.is_authenticated %}
               {% now "Y-m-d" as now %}
@@ -197,82 +194,62 @@
               </li>
               {%endif%}
              
-            {% if user.is_staff %}
-              <li class="nav-item">
-                <a class="nav-link nav-link-colors" href="/report/list" aria-label="Brings you to the recipes">
-                  Reportes
-                </a>
-              </li>
+              {% if user.is_staff %}
+                <li class="nav-item">
+                  <a class="nav-link nav-link-colors" href="/report/list" aria-label="Brings you to the recipes">
+                    Reportes
+                  </a>
+                </li>
               {% endif %}
             </ul>
             {% if user.is_authenticated %}
-            <div class="btn-group dropstart">
-              <button
-                class="btn btn-secondary nav-link nav-link-colors"
-                type="button"
-                id="infoUser"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-              {% now "Y-m-d" as now %}
-              {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
-              <i class="fa-solid fa-star"></i>
-              {%endif%}
-              {% if user.is_staff %}
-              <i class="fa-solid fa-toolbox"></i>
-              {%endif%}
-                <span class="username">{{ user.username }}</span>
-              </button>
-              <div
-                class="dropdown-menu dropdown--menu-end"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <p class="dropdown-item">
-                  Nombre de usuario: {{ user.username }}
-                </p>
-                {% if user.email %}
-                <p class="dropdown-item">
-                  Correo electronico: {{ user.email }}
-                </p>
-                {% endif %} {% if user.first_name %}
-                <p class="dropdown-item">Nombre: {{ user.first_name }}</p>
-                {% endif %} {% if user.last_name %}
-                <p class="dropdown-item">Apellidos: {{ user.last_name }}</p>
-                {% endif %}
-                {% now "Y-m-d" as now %}
-                {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now and user.subscription != None%}
-                  <a class="nav-link nav-link-colors" href="/payment_portal">
-                    <p class="dropdown-item"><i class="fa-solid fa-star"></i> Administrar Subscripción</p>
-                  </a>
-                {%endif%}
-                  <li class="dropdown-item">
-                    <a
-                      class="nav-link"
-                      href="{% url 'authentication:logout' %}"
-                      aria-label="Brings you to the frontpage"
-                    >
-                      Cerrar sesión
-                    </a>
-                  </li>
-                  {% else %}
-                  <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-link-colors" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {% now "Y-m-d" as now %}
+                  {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now %}
+                  <i class="fa-solid fa-star"></i>
+                  {%endif%}
+                  {% if user.is_staff %}
+                  <i class="fa-solid fa-toolbox"></i>
+                  {%endif%}
+                  <span class="username">{{ user.username }}</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><p class="dropdown-item">Nombre de usuario: {{ user.username }}</li>
+                  {% if user.email %}
+                  <li><p class="dropdown-item">Correo electronico: {{ user.email }}</li>
+                  {% endif %} {% if user.first_name %}
+                  <li><p class="dropdown-item">Nombre: {{ user.first_name }}</p></li>
+                  {% endif %} {% if user.last_name %}
+                  <li><p class="dropdown-item">Apellidos: {{ user.last_name }}</p></li>
+                  {% endif %}
+                  {% now "Y-m-d" as now %}
+                  {% if user.premiumHasta != None and user.premiumHasta|date:"Y-m-d" >= now and user.subscription != None%}
+                  <li><a class="dropdown-item" href="/payment_portal"><i class="fa-solid fa-star"></i> Administrar Subscripción</a></li>
+                  <p></p>
+                  {%endif%}
+                  <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Cerrar sesión</a></li>
+                </ul>
+              </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
                       <a class="nav-link nav-link-colors" href="{% url 'authentication:login' %}"
                         aria-label="Brings you to the frontpage">
                         Iniciar sesión
                       </a>
-                    </li>
-                    <li class="nav-item">
+              </li>
+              <li class="nav-item">
                       <a class="nav-link nav-link-colors" href="{% url 'authentication:register' %}"
                         aria-label="Brings you to the frontpage">
                         Registrarse
                       </a>
-                    </li>
-                  </ul>
-              </div>
-            </div>
+              </li>
+            </ul>
             {% endif %}
+
           </div>
         </div>
       </div>
