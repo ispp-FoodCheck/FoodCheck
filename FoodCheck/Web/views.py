@@ -517,6 +517,7 @@ def trending_productos(request):
     numero_de_productos_trending = 5 if Producto.objects.count() >= 5 else Producto.objects.count()
     productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:numero_de_productos_trending]
     for p in productos:
+        p.actualizar_valoracion_media()
         if p.valoracionMedia > 0:
             res.append((p, Valoracion.objects.filter(producto = p).count()))
     return render(request, "trending_productos.html", {'products':res})

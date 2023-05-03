@@ -7,7 +7,8 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django import forms
 from django.db.models import Avg
-from django.utils import timezone
+import time
+from math import log10
 
 class Alergeno(models.Model):
     id = models.AutoField(primary_key=True)
@@ -43,10 +44,9 @@ class Producto(models.Model):
         return self.nombre > other.nombre
 
     def get_popularity(self):
-        usuarios_totales = User.objects.count()
-        usuarios_que_han_valorado = len(Valoracion.objects.filter(producto = self))
-        if usuarios_totales > 0 and usuarios_que_han_valorado > 0:
-            return self.valoracionMedia * (usuarios_que_han_valorado/usuarios_totales)  
+        usuarios_que_han_valorado = Valoracion.objects.filter(producto = self).count()
+        if usuarios_que_han_valorado > 0:
+            return self.valoracionMedia * log10(usuarios_que_han_valorado)   
         else:
             return -1
     
@@ -95,7 +95,7 @@ class Valoracion(models.Model):
     comentario = models.CharField(max_length=200, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(default=datetime.now)
 
     class Meta:
         unique_together = ('usuario', 'producto')
@@ -117,7 +117,7 @@ class ReporteAlergenos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     alergenos = models.ManyToManyField(Alergeno)
-    fecha = models.DateTimeField(default=datetime.now())
+    fecha = models.DateTimeField(default=datetime.now)
 
     class Meta:
         constraints = [
