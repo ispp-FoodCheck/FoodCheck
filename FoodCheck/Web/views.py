@@ -54,7 +54,7 @@ def index(request):
     if len(supermercados_selected) != 0:
         lista_producto = Producto.objects.exclude(alergenos__nombre__in=alergenos_selected).filter(supermercados__nombre__in=supermercados_selected)     
             
-    if request.POST.get('vegano') == '1':
+    if request.POST.get('vegano') == '1' or vegano_selected == True:
         lista_producto = lista_producto.filter(vegano=True)
         vegano_selected = True
     if palabra_buscador != None:
@@ -517,6 +517,7 @@ def trending_productos(request):
     numero_de_productos_trending = 5 if Producto.objects.count() >= 5 else Producto.objects.count()
     productos = sorted(Producto.objects.all(), key=lambda p: p.get_popularity(), reverse=True)[0:numero_de_productos_trending]
     for p in productos:
+        p.actualizar_valoracion_media()
         if p.valoracionMedia > 0:
             res.append((p, Valoracion.objects.filter(producto = p).count()))
     return render(request, "trending_productos.html", {'products':res})

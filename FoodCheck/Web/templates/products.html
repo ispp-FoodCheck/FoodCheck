@@ -36,9 +36,12 @@
                 <label for="alergeno_{{ alergeno.nombre }}" class="imagen-checkbox" style="background-image: url('{{alergeno.imagen}}'); ">
                 </label>
                 {% endfor %}
-                <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %} id="vegano">
-                <label for="vegano" class="imagen-checkbox" style="background-image: url({% static 'imgs/intolerancias/vegano.png' %});">
-                </label>
+                <div class="row-md-2">
+                    <h1 class="title">Solo productos veganos</h1>
+
+                    <input type="checkbox" name="vegano" value="1" {% if vegano_selected %} checked {% endif %} id="vegano">
+                    <label for="vegano" class="imagen-checkbox" style="background-image: url({% static 'imgs/intolerancias/vegano.png' %});"></label>
+                </div>
                 <div class="row-md-2">
                     </br>
                     <button type="submit" class="btn btn-primary mb-3" style="border-radius: 12px;">

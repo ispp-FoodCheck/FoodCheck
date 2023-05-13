@@ -155,6 +155,7 @@ caviar
 hueva
 lumpo
 palometa
+huevas
 e322
 e441
 e120
